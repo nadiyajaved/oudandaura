@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport">
+  <title>The Collection | Oud &amp; Aura</title>
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&amp;family=Plus+Jakarta+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "tertiary-fixed": "#ede0d7", "on-primary": "#ffffff", "inverse-primary": "#cac6c3", "primary-fixed-dim": "#cac6c3",
+            secondary: "#875200", background: "#fbf9f6", "error-container": "#ffdad6", "outline-variant": "#cdc5bd",
+            "on-background": "#1b1c1a", "surface-container-lowest": "#ffffff", "on-error-container": "#93000a",
+            "surface-container-low": "#f5f3f0", "inverse-surface": "#30312f", "tertiary-fixed-dim": "#d0c4bb",
+            "primary-container": "#1d1b1a", "on-tertiary-fixed": "#201a15", "on-tertiary-container": "#8c827a",
+            "on-tertiary-fixed-variant": "#4d453f", "primary-fixed": "#e6e1df", "inverse-on-surface": "#f2f0ed",
+            "secondary-fixed": "#ffddba", primary: "#000000", "on-secondary-container": "#724500",
+            "surface-container-highest": "#e4e2df", error: "#ba1a1a", "on-surface": "#1b1c1a",
+            "on-primary-container": "#868381", "on-secondary": "#ffffff", "on-surface-variant": "#4b4640",
+            "on-secondary-fixed": "#2b1700", "surface-container": "#efeeeb", "surface-dim": "#dbdad7",
+            "tertiary-container": "#201a15", "surface-tint": "#605e5c", "secondary-fixed-dim": "#ffb865",
+            "surface-variant": "#e4e2df", "secondary-container": "#feb154", "on-tertiary": "#ffffff",
+            "on-primary-fixed": "#1d1b1a", "surface-container-high": "#eae8e5", "surface-bright": "#fbf9f6",
+            "on-primary-fixed-variant": "#484645", surface: "#fbf9f6", tertiary: "#000000", "on-error": "#ffffff",
+            "on-secondary-fixed-variant": "#663d00", outline: "#7c766f"
+          },
+          fontFamily: {
+            "headline-sm": ["Playfair Display"], "display-hero": ["Playfair Display"], "headline-lg": ["Playfair Display"],
+            "display-hero-mobile": ["Playfair Display"], "label-caps": ["Plus Jakarta Sans"], "headline-md": ["Playfair Display"],
+            "body-lg": ["Plus Jakarta Sans"], "body-md": ["Plus Jakarta Sans"], "body-sm": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Playfair Display"], "label-sm": ["Plus Jakarta Sans"], headline: ["Playfair Display"],
+            display: ["Playfair Display"], body: ["Plus Jakarta Sans"], label: ["Plus Jakarta Sans"]
+          },
+          spacing: {
+            "margin-mobile": "1.25rem", "space-xl": "3rem", margin: "3rem", "space-xs": "0.25rem",
+            "space-sm": "0.5rem", "space-md": "1rem", "gutter-mobile": "0.75rem", gutter: "1.25rem", "space-lg": "1.75rem"
+          }
+        }
+      }
+    };
+  </script>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-surface text-on-surface font-body-md flex flex-col min-h-screen relative" style="background-color: rgb(247, 242, 235);">
+
+  <!-- HEADER -->
+  <header class="fixed top-0 inset-x-0 z-50 bg-surface/90 backdrop-blur-xl shadow-[0_1px_12px_rgba(0,0,0,0.03)] pt-safe">
+    <div class="max-w-7xl mx-auto h-16 px-margin-mobile flex items-center justify-between">
+      <div class="flex items-center gap-space-xs">
+        <button id="openMenuBtn" aria-label="Open Menu" class="w-11 h-11 flex items-center justify-center text-on-surface hover:text-secondary transition-colors" type="button">
+          <span class="material-symbols-outlined text-[24px]">menu</span>
+        </button>
+        <button aria-label="Search Fragrances" class="openSearchBtn w-11 h-11 flex items-center justify-center text-on-surface hover:text-secondary transition-colors" type="button">
+          <span class="material-symbols-outlined text-[22px]">search</span>
+        </button>
+      </div>
+
+      <a class="flex flex-col items-center justify-center text-center select-none" href="index.html">
+        <span class="font-headline-sm text-headline-sm tracking-[0.18em] text-primary uppercase">OUD &amp; AURA</span>
+        <span class="font-label-caps text-[9px] tracking-[0.24em] text-secondary uppercase -mt-0.5" data-config="brand-subtitle">PERFUMES</span>
+      </a>
+
+      <nav class="hidden md:flex items-center space-x-6 ml-8">
+        <a href="index.html" data-nav="home" class="font-label-caps text-xs uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors">Home</a>
+        <a href="shop.html" data-nav="shop" class="font-label-caps text-xs uppercase tracking-widest text-primary font-semibold hover:text-secondary transition-colors">Shop</a>
+        <a href="about.html" data-nav="about" class="font-label-caps text-xs uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors">Story</a>
+        <a href="contact.html" data-nav="contact" class="font-label-caps text-xs uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors">Order &amp; Support</a>
+      </nav>
+
+      <div class="flex items-center gap-space-xs">
+        <a aria-label="Shopping Bag" class="openCartBtn relative w-11 h-11 flex items-center justify-center text-on-surface hover:text-secondary transition-colors cursor-pointer" href="#">
+          <span class="material-symbols-outlined text-[22px]">shopping_bag</span>
+          <span class="cart-count-badge absolute top-2 right-2 min-w-[16px] h-[16px] px-1 rounded-full bg-primary text-on-primary font-label-caps text-[9px] flex items-center justify-center leading-none" style="display:none;">0</span>
+        </a>
+        <a href="contact.html" aria-label="Order &amp; Support" class="w-8 h-8 rounded-full bg-primary flex items-center justify-center ml-1 text-on-primary hover:bg-secondary transition-colors">
+          <span class="material-symbols-outlined text-[18px]">support_agent</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CATALOGUE CONTAINER -->
+  <main class="flex-1 flex flex-col relative w-full pt-16 pb-36 bg-surface">
+    <div class="max-w-4xl mx-auto w-full">
+
+      <!-- Breadcrumbs & Heading -->
+      <div class="relative px-margin-mobile pt-6 pb-4">
+        <div class="flex items-center gap-1.5 text-on-surface-variant font-label-caps text-[10px] tracking-[0.2em] uppercase">
+          <a class="hover:text-primary transition-colors" href="index.html">Home</a>
+          <span class="text-outline-variant">/</span>
+          <span class="text-secondary font-semibold">Shop</span>
+        </div>
+        <div class="mt-3 flex flex-col space-y-1">
+          <h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface tracking-tight font-headline-sm">Our Collection</h1>
+          <p class="font-body-sm text-body-sm text-on-surface-variant max-w-sm">
+            Explore our collection of perfumes, attars and gift sets, created for different moods, occasions and personal styles.
+          </p>
+        </div>
+        <!-- Editorial Note Badge -->
+        <div class="mt-4 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-container-low text-on-surface-variant border border-[#E5DDCF]">
+          <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+          <span class="font-label-caps text-[9px] uppercase tracking-[0.14em]">Catalog Edition 2025 • Thoughtfully Selected Fragrances</span>
+        </div>
+      </div>
+
+      <!-- Filter & Tab Navigation -->
+      <section class="px-margin-mobile pt-2 pb-3">
+        <!-- Horizontal Filter Chips -->
+        <div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-1" id="categoryTabs">
+          <button class="filter-tab flex-shrink-0 px-4 py-2 rounded-full font-label-caps text-label-caps uppercase transition-all shadow-sm" data-category="all" type="button">
+            All (<span id="allCount">0</span>)
+          </button>
+          <button class="filter-tab flex-shrink-0 px-4 py-2 rounded-full font-label-caps text-label-caps uppercase transition-all" data-category="perfumes" type="button">
+            Perfumes
+          </button>
+          <button class="filter-tab flex-shrink-0 px-4 py-2 rounded-full font-label-caps text-label-caps uppercase transition-all" data-category="attars" type="button">
+            Attars &amp; Oils
+          </button>
+          <button class="filter-tab flex-shrink-0 px-4 py-2 rounded-full font-label-caps text-label-caps uppercase transition-all" data-category="gifts" type="button">
+            Gift Sets
+          </button>
+        </div>
+
+        <!-- Micro Metadata / Sorting Bar -->
+        <div class="mt-4 flex items-center justify-between pt-3 text-on-surface-variant border-t border-[#E5DDCF]/60">
+          <div class="flex items-center gap-1.5 font-label-caps text-[11px] tracking-wider uppercase">
+            <span class="text-on-surface font-semibold" id="productCounter">0</span>
+            <span>Fragrances</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="relative">
+              <select id="sortSelect" class="font-label-caps text-[11px] tracking-wider uppercase text-on-surface bg-transparent hover:text-secondary focus:outline-none appearance-none pr-5 cursor-pointer">
+                <option value="curated">Sort: Featured</option>
+                <option value="price-asc">Price: Low to High</option>
+                <option value="price-desc">Price: High to Low</option>
+                <option value="name">Name: A to Z</option>
+              </select>
+              <span class="material-symbols-outlined text-[16px] text-secondary absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none">expand_more</span>
+            </div>
+            <button id="toggleFilterBtn" aria-label="Search Fragrances" class="openSearchBtn w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface hover:text-secondary transition-colors" type="button">
+              <span class="material-symbols-outlined text-[16px]">tune</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Product Catalog Grid -->
+      <section class="px-margin-mobile pt-2 pb-8">
+        <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-3" id="catalogueGrid">
+          <!-- Dynamic Products rendered from data/products.js -->
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="mt-auto bg-primary-container text-surface-container-low px-margin-mobile pt-12 pb-24" style="background-color: rgb(13, 12, 11);">
+    <div class="max-w-4xl mx-auto flex flex-col items-center text-center space-y-3">
+      <span class="font-headline-sm text-headline-sm tracking-[0.2em] text-surface-container-lowest uppercase">OUD &amp; AURA</span>
+      <p class="font-headline-sm text-body-sm italic text-secondary-fixed-dim">The essence of elegance.</p>
+      <div class="w-12 h-[1px] bg-secondary/40 my-2"></div>
+      <div class="mt-6 grid grid-cols-2 sm:grid-cols-3 gap-y-3 gap-x-8 text-center">
+        <a class="font-label-caps text-label-caps uppercase text-secondary-fixed-dim hover:text-surface-container-lowest transition-colors" href="shop.html">Shop All</a>
+        <a class="font-label-caps text-label-caps uppercase text-secondary-fixed-dim hover:text-surface-container-lowest transition-colors" href="shop.html">Best Sellers</a>
+        <a class="font-label-caps text-label-caps uppercase text-secondary-fixed-dim hover:text-surface-container-lowest transition-colors" href="shop.html?category=attars">Attars</a>
+        <a class="font-label-caps text-label-caps uppercase text-secondary-fixed-dim hover:text-surface-container-lowest transition-colors" href="shop.html?category=gifts">Gift Sets</a>
+        <a class="font-label-caps text-label-caps uppercase text-secondary-fixed-dim hover:text-surface-container-lowest transition-colors" href="about.html">About Us</a>
+        <a class="font-label-caps text-label-caps uppercase text-secondary-fixed-dim hover:text-surface-container-lowest transition-colors" href="contact.html">Order &amp; Support</a>
+      </div>
+      <div class="mt-8 pt-6 flex flex-col items-center space-y-2 border-t border-white/10 w-full">
+        <a class="font-label-caps text-[10px] tracking-[0.16em] text-on-tertiary-container hover:text-surface-container-lowest transition-colors" data-config="instagram-link" href="#" target="_blank" rel="noopener">
+          <span data-config="instagram-handle">@oudandaura</span> • Instagram
+        </a>
+        <a class="font-label-caps text-[10px] tracking-[0.16em] text-secondary hover:text-secondary-fixed transition-colors" data-config="whatsapp-link" href="#" target="_blank" rel="noopener">
+          <span data-config="whatsapp-number">+91 98765 43210</span> • Quick Orders
+        </a>
+      </div>
+      <p class="mt-6 text-center font-label-caps text-[9px] tracking-[0.15em] text-on-tertiary-container/70">© 2025 Oud &amp; Aura. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- FLOATING WHATSAPP BUTTON -->
+  <aside class="fixed bottom-20 inset-x-0 z-40 px-margin-mobile pointer-events-none flex justify-center">
+    <a data-config="whatsapp-link" class="pointer-events-auto flex items-center gap-2.5 px-space-lg py-3 rounded-full bg-primary-container text-surface-container-lowest shadow-[0_8px_24px_rgba(0,0,0,0.18)] hover:bg-primary transition-all active:scale-95" href="#" rel="noopener" target="_blank" style="background-color: rgb(13, 12, 11); border: 1px solid rgb(203, 178, 121);">
+      <span class="w-2 h-2 rounded-full bg-secondary-fixed animate-pulse"></span>
+      <span class="font-label-caps text-label-caps uppercase tracking-[0.16em] text-surface-container-lowest">Order / Inquire via WhatsApp</span>
+      <span class="material-symbols-outlined text-[16px] text-secondary-fixed">arrow_outward</span>
+    </a>
+  </aside>
+
+  <!-- MOBILE BOTTOM BAR -->
+  <nav class="md:hidden fixed bottom-0 inset-x-0 z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-2px_12px_rgba(0,0,0,0.03)] border-t border-[#E5DDCF]/50">
+    <div class="flex justify-around items-center h-16 px-gutter-mobile">
+      <a class="flex flex-col items-center justify-center gap-0.5 w-16 h-14 text-on-surface-variant hover:text-primary transition-colors" data-nav="home" href="index.html">
+        <span class="material-symbols-outlined text-[22px]">home</span>
+        <span class="font-label-caps text-[10px] tracking-wider">Home</span>
+      </a>
+      <a class="flex flex-col items-center justify-center gap-0.5 w-16 h-14 text-primary font-semibold transition-colors" data-nav="shop" href="shop.html">
+        <span class="material-symbols-outlined text-[22px]">local_mall</span>
+        <span class="font-label-caps text-[10px] tracking-wider">Shop</span>
+      </a>
+      <a class="flex flex-col items-center justify-center gap-0.5 w-16 h-14 text-on-surface-variant hover:text-primary transition-colors" data-nav="about" href="about.html">
+        <span class="material-symbols-outlined text-[22px]">auto_stories</span>
+        <span class="font-label-caps text-[10px] tracking-wider">Story</span>
+      </a>
+      <a class="flex flex-col items-center justify-center gap-0.5 w-16 h-14 text-on-surface-variant hover:text-primary transition-colors" data-nav="contact" href="contact.html">
+        <span class="material-symbols-outlined text-[22px]">support_agent</span>
+        <span class="font-label-caps text-[10px] tracking-wider">Need Help?</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- MOBILE MENU DRAWER -->
+  <div id="mobileMenuBackdrop" class="drawer-backdrop fixed inset-0 z-50 bg-black/50 backdrop-blur-sm"></div>
+  <aside id="mobileMenuDrawer" class="drawer-panel-left fixed top-0 bottom-0 left-0 w-4/5 max-w-xs z-50 bg-surface p-6 flex flex-col justify-between shadow-2xl border-r border-[#E5DDCF]">
+    <div>
+      <div class="flex items-center justify-between pb-6 border-b border-[#E5DDCF]">
+        <div class="flex flex-col">
+          <span class="font-headline-sm text-base tracking-[0.18em] text-primary uppercase">OUD &amp; AURA</span>
+          <span class="font-label-caps text-[8px] tracking-[0.24em] text-secondary uppercase" data-config="brand-subtitle">PERFUMES</span>
+        </div>
+        <button id="closeMenuBtn" class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-surface-container text-on-surface">
+          <span class="material-symbols-outlined text-[20px]">close</span>
+        </button>
+      </div>
+      <nav class="mt-6 flex flex-col space-y-4">
+        <a href="index.html" class="flex items-center justify-between py-2 text-primary font-medium hover:text-secondary">
+          <span class="font-headline-sm text-lg">Home</span>
+          <span class="material-symbols-outlined text-sm">arrow_forward</span>
+        </a>
+        <a href="shop.html" class="flex items-center justify-between py-2 text-primary font-medium hover:text-secondary">
+          <span class="font-headline-sm text-lg">Shop</span>
+          <span class="material-symbols-outlined text-sm">arrow_forward</span>
+        </a>
+        <a href="shop.html?category=perfumes" class="pl-4 py-1 text-sm font-label-caps text-on-surface-variant hover:text-primary uppercase tracking-wider">
+          • Perfumes
+        </a>
+        <a href="shop.html?category=attars" class="pl-4 py-1 text-sm font-label-caps text-on-surface-variant hover:text-primary uppercase tracking-wider">
+          • Attars
+        </a>
+        <a href="shop.html?category=gifts" class="pl-4 py-1 text-sm font-label-caps text-on-surface-variant hover:text-primary uppercase tracking-wider">
+          • Gift Sets
+        </a>
+        <a href="about.html" class="flex items-center justify-between py-2 text-primary font-medium hover:text-secondary">
+          <span class="font-headline-sm text-lg">Our Story</span>
+          <span class="material-symbols-outlined text-sm">arrow_forward</span>
+        </a>
+        <a href="contact.html" class="flex items-center justify-between py-2 text-primary font-medium hover:text-secondary">
+          <span class="font-headline-sm text-lg">Order &amp; Support</span>
+          <span class="material-symbols-outlined text-sm">arrow_forward</span>
+        </a>
+      </nav>
+    </div>
+    <div class="pt-6 border-t border-[#E5DDCF] flex flex-col space-y-3">
+      <a data-config="whatsapp-link" href="#" target="_blank" rel="noopener" class="w-full py-2.5 px-4 rounded bg-primary text-on-primary font-label-caps text-[10px] uppercase tracking-wider flex items-center justify-center gap-2">
+        <span class="material-symbols-outlined text-[16px] text-secondary-fixed">chat</span>
+        WhatsApp Order &amp; Support
+      </a>
+      <p class="font-body-sm text-[11px] text-on-surface-variant text-center">Elegant fragrances designed for memorable everyday moments.</p>
+    </div>
+  </aside>
+
+  <!-- CART DRAWER -->
+  <div id="cartBackdrop" class="drawer-backdrop fixed inset-0 z-50 bg-black/50 backdrop-blur-sm"></div>
+  <aside id="cartDrawer" class="drawer-panel fixed top-0 bottom-0 right-0 w-full sm:w-96 z-50 bg-surface p-6 flex flex-col justify-between shadow-2xl border-l border-[#E5DDCF]">
+    <div>
+      <div class="flex items-center justify-between pb-4 border-b border-[#E5DDCF]">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-secondary text-[22px]">shopping_bag</span>
+          <h3 class="font-headline-sm text-lg text-primary">Your Shopping Bag</h3>
+        </div>
+        <button id="closeCartBtn" class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-surface-container text-on-surface">
+          <span class="material-symbols-outlined text-[20px]">close</span>
+        </button>
+      </div>
+      <div id="cartItemsList" class="mt-4 flex flex-col gap-3 max-h-[60vh] overflow-y-auto no-scrollbar"></div>
+    </div>
+    <div class="pt-4 border-t border-[#E5DDCF] flex flex-col space-y-3">
+      <div class="flex items-baseline justify-between text-on-surface">
+        <span class="font-label-caps text-xs uppercase tracking-wider text-on-surface-variant">Estimated Total</span>
+        <span id="cartSubtotal" class="font-headline-sm text-xl font-semibold text-primary">₹0</span>
+      </div>
+      <p class="font-body-sm text-[11px] text-on-surface-variant">Taxes included. Complete your order directly with our team on WhatsApp.</p>
+      <a id="cartWhatsAppCheckout" href="#" target="_blank" rel="noopener" class="w-full py-3.5 px-4 rounded-lg bg-primary text-on-primary font-label-caps text-xs uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-secondary transition-colors">
+        <span class="material-symbols-outlined text-[18px] text-secondary-fixed">chat</span>
+        Order Bag on WhatsApp
+      </a>
+    </div>
+  </aside>
+
+  <!-- SEARCH MODAL -->
+  <div id="searchModal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-start justify-center pt-20 px-4">
+    <div class="bg-surface rounded-2xl w-full max-w-lg p-6 shadow-2xl border border-[#E5DDCF]">
+      <div class="flex items-center justify-between pb-4 border-b border-[#E5DDCF]">
+        <div class="flex items-center gap-2 flex-1 mr-4">
+          <span class="material-symbols-outlined text-secondary text-[22px]">search</span>
+          <input id="globalSearchInput" type="text" placeholder="Search fragrances by name or note..." class="w-full bg-transparent font-body-md text-on-surface focus:outline-none placeholder:text-on-surface-variant/70 text-sm">
+        </div>
+        <button id="closeSearchBtn" class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-surface-container text-on-surface">
+          <span class="material-symbols-outlined text-[20px]">close</span>
+        </button>
+      </div>
+      <div id="searchResults" class="mt-4 max-h-80 overflow-y-auto no-scrollbar"></div>
+    </div>
+  </div>
+
+  <!-- SCRIPTS -->
+  <script src="data/config.js"></script>
+  <script src="data/products.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    // Shop Page Filtering, Sorting, and Dynamic Catalogue Rendering
+    let currentCategory = "all";
+    let currentSort = "curated";
+
+    function getFilteredAndSortedProducts() {
+      let list = getProductsByCategory(currentCategory);
+      if (currentSort === "price-asc") {
+        list = [...list].sort((a, b) => a.price - b.price);
+      } else if (currentSort === "price-desc") {
+        list = [...list].sort((a, b) => b.price - a.price);
+      } else if (currentSort === "name") {
+        list = [...list].sort((a, b) => a.name.localeCompare(b.name));
+      }
+      return list;
+    }
+
+    function renderShopGrid() {
+      const grid = document.getElementById("catalogueGrid");
+      const counter = document.getElementById("productCounter");
+      if (!grid) return;
+
+      const products = getFilteredAndSortedProducts();
+      if (counter) counter.textContent = products.length;
+
+      if (products.length === 0) {
+        grid.innerHTML = `
+          <div class="col-span-full py-16 text-center text-on-surface-variant">
+            <span class="material-symbols-outlined text-4xl text-secondary mb-2">filter_alt_off</span>
+            <p class="font-headline-sm text-lg text-primary">No fragrances found</p>
+            <p class="font-body-sm text-xs mt-1">Please select another category or clear filters.</p>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = products.map(product => `
+        <article class="product-item group flex flex-col rounded-xl p-2.5 shadow-[0px_4px_20px_rgba(27,28,26,0.04)] transition-all hover:shadow-md" style="background-color: rgb(250, 246, 240); border: 1px solid rgb(229, 221, 207);">
+          <div class="relative w-full aspect-[4/5] rounded-lg overflow-hidden bg-surface-container-low flex items-center justify-center">
+            <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="${product.images[0]}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/300?text=${encodeURIComponent(product.name)}'">
+            ${product.badge ? `
+              <div class="absolute top-2 left-2 flex flex-col gap-1">
+                <span class="px-2 py-0.5 rounded-full font-label-caps text-[9px] uppercase tracking-[0.16em]" style="background-color: rgb(212, 175, 55); color: rgb(20, 19, 18); font-weight: 600;">
+                  ${product.badge}
+                </span>
+              </div>
+            ` : ''}
+            <button onclick="addToCart('${product.id}', '${product.size}', ${product.price})" aria-label="Add to Bag" class="absolute top-2 right-2 w-7 h-7 rounded-full bg-surface-container-lowest/80 backdrop-blur-md flex items-center justify-center text-on-surface hover:text-secondary transition-colors shadow-sm" type="button" title="Quick add to bag">
+              <span class="material-symbols-outlined text-[15px]">add_shopping_bag</span>
+            </button>
+            <div class="absolute bottom-1.5 inset-x-1.5 px-2 py-1 rounded bg-surface-container-lowest/90 backdrop-blur-md flex items-center justify-between">
+              <span class="font-label-caps text-[9px] uppercase tracking-wider text-secondary font-semibold truncate mr-1">${product.tag || product.category}</span>
+              <span class="font-label-caps text-[9px] text-on-surface-variant flex-shrink-0">${product.size}</span>
+            </div>
+          </div>
+          <div class="mt-2.5 flex flex-col flex-1">
+            <div class="flex items-baseline justify-between gap-1">
+              <span class="font-label-caps text-[10px] tracking-[0.18em] uppercase text-secondary font-medium">${product.concentration}</span>
+              <span class="font-body-md font-semibold text-on-surface text-[15px]">${SITE_CONFIG.currencySymbol}${product.price}</span>
+            </div>
+            <h2 class="font-headline-sm text-[16px] leading-tight text-on-surface mt-0.5 font-normal line-clamp-1">
+              <a href="product.html?id=${product.id}" class="hover:text-secondary transition-colors">${product.name}</a>
+            </h2>
+            <p class="font-body-sm text-[11px] leading-snug text-on-surface-variant line-clamp-2 mt-1">${product.shortDescription}</p>
+          </div>
+          <div class="mt-3 flex flex-col gap-1.5 pt-2 border-t border-[#E5DDCF]/40">
+            <a class="w-full py-2 px-2 rounded-lg bg-primary text-on-primary hover:bg-secondary transition-colors flex items-center justify-center gap-1.5 shadow-sm" href="${SITE_CONFIG.getProductWhatsAppUrl(product.name, product.size, product.price)}" target="_blank" rel="noopener" style="background-color: rgb(20, 19, 18); color: rgb(255, 255, 255);">
+              <span class="material-symbols-outlined text-[15px] text-secondary-fixed">chat</span>
+              <span class="font-label-caps text-[10px] tracking-[0.14em] uppercase">WhatsApp Order</span>
+            </a>
+            <a href="product.html?id=${product.id}" class="w-full py-1.5 text-center font-label-caps text-[10px] tracking-[0.14em] text-on-surface-variant hover:text-primary uppercase transition-colors" style="background-color: rgb(239, 233, 223); color: rgb(20, 19, 18); border: 1px solid rgb(229, 221, 207); border-radius: 0.5rem;">
+              View Details &amp; Notes
+            </a>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    function updateTabStyles() {
+      const tabs = document.querySelectorAll(".filter-tab");
+      tabs.forEach(tab => {
+        const cat = tab.getAttribute("data-category");
+        if (cat === currentCategory) {
+          tab.style.backgroundColor = "rgb(20, 19, 18)";
+          tab.style.color = "rgb(250, 246, 240)";
+          tab.style.boxShadow = "rgba(20, 19, 18, 0.15) 0px 2px 8px";
+          tab.style.border = "none";
+        } else {
+          tab.style.backgroundColor = "rgb(239, 233, 223)";
+          tab.style.color = "rgb(75, 70, 64)";
+          tab.style.boxShadow = "none";
+          tab.style.border = "1px solid rgb(229, 221, 207)";
+        }
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      // Set allCount
+      const allCountEl = document.getElementById("allCount");
+      if (allCountEl) allCountEl.textContent = PRODUCTS.length;
+
+      // Check URL query for default category
+      const urlParams = new URLSearchParams(window.location.search);
+      const catParam = urlParams.get("category");
+      if (catParam && ["all", "perfumes", "attars", "gifts"].includes(catParam)) {
+        currentCategory = catParam;
+      }
+
+      // Filter tabs event listener
+      document.querySelectorAll(".filter-tab").forEach(tab => {
+        tab.addEventListener("click", () => {
+          currentCategory = tab.getAttribute("data-category");
+          updateTabStyles();
+          renderShopGrid();
+        });
+      });
+
+      // Sort change listener
+      const sortSelect = document.getElementById("sortSelect");
+      if (sortSelect) {
+        sortSelect.addEventListener("change", (e) => {
+          currentSort = e.target.value;
+          renderShopGrid();
+        });
+      }
+
+      updateTabStyles();
+      renderShopGrid();
+    });
+  </script>
+</body>
+</html>

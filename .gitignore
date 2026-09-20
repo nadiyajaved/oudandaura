@@ -1,0 +1,16 @@
+# Ignore temporary downloads & binary tools
+cloudflared.exe
+*.exe
+
+# Ignore temporary screenshot captures
+*.png
+
+# Ignore system files
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+
+# Ignore local scratch / log files
+*.log
