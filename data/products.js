@@ -50,6 +50,7 @@ const PRODUCTS = [
     sizes: [
       { size: "50 ml", price: 450, originalPrice: 550, label: "50 ml Bottle", isDefault: true },
       { size: "100 ml", price: 650, originalPrice: 799, label: "100 ml Bottle", isDefault: false },
+      { size: "30 ml", price: 299, originalPrice: 399, label: "30 ml Bottle", isDefault: false },
       { size: "20 ml Vial", price: 199, originalPrice: 299, label: "Pocket Vial", isDefault: false }
     ]
   },
@@ -80,6 +81,7 @@ const PRODUCTS = [
     sizes: [
       { size: "50 ml", price: 450, originalPrice: 550, label: "50 ml Bottle", isDefault: true },
       { size: "100 ml", price: 650, originalPrice: 799, label: "100 ml Bottle", isDefault: false },
+      { size: "30 ml", price: 299, originalPrice: 399, label: "30 ml Bottle", isDefault: false },
       { size: "20 ml Vial", price: 199, originalPrice: 299, label: "Pocket Vial", isDefault: false }
     ]
   },
@@ -110,6 +112,7 @@ const PRODUCTS = [
     sizes: [
       { size: "50 ml", price: 450, originalPrice: 550, label: "50 ml Bottle", isDefault: true },
       { size: "100 ml", price: 650, originalPrice: 799, label: "100 ml Bottle", isDefault: false },
+      { size: "30 ml", price: 299, originalPrice: 399, label: "30 ml Bottle", isDefault: false },
       { size: "20 ml Vial", price: 199, originalPrice: 299, label: "Pocket Vial", isDefault: false }
     ]
   },
@@ -166,6 +169,7 @@ const PRODUCTS = [
     sizes: [
       { size: "50 ml", price: 450, originalPrice: 550, label: "50 ml Bottle", isDefault: true },
       { size: "100 ml", price: 650, originalPrice: 799, label: "100 ml Bottle", isDefault: false },
+      { size: "30 ml", price: 299, originalPrice: 399, label: "30 ml Bottle", isDefault: false },
       { size: "20 ml Vial", price: 199, originalPrice: 299, label: "Pocket Vial", isDefault: false }
     ]
   },
@@ -194,6 +198,7 @@ const PRODUCTS = [
     sizes: [
       { size: "50 ml", price: 450, originalPrice: 550, label: "50 ml Bottle", isDefault: true },
       { size: "100 ml", price: 650, originalPrice: 799, label: "100 ml Bottle", isDefault: false },
+      { size: "30 ml", price: 299, originalPrice: 399, label: "30 ml Bottle", isDefault: false },
       { size: "20 ml Vial", price: 199, originalPrice: 299, label: "Pocket Vial", isDefault: false }
     ]
   },
@@ -222,6 +227,7 @@ const PRODUCTS = [
     sizes: [
       { size: "50 ml", price: 450, originalPrice: 550, label: "50 ml Bottle", isDefault: true },
       { size: "100 ml", price: 650, originalPrice: 799, label: "100 ml Bottle", isDefault: false },
+      { size: "30 ml", price: 299, originalPrice: 399, label: "30 ml Bottle", isDefault: false },
       { size: "20 ml Vial", price: 199, originalPrice: 299, label: "Pocket Vial", isDefault: false }
     ]
   },
