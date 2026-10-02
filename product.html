@@ -421,6 +421,8 @@
       renderGallery();
 
       // Sizes & Prices
+      selectedSize = null;
+      selectedPrice = null;
       renderSizePills();
 
       // Related Fragrances
@@ -501,9 +503,12 @@
         { size: currentProduct.size, price: currentProduct.price, originalPrice: currentProduct.originalPrice, label: "Standard", isDefault: true }
       ];
 
-      const defaultVariant = sizes.find(s => s.isDefault) || sizes[0];
-      selectedSize = defaultVariant.size;
-      selectedPrice = defaultVariant.price;
+      // Only set initial default if no size has been selected yet
+      if (!selectedSize) {
+        const defaultVariant = sizes.find(s => s.isDefault) || sizes[0];
+        selectedSize = defaultVariant.size;
+        selectedPrice = defaultVariant.price;
+      }
 
       container.innerHTML = sizes.map(variant => {
         const isSel = variant.size === selectedSize;
@@ -511,7 +516,7 @@
           <button 
             type="button" 
             onclick="onSelectSize('${variant.size}', ${variant.price}, ${variant.originalPrice || 0})"
-            class="size-pill group relative flex flex-col items-center justify-center p-3 rounded-lg transition-all text-center"
+            class="size-pill group relative flex flex-col items-center justify-center p-3 rounded-lg transition-all text-center cursor-pointer"
             style="${isSel 
               ? 'background-color: rgb(20, 19, 18); color: rgb(255, 255, 255); border: 1px solid rgb(20, 19, 18);' 
               : 'background-color: rgb(239, 233, 223); color: rgb(20, 19, 18); border: 1px solid rgb(229, 221, 207);'}"
@@ -527,14 +532,14 @@
         `;
       }).join("");
 
-      updatePriceAndWhatsApp(defaultVariant.price, defaultVariant.originalPrice);
+      const activeVariant = sizes.find(s => s.size === selectedSize) || sizes[0];
+      updatePriceAndWhatsApp(activeVariant.price, activeVariant.originalPrice);
     }
 
     function onSelectSize(size, price, origPrice) {
       selectedSize = size;
       selectedPrice = price;
       renderSizePills();
-      updatePriceAndWhatsApp(price, origPrice);
     }
 
     function updatePriceAndWhatsApp(price, origPrice) {
