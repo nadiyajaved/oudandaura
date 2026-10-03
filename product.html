@@ -91,42 +91,61 @@
       </nav>
 
       <!-- PRODUCT VISUAL SHOWCASE STAGE -->
-      <section aria-label="Product Presentation" class="px-margin-mobile pt-space-xs pb-space-md">
-        <div class="relative w-full aspect-[4/5] rounded-xl overflow-hidden shadow-sm flex flex-col justify-between p-space-md" style="background-color: rgb(247, 242, 235); border: 1px solid rgb(229, 221, 207);">
+      <section aria-label="Product Presentation" class="px-margin-mobile pt-space-xs pb-space-sm">
+        <div id="productGalleryStage" class="relative w-full aspect-[4/5] rounded-xl overflow-hidden shadow-sm flex flex-col justify-between p-space-md select-none touch-pan-y" style="background-color: rgb(247, 242, 235); border: 1px solid rgb(229, 221, 207);">
           <!-- Ambient Bloom Gradient -->
           <div class="absolute inset-0 bg-gradient-to-b from-surface-container-lowest/70 via-transparent to-surface-container-high/40 pointer-events-none"></div>
           
           <!-- Top Overlay Bar -->
-          <div class="relative z-10 flex items-center justify-between w-full">
+          <div class="relative z-10 flex items-center justify-between w-full pointer-events-auto">
             <span id="productBadge" class="inline-flex items-center px-2.5 py-1 rounded-full font-label-caps text-label-caps shadow-sm" style="background-color: rgb(212, 175, 55); color: rgb(20, 19, 18); font-weight: 600;">
               Best Seller
             </span>
-            <button id="shareBtn" aria-label="Share this product" class="w-9 h-9 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface shadow-sm flex items-center justify-center transition-transform active:scale-95" type="button">
-              <span class="material-symbols-outlined text-[18px]">share</span>
-            </button>
+            <div class="flex items-center gap-2">
+              <button id="zoomBtn" onclick="openLightbox(event)" aria-label="Open full image" class="w-9 h-9 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface shadow-sm flex items-center justify-center transition-transform active:scale-95 hover:bg-surface-container-lowest cursor-pointer" type="button" title="View full image">
+                <span class="material-symbols-outlined text-[18px]">zoom_in</span>
+              </button>
+              <button id="shareBtn" aria-label="Share this product" class="w-9 h-9 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface shadow-sm flex items-center justify-center transition-transform active:scale-95 hover:bg-surface-container-lowest cursor-pointer" type="button">
+                <span class="material-symbols-outlined text-[18px]">share</span>
+              </button>
+            </div>
           </div>
 
-          <!-- Primary Product Photography Placeholder -->
-          <div class="relative z-0 flex-1 flex flex-col items-center justify-center text-center my-auto w-full px-space-sm">
-            <div class="w-full h-full max-h-[300px] rounded-lg overflow-hidden relative flex items-center justify-center bg-surface-container/60 shadow-inner">
+          <!-- Primary Product Photography (Click to open full view) -->
+          <div class="relative z-0 flex-1 flex flex-col items-center justify-center text-center my-auto w-full px-space-sm cursor-pointer" onclick="openLightbox(event)" title="Click to view full image">
+            <div class="w-full h-full max-h-[300px] rounded-lg overflow-hidden relative flex items-center justify-center bg-surface-container/60 shadow-inner group">
               <img id="mainFlaconImage" class="w-full h-full object-cover object-center transition-opacity duration-300" src="" alt="Product Photograph">
-              <div class="absolute inset-0 bg-gradient-to-t from-surface-container-highest/60 via-transparent to-transparent pointer-events-none"></div>
-              <div class="absolute bottom-3 inset-x-3 bg-surface-container-lowest/85 backdrop-blur-md py-1.5 px-3 rounded-lg flex items-center justify-between text-left shadow-sm">
-                <span class="font-label-caps text-[10px] text-on-surface-variant truncate">Product Photograph Placeholder</span>
-                <span class="material-symbols-outlined text-[14px] text-secondary">verified</span>
+              
+              <!-- Subtle zoom hint pill -->
+              <div class="absolute bottom-2.5 right-2.5 bg-black/60 backdrop-blur-md text-white/95 px-2 py-0.5 rounded-full font-label-caps text-[9px] uppercase tracking-wider flex items-center gap-1 shadow-sm opacity-80 group-hover:opacity-100 transition-opacity">
+                <span class="material-symbols-outlined text-[12px]">fullscreen</span>
+                <span>Zoom</span>
               </div>
             </div>
+
+            <!-- Left / Right Nav Arrows -->
+            <button id="prevSlideBtn" onclick="prevSlide(event)" aria-label="Previous image" class="absolute left-1 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface flex items-center justify-center shadow-md hover:scale-105 transition-all active:scale-90 cursor-pointer" type="button">
+              <span class="material-symbols-outlined text-[20px]">chevron_left</span>
+            </button>
+            <button id="nextSlideBtn" onclick="nextSlide(event)" aria-label="Next image" class="absolute right-1 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface flex items-center justify-center shadow-md hover:scale-105 transition-all active:scale-90 cursor-pointer" type="button">
+              <span class="material-symbols-outlined text-[20px]">chevron_right</span>
+            </button>
           </div>
 
           <!-- Bottom Gallery Indicators -->
           <div class="relative z-10 flex items-center justify-between w-full pt-space-xs">
-            <div class="flex items-center gap-1.5" id="galleryDots">
+            <div class="flex items-center gap-1" id="galleryDots">
               <!-- Rendered dynamically -->
             </div>
             <span class="font-label-caps text-label-caps text-on-surface-variant tracking-widest bg-surface-container-lowest/80 px-2 py-0.5 rounded-md" id="galleryCounter">
               1 / 1
             </span>
           </div>
+        </div>
+
+        <!-- Mini Thumbnails Strip -->
+        <div id="galleryThumbnails" class="flex items-center justify-center gap-2 mt-3 overflow-x-auto py-1">
+          <!-- Rendered dynamically -->
         </div>
       </section>
 
@@ -370,6 +389,31 @@
         </button>
       </div>
       <div id="searchResults" class="mt-4 max-h-80 overflow-y-auto no-scrollbar"></div>
+  </div>
+
+  <!-- FULLSCREEN IMAGE LIGHTBOX MODAL -->
+  <div id="imageLightboxModal" class="fixed inset-0 z-50 bg-[#0D0C0B]/95 backdrop-blur-md hidden flex flex-col justify-between p-4 touch-pan-y" onclick="closeLightbox(event)">
+    <div class="flex items-center justify-between w-full max-w-2xl mx-auto z-10 text-[#FAF6F0] pt-2">
+      <span id="lightboxCounter" class="font-label-caps text-xs tracking-widest text-[#FAF6F0]/80">1 / 1</span>
+      <button onclick="closeLightbox(event)" type="button" aria-label="Close image viewer" class="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-[#FAF6F0] flex items-center justify-center transition-colors cursor-pointer">
+        <span class="material-symbols-outlined text-[24px]">close</span>
+      </button>
+    </div>
+    
+    <div class="relative flex-1 flex items-center justify-center max-w-3xl mx-auto w-full my-auto overflow-hidden" onclick="event.stopPropagation()">
+      <button id="lightboxPrevBtn" onclick="prevSlide(event); updateLightbox();" aria-label="Previous image" class="absolute left-2 z-20 w-11 h-11 rounded-full bg-black/60 hover:bg-black/90 text-white flex items-center justify-center shadow-lg transition-transform active:scale-90 cursor-pointer">
+        <span class="material-symbols-outlined text-[28px]">chevron_left</span>
+      </button>
+      
+      <img id="lightboxImage" src="" alt="Full view" class="max-h-[75vh] max-w-full object-contain rounded-lg shadow-2xl transition-opacity duration-200 select-none">
+      
+      <button id="lightboxNextBtn" onclick="nextSlide(event); updateLightbox();" aria-label="Next image" class="absolute right-2 z-20 w-11 h-11 rounded-full bg-black/60 hover:bg-black/90 text-white flex items-center justify-center shadow-lg transition-transform active:scale-90 cursor-pointer">
+        <span class="material-symbols-outlined text-[28px]">chevron_right</span>
+      </button>
+    </div>
+
+    <div class="flex items-center justify-center gap-2 py-3 z-10" id="lightboxDots" onclick="event.stopPropagation()">
+      <!-- dots rendered dynamically -->
     </div>
   </div>
 
@@ -419,6 +463,7 @@
 
       // Images & Carousel
       renderGallery();
+      initGalleryGestures();
 
       // Sizes & Prices
       selectedSize = null;
@@ -483,18 +528,185 @@
       const mainImg = document.getElementById("mainFlaconImage");
       const dotsContainer = document.getElementById("galleryDots");
       const counter = document.getElementById("galleryCounter");
+      const thumbsContainer = document.getElementById("galleryThumbnails");
+      const prevBtn = document.getElementById("prevSlideBtn");
+      const nextBtn = document.getElementById("nextSlideBtn");
+
+      if (currentSlide >= images.length) currentSlide = 0;
+      if (currentSlide < 0) currentSlide = images.length - 1;
 
       mainImg.src = images[currentSlide];
+      mainImg.alt = `${currentProduct.name} - Image ${currentSlide + 1}`;
       counter.textContent = `${currentSlide + 1} / ${images.length}`;
 
-      dotsContainer.innerHTML = images.map((_, idx) => `
-        <button onclick="setSlide(${idx})" class="h-1.5 rounded-full transition-all ${idx === currentSlide ? 'w-6 bg-primary' : 'w-2 bg-outline-variant'}" type="button" aria-label="Slide ${idx + 1}"></button>
-      `).join("");
+      // Navigation arrows visibility
+      if (prevBtn) prevBtn.style.display = images.length > 1 ? "flex" : "none";
+      if (nextBtn) nextBtn.style.display = images.length > 1 ? "flex" : "none";
+
+      // Dots
+      if (dotsContainer) {
+        dotsContainer.innerHTML = images.map((_, idx) => `
+          <button onclick="event.stopPropagation(); setSlide(${idx})" class="p-1.5 flex items-center justify-center cursor-pointer" type="button" aria-label="View photo ${idx + 1}">
+            <div class="h-1.5 rounded-full transition-all ${idx === currentSlide ? 'w-6 bg-primary' : 'w-2 bg-outline-variant'}"></div>
+          </button>
+        `).join("");
+      }
+
+      // Thumbnails
+      if (thumbsContainer) {
+        if (images.length > 1) {
+          thumbsContainer.style.display = "flex";
+          thumbsContainer.innerHTML = images.map((imgSrc, idx) => `
+            <button 
+              type="button" 
+              onclick="event.stopPropagation(); setSlide(${idx})" 
+              aria-label="Image ${idx + 1}"
+              class="w-12 h-12 rounded-lg overflow-hidden border-2 transition-all p-0.5 cursor-pointer ${idx === currentSlide ? 'border-[#0D0C0B] scale-105 shadow-sm' : 'border-[#E5DDCF] opacity-70 hover:opacity-100'}"
+              style="background-color: rgb(247, 242, 235);"
+            >
+              <img src="${imgSrc}" alt="${currentProduct.name} thumbnail ${idx + 1}" class="w-full h-full object-cover rounded">
+            </button>
+          `).join("");
+        } else {
+          thumbsContainer.style.display = "none";
+        }
+      }
     }
 
     function setSlide(index) {
-      currentSlide = index;
-      renderGallery();
+      const images = currentProduct.images && currentProduct.images.length > 0 ? currentProduct.images : [];
+      if (images.length === 0) return;
+      currentSlide = (index + images.length) % images.length;
+      
+      const mainImg = document.getElementById("mainFlaconImage");
+      mainImg.style.opacity = "0.3";
+      setTimeout(() => {
+        renderGallery();
+        mainImg.style.opacity = "1";
+      }, 100);
+      updateLightbox();
+    }
+
+    function nextSlide(e) {
+      if (e) e.stopPropagation();
+      const images = currentProduct.images && currentProduct.images.length > 0 ? currentProduct.images : [];
+      if (images.length <= 1) return;
+      setSlide(currentSlide + 1);
+    }
+
+    function prevSlide(e) {
+      if (e) e.stopPropagation();
+      const images = currentProduct.images && currentProduct.images.length > 0 ? currentProduct.images : [];
+      if (images.length <= 1) return;
+      setSlide(currentSlide - 1);
+    }
+
+    function openLightbox(e) {
+      if (e) e.stopPropagation();
+      const modal = document.getElementById("imageLightboxModal");
+      if (!modal) return;
+      updateLightbox();
+      modal.classList.remove("hidden");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeLightbox(e) {
+      if (e) e.stopPropagation();
+      const modal = document.getElementById("imageLightboxModal");
+      if (!modal) return;
+      modal.classList.add("hidden");
+      document.body.style.overflow = "";
+    }
+
+    function updateLightbox() {
+      const modal = document.getElementById("imageLightboxModal");
+      if (!modal || modal.classList.contains("hidden")) return;
+      
+      const images = currentProduct.images && currentProduct.images.length > 0 ? currentProduct.images : [];
+      if (images.length === 0) return;
+      
+      const lbImg = document.getElementById("lightboxImage");
+      const lbCounter = document.getElementById("lightboxCounter");
+      const lbDots = document.getElementById("lightboxDots");
+      const lbPrev = document.getElementById("lightboxPrevBtn");
+      const lbNext = document.getElementById("lightboxNextBtn");
+
+      lbImg.src = images[currentSlide];
+      lbImg.alt = `${currentProduct.name} - Full view ${currentSlide + 1}`;
+      lbCounter.textContent = `${currentSlide + 1} / ${images.length}`;
+
+      if (lbPrev) lbPrev.style.display = images.length > 1 ? "flex" : "none";
+      if (lbNext) lbNext.style.display = images.length > 1 ? "flex" : "none";
+
+      if (lbDots) {
+        lbDots.innerHTML = images.map((_, idx) => `
+          <button onclick="event.stopPropagation(); setSlide(${idx})" class="p-1.5 flex items-center justify-center cursor-pointer" type="button" aria-label="Photo ${idx + 1}">
+            <div class="h-2 rounded-full transition-all ${idx === currentSlide ? 'w-6 bg-[#CBB279]' : 'w-2 bg-white/40'}"></div>
+          </button>
+        `).join("");
+      }
+    }
+
+    function initGalleryGestures() {
+      function attachSwipe(element, onLeft, onRight) {
+        if (!element) return;
+        let startX = 0;
+        let startY = 0;
+        let isTouching = false;
+
+        element.addEventListener("touchstart", (e) => {
+          if (e.touches.length === 1) {
+            startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
+            isTouching = true;
+          }
+        }, { passive: true });
+
+        element.addEventListener("touchend", (e) => {
+          if (!isTouching || e.changedTouches.length === 0) return;
+          isTouching = false;
+          const diffX = e.changedTouches[0].clientX - startX;
+          const diffY = e.changedTouches[0].clientY - startY;
+
+          // Horizontal swipe threshold: 35px & horizontally dominant
+          if (Math.abs(diffX) > 35 && Math.abs(diffX) > Math.abs(diffY)) {
+            if (diffX < 0) {
+              onLeft();
+            } else {
+              onRight();
+            }
+          }
+        }, { passive: true });
+      }
+
+      // Main product stage swipe
+      attachSwipe(
+        document.getElementById("productGalleryStage"),
+        () => nextSlide(),
+        () => prevSlide()
+      );
+
+      // Lightbox swipe
+      attachSwipe(
+        document.getElementById("imageLightboxModal"),
+        () => { nextSlide(); updateLightbox(); },
+        () => { prevSlide(); updateLightbox(); }
+      );
+
+      // Keyboard arrow keys & ESC support
+      window.addEventListener("keydown", (e) => {
+        const modal = document.getElementById("imageLightboxModal");
+        const isOpen = modal && !modal.classList.contains("hidden");
+        if (e.key === "ArrowRight") {
+          nextSlide();
+          if (isOpen) updateLightbox();
+        } else if (e.key === "ArrowLeft") {
+          prevSlide();
+          if (isOpen) updateLightbox();
+        } else if (e.key === "Escape" && isOpen) {
+          closeLightbox();
+        }
+      });
     }
 
     function renderSizePills() {
