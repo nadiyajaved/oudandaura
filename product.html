@@ -812,7 +812,7 @@
       const related = PRODUCTS.filter(p => p.id !== currentProduct.id).slice(0, 2);
       
       container.innerHTML = related.map(p => `
-        <div class="rounded-xl p-2.5 flex flex-col shadow-xs" style="background-color: rgb(247, 242, 235); border: 1px solid rgb(229, 221, 207);">
+        <div onclick="window.location.href='product.html?id=' + encodeURIComponent('${p.id}')" class="rounded-xl p-2.5 flex flex-col shadow-xs cursor-pointer hover:shadow-md transition-all" style="background-color: rgb(247, 242, 235); border: 1px solid rgb(229, 221, 207);">
           <div class="w-full aspect-[4/5] rounded-lg overflow-hidden relative bg-surface-container mb-2">
             <img class="w-full h-full object-cover" src="${p.images[0]}" alt="${p.name}">
             ${p.badge ? `
@@ -828,7 +828,7 @@
             </div>
             <div class="mt-2.5 pt-2 flex items-center justify-between">
               <span class="font-label-caps text-label-caps font-semibold text-primary">${SITE_CONFIG.currencySymbol}${p.price}</span>
-              <a class="font-label-caps text-[10px] text-secondary font-semibold uppercase hover:text-primary transition-colors" href="product.html?id=${p.id}">
+              <a class="font-label-caps text-[10px] text-secondary font-semibold uppercase hover:text-primary transition-colors" href="product.html?id=${encodeURIComponent(p.id)}">
                 View
               </a>
             </div>

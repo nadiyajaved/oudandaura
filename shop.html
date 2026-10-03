@@ -348,7 +348,7 @@
       }
 
       grid.innerHTML = products.map(product => `
-        <article onclick="window.location.href='product.html?id=${product.id}'" class="product-item group flex flex-col rounded-xl p-2.5 shadow-[0px_4px_20px_rgba(27,28,26,0.04)] transition-all hover:shadow-md cursor-pointer" style="background-color: rgb(250, 246, 240); border: 1px solid rgb(229, 221, 207);">
+        <article onclick="window.location.href='product.html?id=' + encodeURIComponent('${product.id}')" class="product-item group flex flex-col rounded-xl p-2.5 shadow-[0px_4px_20px_rgba(27,28,26,0.04)] transition-all hover:shadow-md cursor-pointer" style="background-color: rgb(250, 246, 240); border: 1px solid rgb(229, 221, 207);">
           <div class="relative w-full aspect-[4/5] rounded-lg overflow-hidden bg-surface-container-low flex items-center justify-center">
             <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="${product.images[0]}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/300?text=${encodeURIComponent(product.name)}'">
             ${product.badge ? `
@@ -358,8 +358,8 @@
                 </span>
               </div>
             ` : ''}
-            <button onclick="event.stopPropagation(); addToCart('${product.id}', '${product.size}', ${product.price})" aria-label="Add to Bag" class="absolute top-2 right-2 w-7 h-7 rounded-full bg-surface-container-lowest/80 backdrop-blur-md flex items-center justify-center text-on-surface hover:text-secondary transition-colors shadow-sm" type="button" title="Quick add to bag">
-              <span class="material-symbols-outlined text-[15px]">add_shopping_bag</span>
+            <button onclick="event.stopPropagation(); addToCart('${product.id}', '${product.size}', ${product.price})" aria-label="Add to Bag" class="absolute top-2 right-2 w-8 h-8 rounded-full bg-white/95 backdrop-blur-sm flex items-center justify-center text-[#141312] hover:text-[#CBB279] hover:bg-white transition-all shadow-sm z-10" type="button" title="Add to Bag">
+              <span class="material-symbols-outlined text-[17px] leading-none select-none flex items-center justify-center">shopping_bag</span>
             </button>
             <div class="absolute bottom-1.5 inset-x-1.5 px-2 py-1 rounded bg-surface-container-lowest/90 backdrop-blur-md flex items-center justify-between">
               <span class="font-label-caps text-[9px] uppercase tracking-wider text-secondary font-semibold truncate mr-1">${product.tag || product.category}</span>

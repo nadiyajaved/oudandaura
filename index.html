@@ -354,7 +354,7 @@
             A beautiful set of three fragrances, made for discovering new favourites or sharing the Oud &amp; Aura experience with someone special.
           </p>
           <div class="flex flex-col sm:flex-row gap-2">
-            <a class="w-full py-3 bg-primary text-on-primary font-label-caps text-label-caps uppercase tracking-wider text-center rounded hover:bg-secondary transition-colors" href="product.html?id=oud-aura-gift-set">
+            <a class="w-full py-3 bg-primary text-on-primary font-label-caps text-label-caps uppercase tracking-wider text-center rounded hover:bg-secondary transition-colors" href="product.html?id=unisex_giftset">
               Explore Gift Sets
             </a>
             <a id="homeGiftWhatsAppBtn" class="w-full py-3 bg-surface text-primary font-label-caps text-label-caps uppercase tracking-wider text-center rounded shadow-xs flex items-center justify-center gap-1.5 border border-[#E5DDCF] hover:bg-surface-container transition-colors" href="#" target="_blank" rel="noopener">
@@ -583,12 +583,19 @@
       const container = document.getElementById("bestSellersContainer");
       if (container && bestSellers.length > 0) {
         container.innerHTML = bestSellers.slice(0, 4).map(product => `
-          <div onclick="window.location.href='product.html?id=${product.id}'" class="flex flex-col bg-[#FAF6F0] rounded-lg overflow-hidden shadow-sm p-3 border border-[#E5DDCF] product-card cursor-pointer transition-all hover:shadow-md">
+          <div onclick="window.location.href='product.html?id=' + encodeURIComponent('${product.id}')" class="flex flex-col bg-[#FAF6F0] rounded-lg overflow-hidden shadow-sm p-3 border border-[#E5DDCF] product-card cursor-pointer transition-all hover:shadow-md">
             <div class="relative aspect-square rounded bg-[#EFE9DF] mb-2.5 overflow-hidden flex items-center justify-center">
               <img class="w-full h-full object-cover" src="${product.images[0]}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/300?text=${encodeURIComponent(product.name)}'">
               <span class="absolute top-1.5 left-1.5 bg-[#CBB279] text-[#141312] font-semibold font-label-caps text-[8px] uppercase tracking-widest px-1.5 py-0.5 rounded-full shadow-xs">
                 ${product.badge || 'Best Seller'}
               </span>
+              <button onclick="event.stopPropagation(); addToCart('${product.id}', '${product.size}', ${product.price})" 
+                aria-label="Add to Bag" 
+                class="absolute top-1.5 right-1.5 w-7 h-7 rounded-full bg-white/95 backdrop-blur-sm flex items-center justify-center text-[#141312] hover:text-[#CBB279] hover:bg-white transition-all shadow-sm z-10" 
+                type="button" 
+                title="Add to Bag">
+                <span class="material-symbols-outlined text-[15px] leading-none select-none flex items-center justify-center">shopping_bag</span>
+              </button>
               <span class="absolute bottom-1 inset-x-1 text-center font-label-caps text-[8px] text-[#4b4640] bg-[#FAF6F0]/80 backdrop-blur-xs py-0.5">
                 [ ${product.name} ${product.size} ]
               </span>
@@ -608,9 +615,9 @@
         `).join("");
       }
 
-      // 2. Render Featured Catalogue Items (Velvet Santal, Amber Rose, Smoky Leather)
+      // 2. Render Featured Collection Items
       const featuredList = document.getElementById("featuredCatalogueList");
-      const catalogueItems = PRODUCTS.filter(p => ["velvet-santal", "amber-rose", "smoky-leather"].includes(p.id));
+      const catalogueItems = PRODUCTS.filter(p => !p.isBestSeller).concat(PRODUCTS.filter(p => p.isBestSeller)).slice(0, 3);
       if (featuredList && catalogueItems.length > 0) {
         featuredList.innerHTML = catalogueItems.map(p => `
           <div class="flex items-center p-3 rounded-lg bg-surface shadow-sm gap-3 border border-[#E5DDCF]/50">
@@ -625,7 +632,7 @@
               <p class="font-body-sm text-[12px] text-on-surface-variant truncate">${p.shortDescription}</p>
               <span class="font-label-caps text-[10px] text-secondary mt-0.5">${p.size} · ${p.concentration}</span>
               <div class="flex items-center gap-2 mt-2">
-                <a class="font-label-caps text-[10px] text-primary underline hover:text-secondary" href="product.html?id=${p.id}">View Details</a>
+                <a class="font-label-caps text-[10px] text-primary underline hover:text-secondary" href="product.html?id=${encodeURIComponent(p.id)}">View Details</a>
                 <span class="text-outline-variant text-[10px]">·</span>
                 <a class="font-label-caps text-[10px] text-secondary flex items-center gap-0.5 hover:underline" href="${SITE_CONFIG.getProductWhatsAppUrl(p.name, p.size, p.price)}" target="_blank" rel="noopener">
                   <span>Order via WhatsApp</span>
@@ -640,7 +647,10 @@
       // 3. Setup Gift Set WhatsApp CTA
       const giftBtn = document.getElementById("homeGiftWhatsAppBtn");
       if (giftBtn) {
-        giftBtn.href = SITE_CONFIG.getProductWhatsAppUrl("Oud & Aura Gift Set", "3 x 20ml", 589);
+        const giftSet = getProductById("unisex_giftset");
+        if (giftSet) {
+          giftBtn.href = SITE_CONFIG.getProductWhatsAppUrl(giftSet.name, giftSet.size, giftSet.price);
+        }
       }
     });
   </script>
