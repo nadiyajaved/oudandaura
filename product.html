@@ -101,26 +101,15 @@
             <span id="productBadge" class="inline-flex items-center px-2.5 py-1 rounded-full font-label-caps text-label-caps shadow-sm" style="background-color: rgb(212, 175, 55); color: rgb(20, 19, 18); font-weight: 600;">
               Best Seller
             </span>
-            <div class="flex items-center gap-2">
-              <button id="zoomBtn" onclick="openLightbox(event)" aria-label="Open full image" class="w-9 h-9 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface shadow-sm flex items-center justify-center transition-transform active:scale-95 hover:bg-surface-container-lowest cursor-pointer" type="button" title="View full image">
-                <span class="material-symbols-outlined text-[18px]">zoom_in</span>
-              </button>
-              <button id="shareBtn" aria-label="Share this product" class="w-9 h-9 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface shadow-sm flex items-center justify-center transition-transform active:scale-95 hover:bg-surface-container-lowest cursor-pointer" type="button">
-                <span class="material-symbols-outlined text-[18px]">share</span>
-              </button>
-            </div>
+            <button id="shareBtn" aria-label="Share this product" class="w-9 h-9 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface shadow-sm flex items-center justify-center transition-transform active:scale-95 hover:bg-surface-container-lowest cursor-pointer" type="button">
+              <span class="material-symbols-outlined text-[18px]">share</span>
+            </button>
           </div>
 
           <!-- Primary Product Photography (Click to open full view) -->
           <div class="relative z-0 flex-1 flex flex-col items-center justify-center text-center my-auto w-full px-space-sm cursor-pointer" onclick="openLightbox(event)" title="Click to view full image">
             <div class="w-full h-full max-h-[300px] rounded-lg overflow-hidden relative flex items-center justify-center bg-surface-container/60 shadow-inner group">
               <img id="mainFlaconImage" class="w-full h-full object-cover object-center transition-opacity duration-300" src="" alt="Product Photograph">
-              
-              <!-- Subtle zoom hint pill -->
-              <div class="absolute bottom-2.5 right-2.5 bg-black/60 backdrop-blur-md text-white/95 px-2 py-0.5 rounded-full font-label-caps text-[9px] uppercase tracking-wider flex items-center gap-1 shadow-sm opacity-80 group-hover:opacity-100 transition-opacity">
-                <span class="material-symbols-outlined text-[12px]">fullscreen</span>
-                <span>Zoom</span>
-              </div>
             </div>
 
             <!-- Left / Right Nav Arrows -->
@@ -155,7 +144,7 @@
           <div>
             <span id="productTag" class="font-label-caps text-label-caps text-secondary tracking-widest uppercase">Fine Fragrance</span>
             <h2 class="font-headline-md text-headline-md text-primary mt-0.5" id="productTitle">Arabian Touch</h2>
-            <p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5" id="productSubtitle">Eau de Parfum Spray</p>
+            <p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5" id="productSubtitle">Parfum (50% oil concentration)</p>
           </div>
           <button id="wishlistBtn" aria-label="Save to Wishlist" class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface transition-transform active:scale-90" type="button">
             <span class="material-symbols-outlined text-[20px]" id="wishlistIcon">favorite</span>
@@ -171,7 +160,7 @@
         <div class="mt-space-xs flex items-center gap-1.5 text-on-surface-variant">
           <span class="material-symbols-outlined text-[15px] text-secondary">local_shipping</span>
           <p class="font-body-sm text-[12px] text-on-surface-variant" id="shippingNotice">
-            Inclusive of all taxes • Free shipping on orders above ₹499
+            Inclusive of all taxes • Free shipping on orders above ₹999
           </p>
         </div>
       </section>
@@ -180,7 +169,6 @@
       <section class="px-margin-mobile py-space-sm">
         <div class="flex items-center justify-between mb-2.5">
           <label class="font-label-caps text-label-caps uppercase text-on-surface tracking-wider">Available Sizes</label>
-          <span class="font-label-caps text-[10px] text-on-tertiary-container">Sizes &amp; pricing are editable</span>
         </div>
         <div id="sizePillsContainer" aria-label="Available Sizes" class="grid grid-cols-2 sm:grid-cols-4 gap-2.5" role="radiogroup">
           <!-- Size pills populated dynamically -->
@@ -242,7 +230,6 @@
                 <span class="font-body-sm text-[11px] text-on-tertiary-container">First 15 Minutes</span>
               </div>
               <p id="topNotesText" class="font-body-md text-body-md text-on-surface mt-1 font-medium">Bergamot, Saffron, Fresh Citrus</p>
-              <span class="font-body-sm text-[11px] text-on-surface-variant mt-0.5 italic">[ Fragrance Notes ]</span>
             </div>
             <!-- Heart Notes -->
             <div class="rounded-lg p-space-sm shadow-xs flex flex-col" style="background-color: rgb(239, 233, 223); border-left: 3px solid rgb(212, 175, 55);">
@@ -251,7 +238,6 @@
                 <span class="font-body-sm text-[11px] text-on-tertiary-container">2 to 6 Hours</span>
               </div>
               <p id="heartNotesText" class="font-body-md text-body-md text-on-surface mt-1 font-medium">Rose Damascena, Spiced Cedar, Incense</p>
-              <span class="font-body-sm text-[11px] text-on-surface-variant mt-0.5 italic">[ Fragrance Notes ]</span>
             </div>
             <!-- Base Notes -->
             <div class="rounded-lg p-space-sm shadow-xs flex flex-col" style="background-color: rgb(239, 233, 223); border-left: 3px solid rgb(212, 175, 55);">
@@ -260,7 +246,6 @@
                 <span class="font-body-sm text-[11px] text-on-tertiary-container">Base Layer</span>
               </div>
               <p id="baseNotesText" class="font-body-md text-body-md text-on-surface mt-1 font-medium">Agarwood (Oud), Ambergris, Rich Vanilla</p>
-              <span class="font-body-sm text-[11px] text-on-surface-variant mt-0.5 italic">[ Fragrance Notes ]</span>
             </div>
           </div>
         </div>
@@ -452,7 +437,11 @@
 
       // Titles & Descriptions
       document.getElementById("productTitle").textContent = currentProduct.name;
-      document.getElementById("productSubtitle").textContent = `${currentProduct.concentration} Spray`;
+      if (currentProduct.category === "attars") {
+        document.getElementById("productSubtitle").textContent = currentProduct.concentration || "Pure Perfume Oil";
+      } else {
+        document.getElementById("productSubtitle").textContent = "Parfum (50% oil concentration)";
+      }
       document.getElementById("productDescription").textContent = currentProduct.fullDescription;
 
       // Notes

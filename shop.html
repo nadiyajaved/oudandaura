@@ -103,11 +103,6 @@
             Explore our collection of perfumes, attars and gift sets, created for different moods, occasions and personal styles.
           </p>
         </div>
-        <!-- Editorial Note Badge -->
-        <div class="mt-4 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-container-low text-on-surface-variant border border-[#E5DDCF]">
-          <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
-          <span class="font-label-caps text-[9px] uppercase tracking-[0.14em]">Catalog Edition 2025 • Thoughtfully Selected Fragrances</span>
-        </div>
       </div>
 
       <!-- Filter & Tab Navigation -->
@@ -353,7 +348,7 @@
       }
 
       grid.innerHTML = products.map(product => `
-        <article class="product-item group flex flex-col rounded-xl p-2.5 shadow-[0px_4px_20px_rgba(27,28,26,0.04)] transition-all hover:shadow-md" style="background-color: rgb(250, 246, 240); border: 1px solid rgb(229, 221, 207);">
+        <article onclick="window.location.href='product.html?id=${product.id}'" class="product-item group flex flex-col rounded-xl p-2.5 shadow-[0px_4px_20px_rgba(27,28,26,0.04)] transition-all hover:shadow-md cursor-pointer" style="background-color: rgb(250, 246, 240); border: 1px solid rgb(229, 221, 207);">
           <div class="relative w-full aspect-[4/5] rounded-lg overflow-hidden bg-surface-container-low flex items-center justify-center">
             <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="${product.images[0]}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/300?text=${encodeURIComponent(product.name)}'">
             ${product.badge ? `
@@ -363,7 +358,7 @@
                 </span>
               </div>
             ` : ''}
-            <button onclick="addToCart('${product.id}', '${product.size}', ${product.price})" aria-label="Add to Bag" class="absolute top-2 right-2 w-7 h-7 rounded-full bg-surface-container-lowest/80 backdrop-blur-md flex items-center justify-center text-on-surface hover:text-secondary transition-colors shadow-sm" type="button" title="Quick add to bag">
+            <button onclick="event.stopPropagation(); addToCart('${product.id}', '${product.size}', ${product.price})" aria-label="Add to Bag" class="absolute top-2 right-2 w-7 h-7 rounded-full bg-surface-container-lowest/80 backdrop-blur-md flex items-center justify-center text-on-surface hover:text-secondary transition-colors shadow-sm" type="button" title="Quick add to bag">
               <span class="material-symbols-outlined text-[15px]">add_shopping_bag</span>
             </button>
             <div class="absolute bottom-1.5 inset-x-1.5 px-2 py-1 rounded bg-surface-container-lowest/90 backdrop-blur-md flex items-center justify-between">
@@ -377,17 +372,14 @@
               <span class="font-body-md font-semibold text-on-surface text-[15px]">${SITE_CONFIG.currencySymbol}${product.price}</span>
             </div>
             <h2 class="font-headline-sm text-[16px] leading-tight text-on-surface mt-0.5 font-normal line-clamp-1">
-              <a href="product.html?id=${product.id}" class="hover:text-secondary transition-colors">${product.name}</a>
+              <span class="hover:text-secondary transition-colors">${product.name}</span>
             </h2>
             <p class="font-body-sm text-[11px] leading-snug text-on-surface-variant line-clamp-2 mt-1">${product.shortDescription}</p>
           </div>
           <div class="mt-3 flex flex-col gap-1.5 pt-2 border-t border-[#E5DDCF]/40">
-            <a class="w-full py-2 px-2 rounded-lg bg-primary text-on-primary hover:bg-secondary transition-colors flex items-center justify-center gap-1.5 shadow-sm" href="${SITE_CONFIG.getProductWhatsAppUrl(product.name, product.size, product.price)}" target="_blank" rel="noopener" style="background-color: rgb(20, 19, 18); color: rgb(255, 255, 255);">
+            <a onclick="event.stopPropagation();" class="w-full py-2 px-2 rounded-lg bg-primary text-on-primary hover:bg-secondary transition-colors flex items-center justify-center gap-1.5 shadow-sm" href="${SITE_CONFIG.getProductWhatsAppUrl(product.name, product.size, product.price)}" target="_blank" rel="noopener" style="background-color: rgb(20, 19, 18); color: rgb(255, 255, 255);">
               <span class="material-symbols-outlined text-[15px] text-secondary-fixed">chat</span>
               <span class="font-label-caps text-[10px] tracking-[0.14em] uppercase">WhatsApp Order</span>
-            </a>
-            <a href="product.html?id=${product.id}" class="w-full py-1.5 text-center font-label-caps text-[10px] tracking-[0.14em] text-on-surface-variant hover:text-primary uppercase transition-colors" style="background-color: rgb(239, 233, 223); color: rgb(20, 19, 18); border: 1px solid rgb(229, 221, 207); border-radius: 0.5rem;">
-              View Details &amp; Notes
             </a>
           </div>
         </article>

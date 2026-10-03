@@ -26,7 +26,7 @@ const SITE_CONFIG = {
 
   // Store Currency & Thresholds
   currencySymbol: "₹",
-  freeShippingThreshold: 499,
+  freeShippingThreshold: 999,
 
   // Helper method to create WhatsApp link with pre-filled message
   getWhatsAppUrl(message) {
