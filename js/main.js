@@ -313,8 +313,14 @@ function hydrateSite() {
     el.textContent = SITE_CONFIG.instagramHandle;
   });
   document.querySelectorAll("[data-config='contact-email']").forEach(el => {
-    el.textContent = SITE_CONFIG.contactEmail;
-    if (el.tagName === 'A') el.href = `mailto:${SITE_CONFIG.contactEmail}`;
+    if (el.tagName !== 'A') {
+      el.textContent = SITE_CONFIG.contactEmail;
+    } else {
+      el.href = `mailto:${SITE_CONFIG.contactEmail}`;
+    }
+  });
+  document.querySelectorAll("[data-config='email-link']").forEach(el => {
+    el.href = `mailto:${SITE_CONFIG.contactEmail}`;
   });
   document.querySelectorAll("[data-config='brand-subtitle']").forEach(el => {
     el.textContent = SITE_CONFIG.brandSubtitle;
