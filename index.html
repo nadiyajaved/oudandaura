@@ -340,24 +340,34 @@
           <span class="font-label-caps text-label-caps text-secondary uppercase tracking-[0.2em]">Gift Sets</span>
           <h2 class="font-headline-sm text-headline-sm text-primary mt-1">Give the Gift of Fragrance</h2>
         </div>
-        <div class="rounded-xl bg-surface-container-low overflow-hidden shadow-sm flex flex-col p-4 border border-[#E5DDCF]/60">
+        <div onclick="window.location.href='product.html?id=unisex_giftset'" class="rounded-xl bg-surface-container-low overflow-hidden shadow-sm flex flex-col p-4 border border-[#E5DDCF]/60 cursor-pointer transition-all hover:shadow-md">
           <div class="relative w-full aspect-[4/3] sm:aspect-[16/9] rounded-lg overflow-hidden bg-surface-container mb-4">
-            <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHj4rMw6Rjg_Ru-uRJ_VmGRQjmDIC2UXrKrwBdgqE2oq-aHIgTjM0RDAROrCQYKwHPJ0rD0dkxn1YMTujP2w50jHHB26M_4ip-Gh7YtL1omQUl7Z35Ng8R0X37KIiVA7yAjHSCFYq9gqjtD5m2XGh1FoR1Ouz9GSyU_iBOEqTzDk2pTcb3cdzkKHPv359qbXTZzmZ0FnkH9DqpIPKmJck24isnuUqQsWZuVP2QfBLsP6IxC1JWp_JcwA" alt="Gift Set">
-            <span class="absolute top-2.5 left-2.5 bg-primary text-on-primary font-label-caps text-[8px] uppercase tracking-widest px-2 py-0.5 rounded-full">Limited Collection</span>
+            <img class="w-full h-full object-cover transition-transform duration-700 hover:scale-105" src="combo1.jpg" alt="Unisex Gift Set" onerror="this.src='combo2.jpg'">
+            <span class="absolute top-2.5 left-2.5 bg-primary text-on-primary font-label-caps text-[8px] uppercase tracking-widest px-2.5 py-0.5 rounded-full">Limited Collection</span>
+            <button onclick="event.stopPropagation(); addToCart('unisex_giftset', '4 × 20 ml', 699)" 
+              aria-label="Add to Bag" 
+              class="absolute top-2.5 right-2.5 w-8 h-8 rounded-full bg-white/95 backdrop-blur-sm flex items-center justify-center text-[#141312] hover:text-[#CBB279] hover:bg-white transition-all shadow-sm z-10" 
+              type="button" 
+              title="Add to Bag">
+              <span class="material-symbols-outlined text-[17px] leading-none select-none flex items-center justify-center">shopping_bag</span>
+            </button>
           </div>
           <div class="flex items-baseline justify-between mb-1">
-            <h3 class="font-headline-sm text-headline-sm text-primary">Oud &amp; Aura Gift Set</h3>
-            <span class="font-body-md text-[18px] font-semibold text-primary">₹589</span>
+            <h3 class="font-headline-sm text-headline-sm text-primary">Unisex Gift Set</h3>
+            <div class="flex items-baseline gap-2">
+              <span class="font-body-md text-[13px] text-on-surface-variant line-through">₹796</span>
+              <span class="font-body-md text-[19px] font-semibold text-primary">₹699</span>
+            </div>
           </div>
-          <span class="font-label-caps text-[11px] text-secondary tracking-wider uppercase mb-2">3 × 20 ml · Gift Set</span>
+          <span class="font-label-caps text-[11px] text-secondary tracking-wider uppercase mb-2">4 × 20 ml · Luxury Discovery Set</span>
           <p class="font-body-sm text-body-sm text-on-surface-variant font-light mb-5">
-            A beautiful set of three fragrances, made for discovering new favourites or sharing the Oud &amp; Aura experience with someone special.
+            A versatile collection of four captivating fragrances (Arabian Touch, Tam D'Or, Ruh Arab, and Hawaz Rush), blending rich, warm, woody, and fresh characters for every mood, occasion, and gifting.
           </p>
           <div class="flex flex-col sm:flex-row gap-2">
-            <a class="w-full py-3 bg-primary text-on-primary font-label-caps text-label-caps uppercase tracking-wider text-center rounded hover:bg-secondary transition-colors" href="product.html?id=unisex_giftset">
-              Explore Gift Sets
+            <a onclick="event.stopPropagation();" class="w-full py-3 bg-primary text-on-primary font-label-caps text-label-caps uppercase tracking-wider text-center rounded hover:bg-secondary transition-colors" href="product.html?id=unisex_giftset">
+              Explore Gift Set
             </a>
-            <a id="homeGiftWhatsAppBtn" class="w-full py-3 bg-surface text-primary font-label-caps text-label-caps uppercase tracking-wider text-center rounded shadow-xs flex items-center justify-center gap-1.5 border border-[#E5DDCF] hover:bg-surface-container transition-colors" href="#" target="_blank" rel="noopener">
+            <a onclick="event.stopPropagation();" id="homeGiftWhatsAppBtn" class="w-full py-3 bg-surface text-primary font-label-caps text-label-caps uppercase tracking-wider text-center rounded shadow-xs flex items-center justify-center gap-1.5 border border-[#E5DDCF] hover:bg-surface-container transition-colors" href="#" target="_blank" rel="noopener">
               <span>Order on WhatsApp</span>
               <span class="material-symbols-outlined text-[14px] text-secondary">send</span>
             </a>
