@@ -4,6 +4,7 @@ cloudflared.exe
 
 # Ignore temporary screenshot captures
 *.png
+!storypageattar.png
 
 # Ignore system files
 .DS_Store
