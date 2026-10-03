@@ -24,34 +24,32 @@
 
 const PRODUCTS = [
   {
-    id: "royal-oud",
-    name: "Royal Oud",
+    id: "arabian_touch",
+    name: "Arabian Touch",
     category: "perfumes",
-    price: 450,
-    originalPrice: 550,
+    price: 649,
+    originalPrice: 899,
     size: "50 ml",
-    concentration: "Eau de Parfum",
+    concentration: "Parfum",
     badge: "Best Seller",
     isBestSeller: true,
     inStock: true,
-    tag: "Oud & Amber",
-    shortDescription: "Rich agarwood layered with warm amber and soft floral notes.",
-    fullDescription: "A distinctive fragrance balancing deep woody notes with smooth, warm amber for an elegant everyday presence.",
-    images: [
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuCk7ItmDT8P40W7NPHiWlaq5DSlGMJFenimysvJj5LVp7Ga8PC7xexjSXabTTI5TaFuTQ_D7pp5Sy6JESU4bxQvEEbEhovkNKcAyECw52pR2641sSndUs4VpyGNSjO9BhntSANyVSD19hpErzJ2i4NkY0UsMz_U5VCAV5TrcqmOZ_DZG3KzhRGxhvc6_b66e32vHN4ZxTNrlrtXzFMp9W76J4lUJ8FBT_PIaDFQS1MNoGV27nzPhVfKgw",
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuBjKcf3j2SppHobUUvPJ5gfpd2efHI8vDz8bHpuOgZgmArVYZS8-Om-Ma2VYmq1Y_gU0gMjyX51afwhDXdKrpykBiSnf40V6gtK28jyDbBfm--ywWb0MqIpVQBmmlVcTITzJFWjCMnqj9MpIA6ECsi4SoNNStYTAk0TYyk_R0LrAwxa3LVhyLB8J5_hgy9om9uMW69msY7c0pazKKTaf33ttzcsSe0c7T2cXqRO2Lw34gFGVh6d-zabzw",
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuAgaY_qqDuOFIbAJsPEv_c53nmlNDApjc9DVuDm4F34yP7CRw6Y-ih_Rz3vpDAKh0i-oU0qREyJGyldccr9VW6ggC_Niz2UQy04p4gD-v8WtlYFXTl0Mlw1RaGVHNEEPc1cHP8sOpqd1w8Y7w5wQ_uHbWcQWy-TwU5Af3PVZpFqLJOIRbLl8jU4pOAEOfGcvyj8iHdOkWWs5Mbx70YzscVbSt5A-ogB0Ichyw1KMH8N9-YC8c0hd7BTyg"
-    ],
+    tag: "Arabian Tonka",
+    shortDescription: "Intense sweetness, enormous projection and rich Middle Eastern profile.",
+    fullDescription: " Powerful, ultra-sweet amber woody fragrance that blends rich oud and warm tonka bean with sugary cane and spicy saffron",
+    images: ["arabiantouch1.jpg",
+      "arabiantouch2.jpg",
+      "arabiantouch3.jpg"],
     notes: {
-      top: "Bergamot, Saffron, Fresh Citrus",
-      heart: "Rose Damascena, Spiced Cedar, Incense",
-      base: "Agarwood (Oud), Ambergris, Rich Vanilla"
+      top: "Saffron, Bergamot",
+      heart: "Agarwood (Oud), Bulgarian Rose",
+      base: "Tonka Bean, Sugar Cane, Amber, White Musk, Oakmoss"
     },
     sizes: [
-      { size: "50 ml", price: 450, originalPrice: 550, label: "50 ml Bottle", isDefault: true },
-      { size: "100 ml", price: 650, originalPrice: 799, label: "100 ml Bottle", isDefault: false },
-      { size: "30 ml", price: 299, originalPrice: 399, label: "30 ml Bottle", isDefault: false },
-      { size: "20 ml Vial", price: 199, originalPrice: 299, label: "Pocket Vial", isDefault: false }
+      { size: "50 ml", price: 649, originalPrice: 899, label: "50 ml Bottle", isDefault: true },
+      { size: "100 ml", price: 1199, originalPrice: 1499, label: "100 ml Bottle", isDefault: false },
+      { size: "30 ml", price: 349, originalPrice: 549, label: "30 ml Bottle", isDefault: false },
+      { size: "20 ml Vial", price: 249, originalPrice: 349, label: "Pocket Vial", isDefault: false }
     ]
   },
   {

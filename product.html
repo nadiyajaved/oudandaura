@@ -86,7 +86,7 @@
           <span class="opacity-50">/</span>
           <span id="breadcrumbCategory">Perfumes</span>
           <span class="opacity-50">/</span>
-          <span id="breadcrumbName" class="text-on-surface font-semibold truncate">Royal Oud</span>
+          <span id="breadcrumbName" class="text-on-surface font-semibold truncate">Arabian Touch</span>
         </div>
       </nav>
 
@@ -135,7 +135,7 @@
         <div class="flex items-start justify-between gap-space-sm">
           <div>
             <span id="productTag" class="font-label-caps text-label-caps text-secondary tracking-widest uppercase">Fine Fragrance</span>
-            <h2 class="font-headline-md text-headline-md text-primary mt-0.5" id="productTitle">Royal Oud</h2>
+            <h2 class="font-headline-md text-headline-md text-primary mt-0.5" id="productTitle">Arabian Touch</h2>
             <p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5" id="productSubtitle">Eau de Parfum Spray</p>
           </div>
           <button id="wishlistBtn" aria-label="Save to Wishlist" class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface transition-transform active:scale-90" type="button">
@@ -386,7 +386,7 @@
 
     function initProductDetails() {
       const urlParams = new URLSearchParams(window.location.search);
-      const prodId = urlParams.get("id") || "royal-oud";
+      const prodId = urlParams.get("id") || (PRODUCTS[0] && PRODUCTS[0].id) || "arabian_touch";
       currentProduct = getProductById(prodId) || PRODUCTS[0];
 
       // Page Title & Header
