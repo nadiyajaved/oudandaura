@@ -53,207 +53,136 @@ const PRODUCTS = [
     ]
   },
   {
-    id: "vanilla-musk",
-    name: "Vanilla Musk",
+    id: "tam_d'or",
+    name: "Tam D'OR",
     category: "perfumes",
-    price: 450,
-    originalPrice: 550,
+    price: 549,
+    originalPrice: 799,
     size: "50 ml",
-    concentration: "Eau de Parfum",
+    concentration: "Parfum",
     badge: "Best Seller",
     isBestSeller: true,
     inStock: true,
-    tag: "Warm Vanilla",
-    shortDescription: "Creamy vanilla wrapped in gentle white musk and golden amber.",
-    fullDescription: "A comforting and inviting scent centering sweet bourbon vanilla, soft white musk, and delicate amber notes.",
-    images: [
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuAtepclo5PizXSQNxdoEJdiV70_3k0fI3BqOVBGZnVAflGopfnHThyAlYt0k6ppjucFP75AwX6DCsP826z-Z2hop-_z-WZCqLo928Z8wQz1qtESjBzyXdbx85ZlHv72U2RfkLd8LHkDWPk9CUNI7bTFNKj6o6ClNEUJXpE1XZcaGZaenlfvD3DdP686gk0EOdLmhwcru9JgawU8xn_K3_TAy4YV7E7fOJovp9A_AtGMFj2AE0aAWevqMA",
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuD0O3tzHNZx0BQnHhNp0UgZ0cLTk8lJ571Yai-fLm_JKArDHQ2kBNA7q757u0ncBP-EhuuHt8V9iU33O3IDagc-S9lHyH00ZzrbmXOyUp3zfOV15DmCpgKEfS0Ivm7lrqdaXrCkcCcGLqMOx38C0WVlP1dRbJRV68DCJETZSqzpoVN7hhexUOJJC8WZJQHggwuFSvE0MAEl3CTOxy7LvAxbA0nx51YAhcVC7Tz7TJWfzkdMbAhKnebktQ",
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuASKODUc0KoZIhxbIDfDuEmyDdD-GcY1uZjz-edz5kLa8PMBkI0C7gNKbS01fWW98hZ_-nTZZlE_9afnsdfJYOZqYb5nVO6sBKn5Gwtsy2xZskfwhhnpcDBu4iYHMv5xMkxS7wR_UG8GC0JJBY2e2F6c32uCSNnbajZk0QSgC1RjebLq8qy0xwFWgsxp32_1_Te1iUJFoPdtvMnLn4skCUIt_V3gpa2MprdX7D_zwaH0W06jpERUlqAnw"
-    ],
+    tag: "Woody Musk",
+    shortDescription: "A smooth, woody fragrance with creamy sandalwood, warm cedarwood, and a subtle earthy touch.",
+    fullDescription: "This woody fragrance is known for its smooth, creamy sandalwood character. It blends sandalwood, cedarwood, and cypress for a warm, elegant, calming, and subtly earthy scent.",
+    images: ["TamD'OR1.jpg",
+      "TamD'OR2.jpg",
+      "TamD'OR3.jpg"],
     notes: {
-      top: "Sweet Almond, Citrus Blossom",
-      heart: "Vanilla Orchid, Cashmere Wood",
-      base: "White Musk, Tonka Bean, Soft Amber"
+      top: "Cypress, Myrtle, Italian Cypress",
+      heart: "Sandalwood, Cedarwood",
+      base: "White Musk, Amber, Spices"
     },
     sizes: [
-      { size: "50 ml", price: 450, originalPrice: 550, label: "50 ml Bottle", isDefault: true },
-      { size: "100 ml", price: 650, originalPrice: 799, label: "100 ml Bottle", isDefault: false },
-      { size: "30 ml", price: 299, originalPrice: 399, label: "30 ml Bottle", isDefault: false },
+      { size: "50 ml", price: 549, originalPrice: 799, label: "50 ml Bottle", isDefault: true },
+      { size: "100 ml", price: 999, originalPrice: 1399, label: "100 ml Bottle", isDefault: false },
+      { size: "30 ml", price: 299, originalPrice: 449, label: "30 ml Bottle", isDefault: false },
       { size: "20 ml Vial", price: 199, originalPrice: 299, label: "Pocket Vial", isDefault: false }
     ]
   },
   {
-    id: "oud-noir",
-    name: "Oud Noir",
+    id: "hawaz_rush",
+    name: "Hawaz Rush",
     category: "perfumes",
-    price: 450,
-    originalPrice: 550,
+    price: 549,
+    originalPrice: 799,
     size: "50 ml",
-    concentration: "Eau de Parfum",
+    concentration: "Parfum",
     badge: "Best Seller",
     isBestSeller: true,
     inStock: true,
-    tag: "Smoky Woods",
-    shortDescription: "A deep, rich blend of smoked woods, agarwood, and warm spices.",
-    fullDescription: "A warm and intense composition designed for evening wear and special occasions, balancing dark woods with smoky spices.",
-    images: [
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuAsK2qBa4Y3FnWtbm12AZRA71JO0BV_D2ORB2f9E1mbDUCRfML6CgRtRVYDX72zRlpRjrleoT8wwA5iFR-u8wlDttGwghGmXXgKuqicAeHrSn8OR3IdWhpLn7Z8mug5TATm3ybfZNr0qMfAzrTSyFhDCaDZp36uwr82sxk6CpzwRe-FpAaQdT4AfZ7PekdcOCzMibe4_KpmUkmD-4c3XnFhpxHNvzlaiHUgQ5-hg9yFsjV7lNzg3EmcQQ",
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuBtkvWHvTsBvIgqmraL2RThi8xEP3Txyt2_Rtw0bXse904MTTbGRL5kjmaJ_rEbYmqwsbbRX5VVO3UMKwBZjVeRGDFfllyZG5SZXawQwghIzzivGoO5Zbs_mVrLZg0wb8M4cxn9leBduzzlTTdRp6dk8PTG3OkzrgbOjORL2ArlQoDzLvSJ6oFJPJn3NLy2GSWQ2pQlXpzObOyHJIFF3mj537KS1npuPHAhvXGPk0yTM3enXBZV8MYz_A",
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuDyMEI5e7kK4-wtpaRTmN2ly08TCWINb0ihvfLbQrjFtoaaX55FHXrofs2KBDpTR3M1nDM_KiaWZ-vkTKuPOx2A_h8NjfqXSJGAkjnjXHPIGpkFra1VxGn9gAHV1RTRcdrVZKO8aSTHBPwKfEoRkM0sV4ah_oPm7-lgWnrSmHykp5LkWe89Zsvee1Jy9OgR6qRkqPCMQtPmezH57rDQGYV93ZwIFRyDLFaUaJxpJyr1s8Fu3Y_TAhTMHg"
-    ],
+    tag: "Fresh Aquatic",
+    shortDescription: "A fresh, aquatic and masculine fragrance with a vibrant, energetic character.",
+    fullDescription: "Hawas for Him is a refreshing and confident fragrance that combines a clean aquatic feel with a smooth, modern character. It is lively, bold, and effortlessly appealing, making it ideal for everyday wear as well as special occasions.",
+    images: ["hawasrush1.jpg", "hawasrush2.jpg", "hawasrush3.jpg"],
     notes: {
-      top: "Black Pepper, Nutmeg, Cardamom",
-      heart: "Smoked Birch, Leather Accord, Dark Patchouli",
-      base: "Assam Oud, Ambergris, Vetiver"
+      top: "Lemon, Apple, Cinnamon, Bergamot",
+      heart: "Watery Notes, Lavender, Violet, Cardamom",
+      base: "Musk, Amber, Sandalwood, Cedarwood, Moss"
     },
     sizes: [
-      { size: "50 ml", price: 450, originalPrice: 550, label: "50 ml Bottle", isDefault: true },
-      { size: "100 ml", price: 650, originalPrice: 799, label: "100 ml Bottle", isDefault: false },
-      { size: "30 ml", price: 299, originalPrice: 399, label: "30 ml Bottle", isDefault: false },
+      { size: "50 ml", price: 549, originalPrice: 799, label: "50 ml Bottle", isDefault: true },
+      { size: "100 ml", price: 999, originalPrice: 1399, label: "100 ml Bottle", isDefault: false },
+      { size: "30 ml", price: 299, originalPrice: 449, label: "30 ml Bottle", isDefault: false },
       { size: "20 ml Vial", price: 199, originalPrice: 299, label: "Pocket Vial", isDefault: false }
     ]
   },
   {
-    id: "premium-attar",
-    name: "Premium Attar",
+    id: "kashmiri_oud",
+    name: "Kashmiri Oud",
     category: "attars",
-    price: 80,
-    originalPrice: 180,
+    price: 250,
+    originalPrice: 400,
     size: "6 ml",
     concentration: "Perfume Oil",
+    badge: "Premium collection",
+    isBestSeller: false,
+    inStock: true,
+    tag: "Deep & Musky",
+    shortDescription: "A rich, deep and traditional oud attar with a warm, earthy and luxurious character.",
+    fullDescription: "Kashmiri Oud Attar is a timeless fragrance that captures the depth and richness of traditional oud. Its warm, woody character creates a sophisticated and elegant presence, making it ideal for those who appreciate classic, long-lasting attars with a deep and distinctive aroma.",
+    images: ["kashmirioud1.jpg", "kashmirioud2.jpg"],
+    notes: {
+      top: "Saffron, Spices",
+      heart: "Oud, Rose, Woody Notes",
+      base: "Musk, Amber, Sandalwood"
+    },
+    sizes: [
+      { size: "6 ml", price: 250, originalPrice: 399, label: "6 ml Bottle", isDefault: true },
+      { size: "8 ml", price: 299, originalPrice: 499, label: "8 ml Bottle", isDefault: false }
+    ]
+  },
+  {
+    id: "qahwa_royal",
+    name: "Qahwa Royal",
+    category: "perfumes",
+    price: 649,
+    originalPrice: 899,
+    size: "50 ml",
+    concentration: "Parfum",
     badge: "Best Seller",
     isBestSeller: true,
     inStock: true,
-    tag: "Traditional Oil",
-    shortDescription: "Concentrated traditional perfume oil in an elegant glass vial with applicator.",
-    fullDescription: "A traditional, alcohol-free concentrated perfume oil with rich and warm notes designed to linger close to the skin.",
-    images: [
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuAac3bHfjgCDww2sBre5QHl4dd_cFiIrqz9fM76IeZYriFHkL0T8KgCzFvLTBBBrHAJ0ZLsysuG5Yptjy54rYq0e_0SslDYydIH5Jis0FKovw8z2JoDYvEsirroB8QW3MS3AHEd_MEGkwcL2LWnARrP9k-3OLUL-FO1QwtUTJ6fXS4Mb0gSFRCQVg-NinSLz3-_Gprsy3inqDxTOAzssFpGTVGDzBGkVnekqO3DqNvYo3lgEd2LQhPiIg",
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuB1m5k7XcXQc7DxfeWdBBkNft8JdyuymCFRipCQ7KzTfqNRgfOZfAyqP6UBUDqk2TodjRobF_KEuhuIPLzeVpfu3BR7hU-e6eKdm26Jf6VPiCGQUxxjH-4utHacRhBSsLO0MO-THSI6jf8nrvnouUogW7IgP_MqwUswmj2JwIcapolzHGZtzHZrxy-PwOCjKXV9X8xNh7GHDuXKHdf-Q0XkCFQGh1uwD_waIRLDfbDSV1JpIFuci7XhtA"
-    ],
+    tag: "Amber Gourmand",
+    shortDescription: "A warm, rich and addictive fragrance with a cozy, sweet and sophisticated character.",
+    fullDescription: "Luxurious and inviting fragrance with a warm, indulgent character. It feels rich, smooth and comforting, creating an elegant aura that is perfect for evenings, special occasions and cooler weather. Its deep gourmand style makes it bold, memorable and effortlessly captivating.",
+    images: ["qahwaroyal1.jpg", "qahwaroyal2.jpg", "qahwaroyal3.jpg"],
     notes: {
-      top: "Saffron, Cardamom, Rose Water",
-      heart: "Aged Sandalwood, Frankincense",
-      base: "Pure Amber Oil, Natural Resins"
+      top: "Ginger, Cinnamon, Cardamom",
+      heart: "Praline, Candied Fruits, White Flowers",
+      base: "Coffee, Vanilla, Tonka Bean, Musk, Amber, Benzoin"
     },
     sizes: [
-      { size: "6 ml", price: 80, originalPrice: 180, label: "6 ml Bottle", isDefault: true },
-      { size: "8 ml", price: 99, originalPrice: 199, label: "8 ml Bottle", isDefault: false }
+      { size: "50 ml", price: 649, originalPrice: 899, label: "50 ml Bottle", isDefault: true },
+      { size: "100 ml", price: 1199, originalPrice: 1499, label: "100 ml Bottle", isDefault: false },
+      { size: "30 ml", price: 349, originalPrice: 549, label: "30 ml Bottle", isDefault: false },
+      { size: "20 ml Vial", price: 249, originalPrice: 349, label: "Pocket Vial", isDefault: false }
     ]
   },
   {
-    id: "velvet-santal",
-    name: "Velvet Santal",
-    category: "perfumes",
-    price: 450,
-    originalPrice: 550,
-    size: "50 ml",
-    concentration: "Eau de Parfum",
-    badge: "Fragrance Blend",
-    isBestSeller: false,
-    inStock: true,
-    tag: "Sandalwood & Amber",
-    shortDescription: "Sandalwood, cardamom and warm amber in a smooth, lingering composition.",
-    fullDescription: "Creamy sandalwood balanced with gentle aromatic spice and warm golden amber for a calm, sophisticated presence.",
-    images: [
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuCqpBREULoQg-LezTrw6Jvh7uuBSj5J32mRj8Xp4oZ2gipBacYQ2fSq2EnGPNf2xfgoQE5VrWzl14w__0dfGTEl2CAR1SDav3K5u7t54O9bp6C_YqL4hwioEDK2B9V8oMLrMXbWS4QjMOH4uMWUyZZr4jzRtf6inw_cdEU6jLSCwEFpEYH0ream1d6o2wmHTgGxIs0M73hqKN3Y6jO9CQTLf5f_RTaK9XA_NZut5hoHUoepq7VzUn-zSg"
-    ],
-    notes: {
-      top: "Cardamom, Violet Leaves",
-      heart: "Australian Sandalwood, Papyrus",
-      base: "Cedarwood, Ambergris, Warm Leather"
-    },
-    sizes: [
-      { size: "50 ml", price: 450, originalPrice: 550, label: "50 ml Bottle", isDefault: true },
-      { size: "100 ml", price: 650, originalPrice: 799, label: "100 ml Bottle", isDefault: false },
-      { size: "30 ml", price: 299, originalPrice: 399, label: "30 ml Bottle", isDefault: false },
-      { size: "20 ml Vial", price: 199, originalPrice: 299, label: "Pocket Vial", isDefault: false }
-    ]
-  },
-  {
-    id: "amber-rose",
-    name: "Amber Rose",
-    category: "perfumes",
-    price: 450,
-    originalPrice: 550,
-    size: "50 ml",
-    concentration: "Eau de Parfum",
-    badge: "Floral & Amber",
-    isBestSeller: false,
-    inStock: true,
-    tag: "Rose & Amber",
-    shortDescription: "Sweet rose petals blended with warm benzoin and cedar.",
-    fullDescription: "A romantic blend pairing blooming rose petals with deep warm amber and gentle cedar notes.",
-    images: [
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuBKqeBzRFKnLGdEQmEC72p7nE76EDC3a0MDQcqW7sh0DFWHeTnBJ1essyKMappg4lKE-ju4u1DyaQW6pdTW_3tK99IYx1U4mbQwi6KsbwEiWKaua5HsoQ-l4qGo1M5Ixe9zRPOlaV0dBvSTyInDoEzvMfhThS8MEea5o9SBA_gbS2MPbNsSW70NE_GGHgIGZ11JsDSjPCLguEVdNyn-hEccmTgxUb6mX-FkPAe01qWMqt_F79J7U0t32A"
-    ],
-    notes: {
-      top: "Pink Peppercorn, Dewy Rose",
-      heart: "Rose Petals, Benzoin",
-      base: "Golden Amber, Cedarwood, Soft Musk"
-    },
-    sizes: [
-      { size: "50 ml", price: 450, originalPrice: 550, label: "50 ml Bottle", isDefault: true },
-      { size: "100 ml", price: 650, originalPrice: 799, label: "100 ml Bottle", isDefault: false },
-      { size: "30 ml", price: 299, originalPrice: 399, label: "30 ml Bottle", isDefault: false },
-      { size: "20 ml Vial", price: 199, originalPrice: 299, label: "Pocket Vial", isDefault: false }
-    ]
-  },
-  {
-    id: "smoky-leather",
-    name: "Smoky Leather",
-    category: "perfumes",
-    price: 450,
-    originalPrice: 550,
-    size: "50 ml",
-    concentration: "Eau de Parfum",
-    badge: "Signature Blend",
-    isBestSeller: false,
-    inStock: true,
-    tag: "Leather Accord",
-    shortDescription: "Rich leather, frankincense, and warm spices for a bold, distinctive scent.",
-    fullDescription: "A bold and smooth fragrance blending leather, incense, and warm woody notes for an unmistakable presence.",
-    images: [
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuDtCG33L9gK8OQgkfXIY_AdLqAx2mZUOWszSzqKCRWlLOvWM6oNZasObWoQoQo0Vm_h3wX_w1_IlJbxGNAe9Lmf42XHDlrR9Ky3ms5VU3RWUt83MjeUUFo1_T6sys_ffus7ehqp5KMZzhmV8lFBfR2CxNLxR6wuk2_SnLFWLAlbzM6R6_mB507DzXctRXy3VS_11GeBOdhKAYguNkuPB2mIr9EYL2oxYi1I-di9JjcPZmaAYHlNOFk_Kg"
-    ],
-    notes: {
-      top: "Thyme, Raspberry, Saffron",
-      heart: "Frankincense, Night Jasmine",
-      base: "Leather, Black Suede, Amberwood"
-    },
-    sizes: [
-      { size: "50 ml", price: 450, originalPrice: 550, label: "50 ml Bottle", isDefault: true },
-      { size: "100 ml", price: 650, originalPrice: 799, label: "100 ml Bottle", isDefault: false },
-      { size: "30 ml", price: 299, originalPrice: 399, label: "30 ml Bottle", isDefault: false },
-      { size: "20 ml Vial", price: 199, originalPrice: 299, label: "Pocket Vial", isDefault: false }
-    ]
-  },
-  {
-    id: "oud-aura-gift-set",
-    name: "Oud & Aura Gift Set",
+    id: "unisex_giftset",
+    name: "Unisex Gift Set",
     category: "gifts",
-    price: 589,
-    originalPrice: 600,
-    size: "3 × 20 ml",
+    price: 699,
+    originalPrice: 796,
+    size: "4 × 20 ml",
     concentration: "Gift Set",
     badge: "Limited Collection",
     isBestSeller: true,
     inStock: true,
-    tag: "Gift Set",
-    shortDescription: "A beautiful set of three fragrances, made for discovering new favourites or sharing with someone special.",
-    fullDescription: "A beautiful set of three fragrances, made for discovering new favourites or sharing the Oud & Aura experience with someone special.",
-    images: [
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuAHj4rMw6Rjg_Ru-uRJ_VmGRQjmDIC2UXrKrwBdgqE2oq-aHIgTjM0RDAROrCQYKwHPJ0rD0dkxn1YMTujP2w50jHHB26M_4ip-Gh7YtL1omQUl7Z35Ng8R0X37KIiVA7yAjHSCFYq9gqjtD5m2XGh1FoR1Ouz9GSyU_iBOEqTzDk2pTcb3cdzkKHPv359qbXTZzmZ0FnkH9DqpIPKmJck24isnuUqQsWZuVP2QfBLsP6IxC1JWp_JcwA",
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuDP-5_aOACthL7lSl-xis2qS0zcMdDWnPQI1yPnFYwi_jP_EU8gYqmpv-YPL8t3e7WsJXFj0VJvf8rVId1cykDWyLnh01xdKs6Lu13h2g0vi9cQbB0KHz92MxzxxG0dH2cRlb0isfzrgekhScDqbyCvappDNJHNT2bx-C9Y81oCZMM2O7JwsEGYqZ7D60HaRK-KMDdLDU0wq5bw3d0u8S7k2gZCTGfPdM_EPoSTH1t2kDl0b0oSG2Silw"
-    ],
+    tag: "Luxury • Woody • Oriental • Fresh",
+    shortDescription: "A versatile collection of four captivating fragrances, blending rich, warm, woody and fresh characters for every mood and occasion.",
+    fullDescription: "Discover the Arabian Signature Combo — a curated collection of four distinctive fragrances inspired by some of the most loved fragrance styles. From the rich and indulgent Arabian Touch to the smooth woods of Tam D'Or, the traditional character of Ruh Arab, and the fresh, energetic appeal of Hawaz Rush, this combo offers a fragrance for every personality and occasion.",
+    images: ["combo1.jpg", "combo2.jpg"],
     notes: {
-      top: "Assortment of Fresh Accords",
-      heart: "Floral & Warm Spices",
-      base: "Amber & Woody Notes"
+      "Arabian Touch": "Warm • Sweet • Spicy • Gourmand",
+      "Tam D'Or": "Woody • Creamy • Earthy • Musky",
+      "Ruh Arab": "Oriental • Woody • Warm • Musky",
+      "Hawaz Rush": "Fresh • Aquatic • Fruity • Woody"
     },
     sizes: [
-      { size: "3 × 20 ml", price: 589, originalPrice: 600, label: "Complete Set", isDefault: true }
+      { size: "4 × 20 ml", price: 699, originalPrice: 796, label: "Complete Set", isDefault: true }
     ]
   }
 ];

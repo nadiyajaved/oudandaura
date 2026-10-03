@@ -222,7 +222,7 @@
           </div>
 
           <!-- Pyramid Tiers -->
-          <div class="flex flex-col space-y-space-sm">
+          <div id="notesContainer" class="flex flex-col space-y-space-sm">
             <!-- Top Notes -->
             <div class="rounded-lg p-space-sm shadow-xs flex flex-col" style="background-color: rgb(239, 233, 223); border-left: 3px solid rgb(212, 175, 55);">
               <div class="flex items-center justify-between">
@@ -439,16 +439,52 @@
       document.getElementById("productTitle").textContent = currentProduct.name;
       if (currentProduct.category === "attars") {
         document.getElementById("productSubtitle").textContent = currentProduct.concentration || "Pure Perfume Oil";
+      } else if (currentProduct.category === "gifts") {
+        document.getElementById("productSubtitle").textContent = currentProduct.concentration || "Luxury Discovery Set";
       } else {
         document.getElementById("productSubtitle").textContent = "Parfum (50% oil concentration)";
       }
       document.getElementById("productDescription").textContent = currentProduct.fullDescription;
 
       // Notes
-      if (currentProduct.notes) {
-        document.getElementById("topNotesText").textContent = currentProduct.notes.top;
-        document.getElementById("heartNotesText").textContent = currentProduct.notes.heart;
-        document.getElementById("baseNotesText").textContent = currentProduct.notes.base;
+      const notesContainer = document.getElementById("notesContainer");
+      if (currentProduct.notes && notesContainer) {
+        if (currentProduct.notes.top !== undefined || currentProduct.notes.heart !== undefined) {
+          notesContainer.innerHTML = `
+            <div class="rounded-lg p-space-sm shadow-xs flex flex-col" style="background-color: rgb(239, 233, 223); border-left: 3px solid rgb(212, 175, 55);">
+              <div class="flex items-center justify-between">
+                <span class="font-label-caps text-label-caps uppercase text-secondary tracking-wider font-semibold">Top Notes</span>
+                <span class="font-body-sm text-[11px] text-on-tertiary-container">First 15 Minutes</span>
+              </div>
+              <p class="font-body-md text-body-md text-on-surface mt-1 font-medium">${currentProduct.notes.top || "Fresh accords"}</p>
+            </div>
+            <div class="rounded-lg p-space-sm shadow-xs flex flex-col" style="background-color: rgb(239, 233, 223); border-left: 3px solid rgb(212, 175, 55);">
+              <div class="flex items-center justify-between">
+                <span class="font-label-caps text-label-caps uppercase text-secondary tracking-wider font-semibold">Heart Notes</span>
+                <span class="font-body-sm text-[11px] text-on-tertiary-container">2 to 6 Hours</span>
+              </div>
+              <p class="font-body-md text-body-md text-on-surface mt-1 font-medium">${currentProduct.notes.heart || "Heart notes"}</p>
+            </div>
+            <div class="rounded-lg p-space-sm shadow-xs flex flex-col" style="background-color: rgb(239, 233, 223); border-left: 3px solid rgb(212, 175, 55);">
+              <div class="flex items-center justify-between">
+                <span class="font-label-caps text-label-caps uppercase text-secondary tracking-wider font-semibold">Base Notes</span>
+                <span class="font-body-sm text-[11px] text-on-tertiary-container">Base Layer</span>
+              </div>
+              <p class="font-body-md text-body-md text-on-surface mt-1 font-medium">${currentProduct.notes.base || "Base accords"}</p>
+            </div>
+          `;
+        } else {
+          // Combo or Custom fragrance profile map (e.g. Unisex Gift Set)
+          notesContainer.innerHTML = Object.entries(currentProduct.notes).map(([title, desc]) => `
+            <div class="rounded-lg p-space-sm shadow-xs flex flex-col" style="background-color: rgb(239, 233, 223); border-left: 3px solid rgb(212, 175, 55);">
+              <div class="flex items-center justify-between">
+                <span class="font-label-caps text-label-caps uppercase text-secondary tracking-wider font-semibold">${title}</span>
+                <span class="font-body-sm text-[10px] uppercase tracking-wider text-on-tertiary-container font-medium">Included in Set</span>
+              </div>
+              <p class="font-body-md text-body-md text-on-surface mt-1 font-medium">${desc}</p>
+            </div>
+          `).join("");
+        }
       }
 
       // Images & Carousel
