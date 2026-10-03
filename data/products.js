@@ -95,7 +95,7 @@ const PRODUCTS = [
     tag: "Fresh Aquatic",
     shortDescription: "A fresh, aquatic and masculine fragrance with a vibrant, energetic character.",
     fullDescription: "Hawas for Him is a refreshing and confident fragrance that combines a clean aquatic feel with a smooth, modern character. It is lively, bold, and effortlessly appealing, making it ideal for everyday wear as well as special occasions.",
-    images: ["hawasrush1.jpg", "hawasrush2.jpg", "hawasrush3.jpg"],
+    images: ["hawazrush1.jpg", "hawazrush2.jpg", "hawazrush3.jpg"],
     notes: {
       top: "Lemon, Apple, Cinnamon, Bergamot",
       heart: "Watery Notes, Lavender, Violet, Cardamom",
