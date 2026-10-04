@@ -92,41 +92,37 @@
 
       <!-- PRODUCT VISUAL SHOWCASE STAGE -->
       <section aria-label="Product Presentation" class="px-margin-mobile pt-space-xs pb-space-sm">
-        <div id="productGalleryStage" class="relative w-full aspect-[4/5] rounded-xl overflow-hidden shadow-sm flex flex-col justify-between p-space-md select-none touch-pan-y" style="background-color: rgb(247, 242, 235); border: 1px solid rgb(229, 221, 207);">
-          <!-- Ambient Bloom Gradient -->
-          <div class="absolute inset-0 bg-gradient-to-b from-surface-container-lowest/70 via-transparent to-surface-container-high/40 pointer-events-none"></div>
+        <div id="productGalleryStage" class="relative w-full aspect-[4/5] rounded-2xl overflow-hidden shadow-sm flex flex-col justify-between select-none touch-pan-y bg-[#f5f2eb] border border-[#E5DDCF]/80">
           
-          <!-- Top Overlay Bar -->
-          <div class="relative z-10 flex items-center justify-between w-full pointer-events-auto">
-            <span id="productBadge" class="inline-flex items-center px-2.5 py-1 rounded-full font-label-caps text-label-caps shadow-sm" style="background-color: rgb(212, 175, 55); color: rgb(20, 19, 18); font-weight: 600;">
+          <!-- Primary Product Photography (Click to open full view) -->
+          <div class="absolute inset-0 flex items-center justify-center p-2 cursor-pointer" onclick="openLightbox(event)" title="Click to view full image">
+            <img id="mainFlaconImage" class="w-full h-full object-contain object-center transition-all duration-300 drop-shadow-sm" src="" alt="Product Photograph">
+          </div>
+
+          <!-- Top Overlay Bar (Floating) -->
+          <div class="relative z-10 flex items-center justify-between w-full p-3 pointer-events-none">
+            <span id="productBadge" class="pointer-events-auto inline-flex items-center px-2.5 py-1 rounded-full font-label-caps text-label-caps shadow-sm" style="background-color: rgb(212, 175, 55); color: rgb(20, 19, 18); font-weight: 600;">
               Best Seller
             </span>
-            <button id="shareBtn" aria-label="Share this product" class="w-9 h-9 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface shadow-sm flex items-center justify-center transition-transform active:scale-95 hover:bg-surface-container-lowest cursor-pointer" type="button">
+            <button id="shareBtn" aria-label="Share this product" class="pointer-events-auto w-9 h-9 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface shadow-sm flex items-center justify-center transition-transform active:scale-95 hover:bg-surface-container-lowest cursor-pointer" type="button">
               <span class="material-symbols-outlined text-[18px]">share</span>
             </button>
           </div>
 
-          <!-- Primary Product Photography (Click to open full view) -->
-          <div class="relative z-0 flex-1 flex flex-col items-center justify-center text-center my-auto w-full px-space-sm cursor-pointer" onclick="openLightbox(event)" title="Click to view full image">
-            <div class="w-full h-full max-h-[300px] rounded-lg overflow-hidden relative flex items-center justify-center bg-surface-container/60 shadow-inner group">
-              <img id="mainFlaconImage" class="w-full h-full object-cover object-center transition-opacity duration-300" src="" alt="Product Photograph">
-            </div>
+          <!-- Left / Right Nav Arrows (Floating) -->
+          <button id="prevSlideBtn" onclick="prevSlide(event)" aria-label="Previous image" class="absolute left-2.5 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface flex items-center justify-center shadow-md hover:scale-105 transition-all active:scale-90 cursor-pointer" type="button">
+            <span class="material-symbols-outlined text-[20px]">chevron_left</span>
+          </button>
+          <button id="nextSlideBtn" onclick="nextSlide(event)" aria-label="Next image" class="absolute right-2.5 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface flex items-center justify-center shadow-md hover:scale-105 transition-all active:scale-90 cursor-pointer" type="button">
+            <span class="material-symbols-outlined text-[20px]">chevron_right</span>
+          </button>
 
-            <!-- Left / Right Nav Arrows -->
-            <button id="prevSlideBtn" onclick="prevSlide(event)" aria-label="Previous image" class="absolute left-1 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface flex items-center justify-center shadow-md hover:scale-105 transition-all active:scale-90 cursor-pointer" type="button">
-              <span class="material-symbols-outlined text-[20px]">chevron_left</span>
-            </button>
-            <button id="nextSlideBtn" onclick="nextSlide(event)" aria-label="Next image" class="absolute right-1 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface flex items-center justify-center shadow-md hover:scale-105 transition-all active:scale-90 cursor-pointer" type="button">
-              <span class="material-symbols-outlined text-[20px]">chevron_right</span>
-            </button>
-          </div>
-
-          <!-- Bottom Gallery Indicators -->
-          <div class="relative z-10 flex items-center justify-between w-full pt-space-xs">
-            <div class="flex items-center gap-1" id="galleryDots">
+          <!-- Bottom Gallery Indicators (Floating) -->
+          <div class="relative z-10 flex items-center justify-between w-full p-3 pointer-events-none">
+            <div class="flex items-center gap-1 pointer-events-auto" id="galleryDots">
               <!-- Rendered dynamically -->
             </div>
-            <span class="font-label-caps text-label-caps text-on-surface-variant tracking-widest bg-surface-container-lowest/80 px-2 py-0.5 rounded-md" id="galleryCounter">
+            <span class="pointer-events-auto font-label-caps text-label-caps text-on-surface-variant tracking-widest bg-surface-container-lowest/90 backdrop-blur-md px-2 py-0.5 rounded-md shadow-xs" id="galleryCounter">
               1 / 1
             </span>
           </div>
