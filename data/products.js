@@ -164,8 +164,8 @@ const PRODUCTS = [
     id: "unisex_giftset",
     name: "Unisex Gift Set",
     category: "gifts",
-    price: 699,
-    originalPrice: 796,
+    price: 777,
+    originalPrice: 800,
     size: "4 × 20 ml",
     concentration: "Gift Set",
     badge: "Limited Collection",
@@ -182,7 +182,7 @@ const PRODUCTS = [
       "Hawaz Rush": "Fresh • Aquatic • Fruity • Woody"
     },
     sizes: [
-      { size: "4 × 20 ml", price: 699, originalPrice: 796, label: "Complete Set", isDefault: true }
+      { size: "4 × 20 ml", price: 777, originalPrice: 800, label: "Complete Set", isDefault: true }
     ]
   }
 ];
