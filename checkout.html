@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport">
-  <title>Checkout | Oud &amp; Aura - Haute Parfumerie</title>
+  <title>Checkout | Oud &amp; Aura - The Essence of Elegance</title>
   
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com" rel="preconnect">
@@ -86,7 +86,7 @@
         </a>
         <a href="index.html" class="flex flex-col">
           <span class="font-serif text-lg tracking-[0.2em] font-semibold uppercase text-[#121110]">OUD &amp; AURA</span>
-          <span class="text-[9px] tracking-[0.26em] text-[#875200] uppercase font-medium -mt-1">HAUTE PARFUMERIE</span>
+          <span class="text-[9px] tracking-[0.26em] text-[#875200] uppercase font-medium -mt-1">The Essence of Elegance</span>
         </a>
       </div>
 
@@ -129,7 +129,7 @@
         <div class="flex items-center justify-between pb-4 border-b border-[#e5ddcf]/80 mb-6">
           <div>
             <h1 class="font-serif text-2xl sm:text-3xl text-[#121110]">Your Shopping Bag</h1>
-            <p class="text-xs text-[#4b4640] mt-0.5">Review your flacon selections before proceeding to delivery</p>
+            <p class="text-xs text-[#4b4640] mt-0.5">Check your selections before delivery.</p>
           </div>
           <a href="shop.html" class="text-xs text-[#875200] hover:underline font-semibold flex items-center gap-1">
             <span class="material-symbols-outlined text-[16px]">add</span>
@@ -163,12 +163,12 @@
           </div>
 
           <div class="flex justify-between text-xs text-[#4b4640]">
-            <span>Insured Luxury Courier</span>
+            <span>Insured Courier</span>
             <span id="cartShippingText" class="font-medium text-[#875200]">₹60</span>
           </div>
 
           <div class="flex justify-between text-xs text-[#4b4640]">
-            <span>Taxes &amp; Luxury Packaging</span>
+            <span>Taxes &amp; Packaging</span>
             <span class="font-medium text-[#1b1c1a]">Included</span>
           </div>
 
@@ -285,7 +285,7 @@
             <div class="flex items-center gap-3">
               <span class="material-symbols-outlined text-[22px] text-[#875200]">verified</span>
               <div>
-                <h4 class="text-xs font-semibold text-[#121110]">Insured Standard Luxury Courier</h4>
+                <h4 class="text-xs font-semibold text-[#121110]">Insured Standard Courier</h4>
                 <p class="text-[11px] text-[#4b4640]">Carefully bubble-wrapped in signature Oud &amp; Aura presentation box.</p>
               </div>
             </div>
@@ -430,14 +430,14 @@
     <section id="screen-confirmation" class="flow-screen">
       <div class="max-w-xl mx-auto text-center py-4">
         
-        <!-- Animated Luxury Success Badge -->
+        <!-- Animated Success Badge -->
         <div class="w-16 h-16 rounded-full bg-[#d4af37]/20 border-2 border-[#d4af37] flex items-center justify-center mx-auto mb-4 text-[#875200] shadow-sm">
           <span class="material-symbols-outlined text-[32px]">check_circle</span>
         </div>
 
         <span class="text-[11px] uppercase tracking-[0.2em] font-semibold text-[#875200]">Order Placed Successfully</span>
         <h1 class="font-serif text-3xl sm:text-4xl text-[#121110] font-normal mt-1">Thank You For Your Order</h1>
-        <p class="text-xs text-[#4b4640] mt-1.5">Your artisanal fragrance curation has been scheduled for dispatch.</p>
+        <p class="text-xs text-[#4b4640] mt-1.5">Your order has been confirmed and scheduled for dispatch.</p>
 
         <!-- Order Card Details -->
         <div class="rounded-2xl bg-white p-5 border border-[#e5ddcf]/80 shadow-sm mt-6 text-left space-y-4">
@@ -602,11 +602,11 @@
       const progressBar = document.getElementById("shippingProgressBar");
       if (shippingMeter && progressBar) {
         if (subtotal >= freeThreshold) {
-          shippingMeter.innerHTML = `<span class="text-[#875200] font-bold">🎉 Congratulations!</span> You qualify for <strong class="text-[#121110]">FREE Luxury Shipping</strong>`;
+          shippingMeter.innerHTML = `<span class="text-[#875200] font-bold">🎉 Congratulations!</span> You qualify for <strong class="text-[#121110]">FREE Shipping</strong>`;
           progressBar.style.width = "100%";
         } else {
           const remaining = freeThreshold - subtotal;
-          shippingMeter.innerHTML = `Add <strong class="text-[#875200]">₹${remaining}</strong> more for <strong>FREE Luxury Shipping</strong>`;
+          shippingMeter.innerHTML = `Add <strong class="text-[#875200]">₹${remaining}</strong> more for <strong>FREE Shipping</strong>`;
           const pct = Math.min(100, Math.round((subtotal / freeThreshold) * 100));
           progressBar.style.width = `${pct}%`;
         }
@@ -646,7 +646,7 @@
           <div class="text-center py-12 bg-white rounded-2xl border border-[#e5ddcf]/80 p-6">
             <span class="material-symbols-outlined text-[44px] text-[#cdc5bd]">shopping_bag</span>
             <h3 class="font-serif text-lg font-bold text-[#121110] mt-2">Your Bag is Empty</h3>
-            <p class="text-xs text-[#4b4640] mt-1 max-w-sm mx-auto">Explore our luxury extrait de parfums and pure attars to begin your bespoke selection.</p>
+            <p class="text-xs text-[#4b4640] mt-1 max-w-sm mx-auto">Explore our artisanal perfumes and pure attars to begin your bespoke selection.</p>
             <a href="shop.html" class="inline-block mt-4 px-6 py-2.5 bg-[#121110] text-white rounded-lg text-xs font-semibold uppercase tracking-wider hover:bg-[#875200] transition-colors">
               Explore Collection
             </a>
@@ -833,7 +833,7 @@
       const o = CHECKOUT_STATE.orderData;
       if (!o) return;
       const itemsSummary = o.items.map(i => `• ${i.name} (${i.size}) × ${i.quantity} = ₹${i.price * i.quantity}`).join("\n");
-      const msg = encodeURIComponent(`*ORDER CONFIRMATION RECEIPT*\nOrder ID: #${o.orderId}\nCustomer: ${o.name}\nDelivery: ${o.address}\n\n*Ordered Flacons:*\n${itemsSummary}\n\n*Total:* ₹${o.total} (${o.paymentMethod})\n\nPlease share dispatch tracking when ready. Thank you!`);
+      const msg = encodeURIComponent(`*ORDER CONFIRMATION RECEIPT*\nOrder ID: #${o.orderId}\nCustomer: ${o.name}\nDelivery: ${o.address}\n\n*Ordered Items:*\n${itemsSummary}\n\n*Total:* ₹${o.total} (${o.paymentMethod})\n\nPlease share dispatch tracking when ready. Thank you!`);
       const waNumber = (typeof SITE_CONFIG !== 'undefined' && SITE_CONFIG.whatsappNumber) ? SITE_CONFIG.whatsappNumber : "919819929863";
       window.open(`https://wa.me/${waNumber}?text=${msg}`, "_blank");
     }
