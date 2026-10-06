@@ -158,6 +158,7 @@ function renderCartDrawer() {
   const list = document.getElementById("cartItemsList");
   const subtotalEl = document.getElementById("cartSubtotal");
   const whatsappCheckoutBtn = document.getElementById("cartWhatsAppCheckout");
+  const onlineCheckoutBtn = document.getElementById("cartOnlineCheckoutBtn");
   if (!list) return;
 
   const cart = getCart();
@@ -176,6 +177,9 @@ function renderCartDrawer() {
     if (whatsappCheckoutBtn) {
       whatsappCheckoutBtn.classList.add("opacity-50", "pointer-events-none");
     }
+    if (onlineCheckoutBtn) {
+      onlineCheckoutBtn.classList.add("opacity-50", "pointer-events-none");
+    }
     return;
   }
 
@@ -192,13 +196,13 @@ function renderCartDrawer() {
           <div class="flex items-center justify-between mt-2">
             <span class="font-body-md text-xs font-semibold text-primary">${SITE_CONFIG.currencySymbol}${item.price}</span>
             <div class="flex items-center border border-[#E5DDCF] rounded bg-surface">
-              <button onclick="updateCartQuantity(${idx}, -1)" class="w-6 h-6 flex items-center justify-center text-primary hover:bg-surface-container text-xs">-</button>
+              <button onclick="updateCartQuantity(${idx}, -1)" class="w-6 h-6 flex items-center justify-center text-primary hover:bg-surface-container text-xs cursor-pointer" type="button" aria-label="Decrease quantity">-</button>
               <span class="px-2 text-xs font-medium">${item.quantity}</span>
-              <button onclick="updateCartQuantity(${idx}, 1)" class="w-6 h-6 flex items-center justify-center text-primary hover:bg-surface-container text-xs">+</button>
+              <button onclick="updateCartQuantity(${idx}, 1)" class="w-6 h-6 flex items-center justify-center text-primary hover:bg-surface-container text-xs cursor-pointer" type="button" aria-label="Increase quantity">+</button>
             </div>
           </div>
         </div>
-        <button onclick="removeFromCart(${idx})" class="text-on-surface-variant hover:text-error p-1" title="Remove item">
+        <button onclick="removeFromCart(${idx})" class="text-on-surface-variant hover:text-error p-1 cursor-pointer" title="Remove item" type="button" aria-label="Remove item">
           <span class="material-symbols-outlined text-[18px]">close</span>
         </button>
       </div>
@@ -207,6 +211,10 @@ function renderCartDrawer() {
 
   if (subtotalEl) {
     subtotalEl.textContent = `${SITE_CONFIG.currencySymbol}${subtotal}`;
+  }
+
+  if (onlineCheckoutBtn) {
+    onlineCheckoutBtn.classList.remove("opacity-50", "pointer-events-none");
   }
 
   if (whatsappCheckoutBtn) {
