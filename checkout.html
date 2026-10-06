@@ -11,6 +11,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&amp;family=Plus+Jakarta+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
   
+  <!-- Razorpay Checkout Script (Official Gateway SDK) -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script id="tailwind-config">
@@ -339,38 +342,39 @@
         <!-- Payment Method Options (UPI and COD ONLY) -->
         <div class="space-y-3.5 mb-6">
           
-          <!-- OPTION 1: UPI / INSTANT QR -->
+          <!-- OPTION 1: RAZORPAY ONLINE GATEWAY (UPI, CARDS, NETBANKING) -->
           <label class="block p-4 rounded-2xl bg-white border-2 border-[#121110] shadow-xs cursor-pointer transition-all payment-card relative" id="card-upi">
             <div class="flex items-center justify-between">
               <div class="flex items-center gap-3">
                 <input type="radio" name="paymentOption" value="upi" checked onchange="handlePaymentSelection('upi')" class="w-4 h-4 accent-[#121110]">
                 <div>
-                  <span class="text-sm font-bold text-[#121110] block">UPI / Instant QR</span>
-                  <span class="text-xs text-[#4b4640]">Google Pay, PhonePe, Paytm, BHIM &amp; UPI Apps</span>
+                  <span class="text-sm font-bold text-[#121110] block">Razorpay Online Payment</span>
+                  <span class="text-xs text-[#4b4640]">UPI (GPay, PhonePe, Paytm), Debit/Credit Cards &amp; NetBanking</span>
                 </div>
               </div>
-              <span class="px-2 py-0.5 text-[10px] font-bold rounded-full bg-[#25D366]/10 text-[#128C7E] border border-[#25D366]/30">INSTANT</span>
+              <span class="px-2 py-0.5 text-[10px] font-bold rounded-full bg-[#875200]/10 text-[#875200] border border-[#875200]/30 flex items-center gap-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-[#875200] animate-pulse"></span>
+                <span>TEST MODE</span>
+              </span>
             </div>
 
-            <!-- UPI Sandbox Details Box -->
+            <!-- Razorpay Gateway Details Box -->
             <div id="upiSandboxBox" class="mt-4 pt-4 border-t border-[#e5ddcf]/60 space-y-3">
-              <div class="p-3 rounded-lg bg-[#fbf9f6] border border-[#e5ddcf] flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
-                <div>
-                  <span class="text-[10px] text-[#4b4640] uppercase tracking-wider font-semibold block">Store UPI ID</span>
-                  <span class="text-xs font-mono font-bold text-[#121110]">oudandaura@upi</span>
+              <div class="p-3 rounded-lg bg-[#fbf9f6] border border-[#e5ddcf] flex flex-col sm:flex-row items-center justify-between gap-2.5 text-xs text-[#4b4640]">
+                <div class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-[18px] text-[#875200]">verified_user</span>
+                  <span><strong>Gateway:</strong> Razorpay Sandbox</span>
                 </div>
-                <button type="button" onclick="copyUpiId()" class="px-3 py-1.5 rounded-lg bg-white border border-[#e5ddcf] text-xs font-medium text-[#121110] hover:bg-[#f5f2eb]">
-                  Copy UPI ID
-                </button>
+                <span class="font-mono text-[11px] font-semibold text-[#875200]">Server-Verified • HMAC SHA256</span>
               </div>
 
               <div class="p-3 rounded-lg bg-white border border-dashed border-[#e5ddcf] flex items-center gap-3">
-                <div class="w-12 h-12 rounded bg-[#121110] flex items-center justify-center text-white shrink-0">
-                  <span class="material-symbols-outlined text-[24px] text-[#d4af37]">qr_code_2</span>
+                <div class="w-10 h-10 rounded-lg bg-[#121110] flex items-center justify-center text-[#ffddba] shrink-0">
+                  <span class="material-symbols-outlined text-[20px]">credit_card</span>
                 </div>
                 <div class="text-[11px] text-[#4b4640]">
-                  <strong class="text-[#121110] block">Instant Mock QR Ready</strong>
-                  Test authorization completes immediately on clicking Complete Order below.
+                  <strong class="text-[#121110] block">Razorpay Checkout Sheet</strong>
+                  Opens test payment sheet. Verified server-side with HMAC SHA256 before confirmation.
                 </div>
               </div>
             </div>
@@ -520,6 +524,43 @@
   <div id="checkoutToast" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-[300] bg-[#121110] text-white px-4 py-2.5 rounded-full text-xs font-medium shadow-2xl flex items-center gap-2 opacity-0 pointer-events-none transition-all duration-300">
     <span class="material-symbols-outlined text-[16px] text-[#d4af37]">check_circle</span>
     <span id="checkoutToastText">Notification</span>
+  </div>
+
+  <!-- Credentials Notice Modal (Shows guidance if .env keys are missing) -->
+  <div id="credentialsNoticeModal" class="fixed inset-0 z-[400] bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 border border-[#e5ddcf] shadow-2xl space-y-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-[#875200]/10 flex items-center justify-center text-[#875200] shrink-0">
+          <span class="material-symbols-outlined text-[22px]">vpn_key</span>
+        </div>
+        <div>
+          <h3 class="font-serif text-lg font-bold text-[#121110]">Razorpay Test Mode Setup</h3>
+          <p class="text-xs text-[#875200] font-medium">Developer Environment Action Required</p>
+        </div>
+      </div>
+
+      <p id="credentialsModalDesc" class="text-xs text-[#4b4640] leading-relaxed">
+        Razorpay test credentials are not configured in your <code class="bg-[#f5f2eb] px-1 py-0.5 rounded text-[#121110] font-mono">.env</code> file.
+      </p>
+
+      <div class="p-3.5 rounded-xl bg-[#fbf9f6] border border-[#e5ddcf] text-xs space-y-2 text-[#4b4640]">
+        <strong class="text-[#121110] block font-semibold">How to activate Razorpay Test Mode:</strong>
+        <ol class="list-decimal pl-4 space-y-1 text-[11px]">
+          <li>Copy <code class="font-mono text-[#875200]">.env.example</code> to <code class="font-mono text-[#875200]">.env</code> in your project root.</li>
+          <li>Log into Razorpay Dashboard &rarr; Account Settings &rarr; API Keys.</li>
+          <li>Copy your <strong class="text-[#121110]">Test Key ID</strong> and <strong class="text-[#121110]">Key Secret</strong> into <code class="font-mono text-[#875200]">.env</code>.</li>
+        </ol>
+      </div>
+
+      <div class="pt-2 flex flex-col sm:flex-row gap-2">
+        <button type="button" onclick="closeCredentialsModal()" class="flex-1 py-2.5 rounded-xl bg-[#121110] text-white text-xs font-semibold uppercase tracking-wider hover:bg-[#875200] transition-colors">
+          Got It
+        </button>
+        <button type="button" onclick="closeCredentialsModal(); handlePaymentSelection('cod');" class="flex-1 py-2.5 rounded-xl bg-white border border-[#e5ddcf] text-[#121110] text-xs font-semibold uppercase tracking-wider hover:bg-[#f5f2eb] transition-colors">
+          Use COD Instead
+        </button>
+      </div>
+    </div>
   </div>
 
   <!-- Shared Catalog & Config Scripts -->
@@ -738,50 +779,21 @@
       });
     }
 
-    // Complete Order Execution
-    function processPaymentAndComplete() {
-      const btn = document.getElementById("completeOrderBtn");
-      btn.disabled = true;
-      btn.innerHTML = `<span class="material-symbols-outlined text-[18px] animate-spin">progress_activity</span><span>Authorizing Test Order...</span>`;
+    // Helper: Finalize Confirmed Order (Used by both COD and Verified Razorpay Online)
+    function finalizeOrder(order) {
+      CHECKOUT_STATE.orderData = order;
 
-      setTimeout(() => {
-        const orderId = "OA-" + Math.floor(10000 + Math.random() * 90000);
-        const name = document.getElementById("custName").value.trim() || "Valued Customer";
-        const phone = document.getElementById("custPhone").value.trim() || "+91 98765 43210";
-        const addr1 = document.getElementById("custAddress1").value.trim() || "Grand Boulevard";
-        const addr2 = document.getElementById("custAddress2").value.trim();
-        const city = document.getElementById("custCity").value.trim() || "Mumbai";
-        const state = document.getElementById("custState").value.trim() || "Maharashtra";
-        const pin = document.getElementById("custPincode").value.trim() || "400001";
+      // Populate Confirmation Screen
+      document.getElementById("confOrderId").textContent = `#${order.orderId}`;
+      document.getElementById("confCustomerName").textContent = order.name;
+      document.getElementById("confCustomerAddress").textContent = order.address;
+      document.getElementById("confCustomerPhone").textContent = order.phone;
+      document.getElementById("confPaymentMethod").textContent = order.paymentMethod;
+      document.getElementById("confTotalPaid").textContent = `₹${order.total}`;
 
-        const fullAddress = `${addr1}${addr2 ? ', ' + addr2 : ''}, ${city}, ${state} - ${pin}`;
-        const subtotal = CHECKOUT_STATE.cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
-        const grandTotal = subtotal + CHECKOUT_STATE.shippingFee;
-
-        let methodText = CHECKOUT_STATE.selectedPaymentMethod === 'cod'
-          ? "Cash on Delivery (Pending Courier Handover)"
-          : "UPI / Instant QR (Paid Test Mode)";
-
-        CHECKOUT_STATE.orderData = {
-          orderId,
-          name,
-          phone,
-          address: fullAddress,
-          paymentMethod: methodText,
-          total: grandTotal,
-          items: [...CHECKOUT_STATE.cart]
-        };
-
-        // Populate Confirmation Screen
-        document.getElementById("confOrderId").textContent = `#${orderId}`;
-        document.getElementById("confCustomerName").textContent = name;
-        document.getElementById("confCustomerAddress").textContent = fullAddress;
-        document.getElementById("confCustomerPhone").textContent = phone;
-        document.getElementById("confPaymentMethod").textContent = methodText;
-        document.getElementById("confTotalPaid").textContent = `₹${grandTotal}`;
-
-        const confItemsList = document.getElementById("confItemsList");
-        confItemsList.innerHTML = CHECKOUT_STATE.cart.map(item => `
+      const confItemsList = document.getElementById("confItemsList");
+      if (confItemsList) {
+        confItemsList.innerHTML = order.items.map(item => `
           <div class="flex items-center justify-between text-xs py-1 border-b border-[#e5ddcf]/40">
             <div>
               <span class="font-bold text-[#121110]">${item.name}</span>
@@ -790,17 +802,244 @@
             <span class="font-semibold text-[#875200]">₹${item.price * item.quantity}</span>
           </div>
         `).join("");
+      }
 
-        // Clear cart from storage upon successful order placement
-        saveCart([]);
-        CHECKOUT_STATE.cart = [];
+      // Clear cart from storage upon successful confirmed order
+      saveCart([]);
+      CHECKOUT_STATE.cart = [];
 
+      const btn = document.getElementById("completeOrderBtn");
+      if (btn) {
         btn.disabled = false;
-        btn.innerHTML = `<span class="material-symbols-outlined text-[18px] text-[#ffddba]">lock</span><span>Complete Test Order</span>`;
+        btn.innerHTML = `<span class="material-symbols-outlined text-[18px] text-[#ffddba]">lock</span><span id="completeOrderBtnText">Complete Test Order</span>`;
+      }
 
-        goToScreen('confirmation');
-        showCheckoutToast("Order placed successfully!");
-      }, 700);
+      goToScreen('confirmation');
+      showCheckoutToast("Order placed & confirmed successfully!");
+    }
+
+    // Server-Side Payment Verification
+    async function verifyPaymentOnServer(rzpResponse, internalOrderId, grandTotal, fullAddress, name, phone, email) {
+      const btn = document.getElementById("completeOrderBtn");
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = `<span class="material-symbols-outlined text-[18px] animate-spin">progress_activity</span><span>Verifying HMAC Signature...</span>`;
+      }
+
+      try {
+        const response = await fetch("/api/verify-payment", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            razorpay_order_id: rzpResponse.razorpay_order_id,
+            razorpay_payment_id: rzpResponse.razorpay_payment_id,
+            razorpay_signature: rzpResponse.razorpay_signature,
+            order_details: {
+              orderId: internalOrderId,
+              customer: { name, phone, email, address: fullAddress },
+              items: [...CHECKOUT_STATE.cart],
+              total: grandTotal
+            }
+          })
+        });
+
+        const data = await response.json();
+
+        if (data.success && data.verified) {
+          finalizeOrder({
+            orderId: data.order_id || internalOrderId,
+            name,
+            phone,
+            email,
+            address: fullAddress,
+            paymentMethod: `Razorpay Online [Payment ID: ${rzpResponse.razorpay_payment_id}]`,
+            total: grandTotal,
+            items: [...CHECKOUT_STATE.cart],
+            razorpayPaymentId: rzpResponse.razorpay_payment_id
+          });
+        } else {
+          if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = `<span class="material-symbols-outlined text-[18px] text-[#ffddba]">lock</span><span>Retry Payment (₹${grandTotal})</span>`;
+          }
+          showCheckoutToast("Verification failed: " + (data.message || "Invalid signature"));
+        }
+      } catch (err) {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = `<span class="material-symbols-outlined text-[18px] text-[#ffddba]">lock</span><span>Retry Payment (₹${grandTotal})</span>`;
+        }
+        showCheckoutToast("Server connection error during signature verification.");
+      }
+    }
+
+    // Modal Helper: Razorpay Credentials Required
+    function showCredentialsModal(customMsg) {
+      const modal = document.getElementById("credentialsNoticeModal");
+      if (modal) {
+        if (customMsg) {
+          const desc = document.getElementById("credentialsModalDesc");
+          if (desc) desc.textContent = customMsg;
+        }
+        modal.classList.remove("hidden");
+      } else {
+        alert(customMsg || "Please configure your Razorpay Test Credentials in .env file.");
+      }
+    }
+
+    function closeCredentialsModal() {
+      const modal = document.getElementById("credentialsNoticeModal");
+      if (modal) modal.classList.add("hidden");
+    }
+
+    // Complete Order Execution
+    async function processPaymentAndComplete() {
+      const btn = document.getElementById("completeOrderBtn");
+      
+      // Customer and delivery data
+      const name = document.getElementById("custName").value.trim() || "Valued Customer";
+      const phone = document.getElementById("custPhone").value.trim() || "+91 98765 43210";
+      const email = (document.getElementById("custEmail") ? document.getElementById("custEmail").value.trim() : "") || "customer@oudandaura.com";
+      const addr1 = document.getElementById("custAddress1").value.trim() || "Grand Boulevard";
+      const addr2 = document.getElementById("custAddress2") ? document.getElementById("custAddress2").value.trim() : "";
+      const city = document.getElementById("custCity").value.trim() || "Mumbai";
+      const state = document.getElementById("custState").value.trim() || "Maharashtra";
+      const pin = document.getElementById("custPincode").value.trim() || "400001";
+      const fullAddress = `${addr1}${addr2 ? ', ' + addr2 : ''}, ${city}, ${state} - ${pin}`;
+
+      const subtotal = CHECKOUT_STATE.cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+      const grandTotal = subtotal + CHECKOUT_STATE.shippingFee;
+
+      if (CHECKOUT_STATE.cart.length === 0) {
+        showCheckoutToast("Your shopping bag is empty.");
+        return;
+      }
+
+      // OPTION A: Cash on Delivery (COD)
+      if (CHECKOUT_STATE.selectedPaymentMethod === 'cod') {
+        btn.disabled = true;
+        btn.innerHTML = `<span class="material-symbols-outlined text-[18px] animate-spin">progress_activity</span><span>Booking COD Order...</span>`;
+
+        setTimeout(() => {
+          const orderId = "OA-" + Math.floor(10000 + Math.random() * 90000);
+          finalizeOrder({
+            orderId,
+            name,
+            phone,
+            email,
+            address: fullAddress,
+            paymentMethod: "Cash on Delivery (Pending Courier Handover)",
+            total: grandTotal,
+            items: [...CHECKOUT_STATE.cart]
+          });
+        }, 600);
+        return;
+      }
+
+      // OPTION B: Razorpay Online Gateway (Server-Side Order + Client Modal + Server HMAC Verification)
+      btn.disabled = true;
+      btn.innerHTML = `<span class="material-symbols-outlined text-[18px] animate-spin">progress_activity</span><span>Connecting to Razorpay...</span>`;
+
+      try {
+        const orderResponse = await fetch("/api/create-order", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            amount: grandTotal,
+            items: CHECKOUT_STATE.cart,
+            customer: { name, phone, email, address: fullAddress }
+          })
+        });
+
+        const orderData = await orderResponse.json();
+
+        if (!orderData.success) {
+          btn.disabled = false;
+          btn.innerHTML = `<span class="material-symbols-outlined text-[18px] text-[#ffddba]">lock</span><span>Pay ₹${grandTotal} with Razorpay</span>`;
+          
+          if (orderData.code === "MISSING_CREDENTIALS") {
+            showCredentialsModal(orderData.message);
+          } else {
+            showCheckoutToast(orderData.message || "Failed to initialize Razorpay payment.");
+          }
+          return;
+        }
+
+        // Check if Razorpay JS SDK is loaded
+        if (typeof Razorpay === "undefined") {
+          btn.disabled = false;
+          btn.innerHTML = `<span class="material-symbols-outlined text-[18px] text-[#ffddba]">lock</span><span>Pay ₹${grandTotal} with Razorpay</span>`;
+          showCheckoutToast("Razorpay SDK could not be loaded. Please check your internet connection.");
+          return;
+        }
+
+        // Initialize Razorpay Checkout Modal
+        const rzpOptions = {
+          key: orderData.key_id,
+          amount: orderData.amount,
+          currency: orderData.currency || "INR",
+          name: "Oud & Aura",
+          description: `The Essence of Elegance • #${orderData.internal_order_id}`,
+          order_id: orderData.order_id,
+          prefill: {
+            name: name,
+            contact: phone.replace(/[^0-9]/g, '').slice(-10),
+            email: email
+          },
+          theme: {
+            color: "#121110"
+          },
+          modal: {
+            backdropclose: false,
+            ondismiss: function() {
+              btn.disabled = false;
+              btn.innerHTML = `<span class="material-symbols-outlined text-[18px] text-[#ffddba]">lock</span><span>Pay ₹${grandTotal} with Razorpay</span>`;
+              showCheckoutToast("Payment window closed. Your selections are preserved.");
+              
+              // Log abandonment on server
+              fetch("/api/payment-failed", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ razorpay_order_id: orderData.order_id, reason: "Modal closed by customer" })
+              }).catch(() => {});
+            }
+          },
+          handler: function(response) {
+            // Callback when Razorpay authorizes: Proceed to SERVER-SIDE verification
+            verifyPaymentOnServer(
+              response,
+              orderData.internal_order_id,
+              grandTotal,
+              fullAddress,
+              name,
+              phone,
+              email
+            );
+          }
+        };
+
+        const rzp = new Razorpay(rzpOptions);
+
+        rzp.on("payment.failed", function(failureResp) {
+          btn.disabled = false;
+          btn.innerHTML = `<span class="material-symbols-outlined text-[18px] text-[#ffddba]">lock</span><span>Retry Payment (₹${grandTotal})</span>`;
+          const reason = (failureResp.error && failureResp.error.description) || "Transaction declined";
+          showCheckoutToast(`Payment failed: ${reason}`);
+
+          fetch("/api/payment-failed", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ razorpay_order_id: orderData.order_id, reason: reason })
+          }).catch(() => {});
+        });
+
+        rzp.open();
+
+      } catch (networkErr) {
+        btn.disabled = false;
+        btn.innerHTML = `<span class="material-symbols-outlined text-[18px] text-[#ffddba]">lock</span><span>Pay ₹${grandTotal} with Razorpay</span>`;
+        showCheckoutToast("Unable to reach local server. Ensure server.py is running.");
+      }
     }
 
     // WhatsApp Direct Integrations
