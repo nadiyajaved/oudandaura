@@ -368,13 +368,38 @@
                 <span class="font-mono text-[11px] font-semibold text-[#875200]">Server-Verified • HMAC SHA256</span>
               </div>
 
-              <div class="p-3 rounded-lg bg-white border border-dashed border-[#e5ddcf] flex items-center gap-3">
-                <div class="w-10 h-10 rounded-lg bg-[#121110] flex items-center justify-center text-[#ffddba] shrink-0">
-                  <span class="material-symbols-outlined text-[20px]">credit_card</span>
+              <!-- Test Dummy Credentials Helper (No Real Details Needed) -->
+              <div class="p-3.5 rounded-xl bg-[#fff8e6] border border-[#d4af37]/60 text-xs space-y-2.5">
+                <div class="flex items-center gap-2 text-[#875200] font-semibold">
+                  <span class="material-symbols-outlined text-[18px]">info</span>
+                  <span>Do NOT enter real card/bank details (Test Mode active)</span>
                 </div>
-                <div class="text-[11px] text-[#4b4640]">
-                  <strong class="text-[#121110] block">Razorpay Checkout Sheet</strong>
-                  Opens test payment sheet. Verified server-side with HMAC SHA256 before confirmation.
+                <p class="text-[11px] text-[#4b4640] leading-relaxed">
+                  Razorpay is operating in sandbox mode. Use these official test credentials inside the popup to simulate payment:
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+                  <!-- Dummy Card -->
+                  <div class="p-2.5 rounded-lg bg-white border border-[#e5ddcf] flex items-center justify-between">
+                    <div>
+                      <span class="text-[10px] uppercase font-bold text-[#4b4640] block">Test Card</span>
+                      <span class="font-mono text-xs font-bold text-[#121110]">4012 0000 0000 0002</span>
+                      <span class="text-[10px] text-[#4b4640] block">Exp: 12/28 • CVV: 123</span>
+                    </div>
+                    <button type="button" onclick="navigator.clipboard.writeText('4012000000000002'); showCheckoutToast('Test Card copied: 4012 0000 0000 0002');" class="px-2 py-1 rounded bg-[#f5f2eb] hover:bg-[#e5ddcf] text-[10px] font-bold text-[#121110] transition-colors">
+                      Copy Card
+                    </button>
+                  </div>
+                  <!-- Dummy UPI -->
+                  <div class="p-2.5 rounded-lg bg-white border border-[#e5ddcf] flex items-center justify-between">
+                    <div>
+                      <span class="text-[10px] uppercase font-bold text-[#4b4640] block">Test UPI ID</span>
+                      <span class="font-mono text-xs font-bold text-[#121110]">success@razorpay</span>
+                      <span class="text-[10px] text-[#25D366] block font-medium">Instant Success</span>
+                    </div>
+                    <button type="button" onclick="navigator.clipboard.writeText('success@razorpay'); showCheckoutToast('Test UPI copied: success@razorpay');" class="px-2 py-1 rounded bg-[#f5f2eb] hover:bg-[#e5ddcf] text-[10px] font-bold text-[#121110] transition-colors">
+                      Copy UPI
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
