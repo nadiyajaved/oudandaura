@@ -1121,23 +1121,71 @@
 
       const name = document.getElementById("custName").value.trim() || "Valued Customer";
       const phone = document.getElementById("custPhone").value.trim() || "+91 9876543210";
+      const email = (document.getElementById("custEmail") ? document.getElementById("custEmail").value.trim() : "") || "customer@oudandaura.com";
       const addr1 = document.getElementById("custAddress1").value.trim() || "Grand Boulevard";
+      const addr2 = document.getElementById("custAddress2") ? document.getElementById("custAddress2").value.trim() : "";
       const city = document.getElementById("custCity").value.trim() || "New Delhi";
+      const state = document.getElementById("custState") ? document.getElementById("custState").value.trim() : "Delhi";
       const pin = document.getElementById("custPincode").value.trim() || "110001";
-      const fullAddress = `${addr1}, ${city} - ${pin}`;
+      const fullAddress = `${addr1}${addr2 ? ', ' + addr2 : ''}, ${city}, ${state} - ${pin}`;
+
+      const customer = {
+        name,
+        phone,
+        email,
+        address_line1: addr1,
+        address_line2: addr2,
+        city,
+        state,
+        pincode: pin,
+        full_address: fullAddress
+      };
 
       const subtotal = PROTOTYPE_STATE.cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
-      const total = subtotal + PROTOTYPE_STATE.shippingFee;
+      const shipping = PROTOTYPE_STATE.shippingFee;
+      const total = subtotal + shipping;
 
-      // Handle COD directly
+      const pricing = {
+        subtotal,
+        discount: 0,
+        shipping,
+        final_amount: total
+      };
+
+      const items = PROTOTYPE_STATE.cart.map(i => ({
+        id: i.id,
+        name: i.name,
+        size: i.size,
+        price: i.price,
+        quantity: i.quantity,
+        subtotal: i.price * i.quantity,
+        image: i.image || ""
+      }));
+
+      // Handle COD directly with Server Persistence
       if (PROTOTYPE_STATE.selectedPaymentMethod === 'cod') {
         btn.disabled = true;
         label.textContent = "Booking COD Order...";
-        setTimeout(() => {
+        try {
+          const codRes = await fetch("/api/create-cod-order", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              amount: total,
+              pricing: pricing,
+              items: items,
+              customer: customer
+            })
+          });
+          const codData = await codRes.json();
           btn.disabled = false;
           label.textContent = "Pay & Place Order";
           completeOrder("Cash on Delivery (Pending Courier Handover)");
-        }, 600);
+        } catch (e) {
+          btn.disabled = false;
+          label.textContent = "Pay & Place Order";
+          completeOrder("Cash on Delivery (Pending Courier Handover)");
+        }
         return;
       }
 
@@ -1151,8 +1199,9 @@
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             amount: total,
-            items: PROTOTYPE_STATE.cart,
-            customer: { name, phone, address: fullAddress }
+            pricing: pricing,
+            items: items,
+            customer: customer
           })
         });
 
@@ -1186,9 +1235,9 @@
           description: `The Essence of Elegance • #${orderData.internal_order_id}`,
           order_id: orderData.order_id,
           prefill: {
-            name: name,
-            contact: phone.replace(/[^0-9]/g, '').slice(-10),
-            email: "orders@oudandaura.com"
+            name: customer.name,
+            contact: customer.phone.replace(/[^0-9]/g, '').slice(-10),
+            email: customer.email
           },
           theme: { color: "#121110" },
           modal: {
@@ -1216,8 +1265,9 @@
                   razorpay_signature: response.razorpay_signature,
                   order_details: {
                     orderId: orderData.internal_order_id,
-                    customer: { name, phone, address: fullAddress },
-                    items: [...PROTOTYPE_STATE.cart],
+                    customer: customer,
+                    items: items,
+                    pricing: pricing,
                     total: total
                   }
                 })

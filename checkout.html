@@ -843,8 +843,59 @@
       showCheckoutToast("Order placed & confirmed successfully!");
     }
 
-    // Server-Side Payment Verification
-    async function verifyPaymentOnServer(rzpResponse, internalOrderId, grandTotal, fullAddress, name, phone, email) {
+    // Helper: Customer details extractor
+    function getCustomerDetails() {
+      const name = document.getElementById("custName").value.trim() || "Valued Customer";
+      const phone = document.getElementById("custPhone").value.trim() || "+91 98765 43210";
+      const email = (document.getElementById("custEmail") ? document.getElementById("custEmail").value.trim() : "") || "customer@oudandaura.com";
+      const addr1 = document.getElementById("custAddress1").value.trim() || "Grand Boulevard";
+      const addr2 = document.getElementById("custAddress2") ? document.getElementById("custAddress2").value.trim() : "";
+      const city = document.getElementById("custCity").value.trim() || "Mumbai";
+      const state = document.getElementById("custState").value.trim() || "Maharashtra";
+      const pin = document.getElementById("custPincode").value.trim() || "400001";
+      const fullAddress = `${addr1}${addr2 ? ', ' + addr2 : ''}, ${city}, ${state} - ${pin}`;
+
+      return {
+        name,
+        phone,
+        email,
+        address_line1: addr1,
+        address_line2: addr2,
+        city,
+        state,
+        pincode: pin,
+        full_address: fullAddress
+      };
+    }
+
+    // Helper: Pricing details extractor
+    function getPricingDetails() {
+      const subtotal = CHECKOUT_STATE.cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+      const shipping = CHECKOUT_STATE.shippingFee;
+      const final_amount = subtotal + shipping;
+      return {
+        subtotal,
+        discount: 0,
+        shipping,
+        final_amount
+      };
+    }
+
+    // Helper: Rich line items extractor
+    function getRichCartItems() {
+      return CHECKOUT_STATE.cart.map(item => ({
+        id: item.id,
+        name: item.name,
+        size: item.size,
+        price: item.price,
+        quantity: item.quantity,
+        subtotal: item.price * item.quantity,
+        image: item.image || ""
+      }));
+    }
+
+    // Server-Side Payment Verification (HMAC SHA256)
+    async function verifyPaymentOnServer(rzpResponse, internalOrderId, pricing, customer) {
       const btn = document.getElementById("completeOrderBtn");
       if (btn) {
         btn.disabled = true;
@@ -861,9 +912,10 @@
             razorpay_signature: rzpResponse.razorpay_signature,
             order_details: {
               orderId: internalOrderId,
-              customer: { name, phone, email, address: fullAddress },
-              items: [...CHECKOUT_STATE.cart],
-              total: grandTotal
+              customer: customer,
+              items: getRichCartItems(),
+              pricing: pricing,
+              total: pricing.final_amount
             }
           })
         });
@@ -873,26 +925,26 @@
         if (data.success && data.verified) {
           finalizeOrder({
             orderId: data.order_id || internalOrderId,
-            name,
-            phone,
-            email,
-            address: fullAddress,
+            name: customer.name,
+            phone: customer.phone,
+            email: customer.email,
+            address: customer.full_address,
             paymentMethod: `Razorpay Online [Payment ID: ${rzpResponse.razorpay_payment_id}]`,
-            total: grandTotal,
+            total: pricing.final_amount,
             items: [...CHECKOUT_STATE.cart],
             razorpayPaymentId: rzpResponse.razorpay_payment_id
           });
         } else {
           if (btn) {
             btn.disabled = false;
-            btn.innerHTML = `<span class="material-symbols-outlined text-[18px] text-[#ffddba]">lock</span><span>Retry Payment (₹${grandTotal})</span>`;
+            btn.innerHTML = `<span class="material-symbols-outlined text-[18px] text-[#ffddba]">lock</span><span>Retry Payment (₹${pricing.final_amount})</span>`;
           }
           showCheckoutToast("Verification failed: " + (data.message || "Invalid signature"));
         }
       } catch (err) {
         if (btn) {
           btn.disabled = false;
-          btn.innerHTML = `<span class="material-symbols-outlined text-[18px] text-[#ffddba]">lock</span><span>Retry Payment (₹${grandTotal})</span>`;
+          btn.innerHTML = `<span class="material-symbols-outlined text-[18px] text-[#ffddba]">lock</span><span>Retry Payment (₹${pricing.final_amount})</span>`;
         }
         showCheckoutToast("Server connection error during signature verification.");
       }
@@ -921,43 +973,54 @@
     async function processPaymentAndComplete() {
       const btn = document.getElementById("completeOrderBtn");
       
-      // Customer and delivery data
-      const name = document.getElementById("custName").value.trim() || "Valued Customer";
-      const phone = document.getElementById("custPhone").value.trim() || "+91 98765 43210";
-      const email = (document.getElementById("custEmail") ? document.getElementById("custEmail").value.trim() : "") || "customer@oudandaura.com";
-      const addr1 = document.getElementById("custAddress1").value.trim() || "Grand Boulevard";
-      const addr2 = document.getElementById("custAddress2") ? document.getElementById("custAddress2").value.trim() : "";
-      const city = document.getElementById("custCity").value.trim() || "Mumbai";
-      const state = document.getElementById("custState").value.trim() || "Maharashtra";
-      const pin = document.getElementById("custPincode").value.trim() || "400001";
-      const fullAddress = `${addr1}${addr2 ? ', ' + addr2 : ''}, ${city}, ${state} - ${pin}`;
-
-      const subtotal = CHECKOUT_STATE.cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
-      const grandTotal = subtotal + CHECKOUT_STATE.shippingFee;
-
       if (CHECKOUT_STATE.cart.length === 0) {
         showCheckoutToast("Your shopping bag is empty.");
         return;
       }
 
-      // OPTION A: Cash on Delivery (COD)
+      const customer = getCustomerDetails();
+      const pricing = getPricingDetails();
+      const items = getRichCartItems();
+
+      // OPTION A: Cash on Delivery (COD) - Server-Stored
       if (CHECKOUT_STATE.selectedPaymentMethod === 'cod') {
         btn.disabled = true;
-        btn.innerHTML = `<span class="material-symbols-outlined text-[18px] animate-spin">progress_activity</span><span>Booking COD Order...</span>`;
+        btn.innerHTML = `<span class="material-symbols-outlined text-[18px] animate-spin">progress_activity</span><span>Securing COD Order...</span>`;
 
-        setTimeout(() => {
-          const orderId = "OA-" + Math.floor(10000 + Math.random() * 90000);
-          finalizeOrder({
-            orderId,
-            name,
-            phone,
-            email,
-            address: fullAddress,
-            paymentMethod: "Cash on Delivery (Pending Courier Handover)",
-            total: grandTotal,
-            items: [...CHECKOUT_STATE.cart]
+        try {
+          const codResponse = await fetch("/api/create-cod-order", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              amount: pricing.final_amount,
+              pricing: pricing,
+              items: items,
+              customer: customer
+            })
           });
-        }, 600);
+
+          const codData = await codResponse.json();
+          if (codData.success) {
+            finalizeOrder({
+              orderId: codData.order_id,
+              name: customer.name,
+              phone: customer.phone,
+              email: customer.email,
+              address: customer.full_address,
+              paymentMethod: "Cash on Delivery (Pending Courier Handover)",
+              total: pricing.final_amount,
+              items: [...CHECKOUT_STATE.cart]
+            });
+          } else {
+            btn.disabled = false;
+            btn.innerHTML = `<span class="material-symbols-outlined text-[18px] text-[#ffddba]">lock</span><span>Complete COD Order</span>`;
+            showCheckoutToast(codData.message || "Failed to book COD order.");
+          }
+        } catch (err) {
+          btn.disabled = false;
+          btn.innerHTML = `<span class="material-symbols-outlined text-[18px] text-[#ffddba]">lock</span><span>Complete COD Order</span>`;
+          showCheckoutToast("Unable to reach server. Please check your connection.");
+        }
         return;
       }
 
@@ -970,9 +1033,10 @@
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            amount: grandTotal,
-            items: CHECKOUT_STATE.cart,
-            customer: { name, phone, email, address: fullAddress }
+            amount: pricing.final_amount,
+            pricing: pricing,
+            items: items,
+            customer: customer
           })
         });
 
@@ -980,7 +1044,7 @@
 
         if (!orderData.success) {
           btn.disabled = false;
-          btn.innerHTML = `<span class="material-symbols-outlined text-[18px] text-[#ffddba]">lock</span><span>Pay ₹${grandTotal} with Razorpay</span>`;
+          btn.innerHTML = `<span class="material-symbols-outlined text-[18px] text-[#ffddba]">lock</span><span>Pay ₹${pricing.final_amount} with Razorpay</span>`;
           
           if (orderData.code === "MISSING_CREDENTIALS") {
             showCredentialsModal(orderData.message);
@@ -993,7 +1057,7 @@
         // Check if Razorpay JS SDK is loaded
         if (typeof Razorpay === "undefined") {
           btn.disabled = false;
-          btn.innerHTML = `<span class="material-symbols-outlined text-[18px] text-[#ffddba]">lock</span><span>Pay ₹${grandTotal} with Razorpay</span>`;
+          btn.innerHTML = `<span class="material-symbols-outlined text-[18px] text-[#ffddba]">lock</span><span>Pay ₹${pricing.final_amount} with Razorpay</span>`;
           showCheckoutToast("Razorpay SDK could not be loaded. Please check your internet connection.");
           return;
         }
@@ -1007,9 +1071,9 @@
           description: `The Essence of Elegance • #${orderData.internal_order_id}`,
           order_id: orderData.order_id,
           prefill: {
-            name: name,
-            contact: phone.replace(/[^0-9]/g, '').slice(-10),
-            email: email
+            name: customer.name,
+            contact: customer.phone.replace(/[^0-9]/g, '').slice(-10),
+            email: customer.email
           },
           theme: {
             color: "#121110"
@@ -1018,7 +1082,7 @@
             backdropclose: false,
             ondismiss: function() {
               btn.disabled = false;
-              btn.innerHTML = `<span class="material-symbols-outlined text-[18px] text-[#ffddba]">lock</span><span>Pay ₹${grandTotal} with Razorpay</span>`;
+              btn.innerHTML = `<span class="material-symbols-outlined text-[18px] text-[#ffddba]">lock</span><span>Pay ₹${pricing.final_amount} with Razorpay</span>`;
               showCheckoutToast("Payment window closed. Your selections are preserved.");
               
               // Log abandonment on server
@@ -1034,11 +1098,8 @@
             verifyPaymentOnServer(
               response,
               orderData.internal_order_id,
-              grandTotal,
-              fullAddress,
-              name,
-              phone,
-              email
+              pricing,
+              customer
             );
           }
         };
@@ -1047,7 +1108,7 @@
 
         rzp.on("payment.failed", function(failureResp) {
           btn.disabled = false;
-          btn.innerHTML = `<span class="material-symbols-outlined text-[18px] text-[#ffddba]">lock</span><span>Retry Payment (₹${grandTotal})</span>`;
+          btn.innerHTML = `<span class="material-symbols-outlined text-[18px] text-[#ffddba]">lock</span><span>Retry Payment (₹${pricing.final_amount})</span>`;
           const reason = (failureResp.error && failureResp.error.description) || "Transaction declined";
           showCheckoutToast(`Payment failed: ${reason}`);
 
@@ -1062,8 +1123,8 @@
 
       } catch (networkErr) {
         btn.disabled = false;
-        btn.innerHTML = `<span class="material-symbols-outlined text-[18px] text-[#ffddba]">lock</span><span>Pay ₹${grandTotal} with Razorpay</span>`;
-        showCheckoutToast("Unable to reach local server. Ensure server.py is running.");
+        btn.innerHTML = `<span class="material-symbols-outlined text-[18px] text-[#ffddba]">lock</span><span>Pay ₹${pricing.final_amount} with Razorpay</span>`;
+        showCheckoutToast("Unable to reach server. Ensure server.py is running.");
       }
     }
 
