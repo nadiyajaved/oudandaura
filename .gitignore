@@ -16,3 +16,12 @@ desktop.ini
 # Ignore local scratch / log files
 *.log
 test_results/
+
+# Ignore sensitive environment variables & credentials
+.env
+.env.*
+!.env.example
+
+# Local orders database
+orders.json
+

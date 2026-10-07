@@ -161,6 +161,33 @@ const PRODUCTS = [
     ]
   },
   {
+    id: "wanted_noir",
+    name: "Wanted Noir",
+    category: "perfumes",
+    price: 549,
+    originalPrice: 799,
+    size: "50 ml",
+    concentration: "Parfum",
+    badge: "New Launch",
+    isBestSeller: false,
+    inStock: true,
+    tag: "Woody Spicy",
+    shortDescription: "A bold, warm and seductive fragrance with a rich, sweet and sophisticated character.",
+    fullDescription: "A confident and captivating fragrance designed for those who enjoy a bold and luxurious scent. Its warm, sweet and inviting character creates a smooth, memorable aura that works especially well for evenings, special occasions and cooler weather.",
+    images: ["wanted1.jpg", "wanted2.jpg", "wanted3.jpg"],
+    notes: {
+      top: "Red Ginger",
+      heart: "Woodsy Notes",
+      base: "Bourbon Vanilla"
+    },
+    sizes: [
+      { size: "50 ml", price: 549, originalPrice: 799, label: "50 ml Bottle", isDefault: true },
+      { size: "100 ml", price: 999, originalPrice: 1399, label: "100 ml Bottle", isDefault: false },
+      { size: "30 ml", price: 299, originalPrice: 449, label: "30 ml Bottle", isDefault: false },
+      { size: "20 ml Vial", price: 199, originalPrice: 299, label: "Pocket Vial", isDefault: false }
+    ]
+  },
+  {
     id: "unisex_giftset",
     name: "Unisex Gift Set",
     category: "gifts",

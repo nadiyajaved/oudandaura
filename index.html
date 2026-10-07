@@ -562,16 +562,16 @@
 
   <!-- SCRIPTS -->
   <script src="data/config.js"></script>
-  <script src="data/products.js"></script>
+  <script src="data/products.js?v=2"></script>
   <script src="js/main.js"></script>
   <script>
     // Home Page Specific Dynamic Content Hydration
     document.addEventListener("DOMContentLoaded", () => {
-      // 1. Render Best Sellers
-      const bestSellers = getBestSellers();
+      // 1. Render Best Sellers & New Launches
+      const featuredProducts = PRODUCTS.filter(p => p.isBestSeller || p.badge === "New Launch" || p.id === "wanted_noir");
       const container = document.getElementById("bestSellersContainer");
-      if (container && bestSellers.length > 0) {
-        container.innerHTML = bestSellers.slice(0, 4).map(product => `
+      if (container && featuredProducts.length > 0) {
+        container.innerHTML = featuredProducts.map(product => `
           <div onclick="window.location.href='product.html?id=' + encodeURIComponent('${product.id}')" class="flex flex-col bg-[#FAF6F0] rounded-lg overflow-hidden shadow-sm p-3 border border-[#E5DDCF] product-card cursor-pointer transition-all hover:shadow-md">
             <div class="relative aspect-square rounded bg-[#EFE9DF] mb-2.5 overflow-hidden flex items-center justify-center">
               <img class="w-full h-full object-cover" src="${product.images[0]}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/300?text=${encodeURIComponent(product.name)}'">
