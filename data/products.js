@@ -188,6 +188,33 @@ const PRODUCTS = [
     ]
   },
   {
+    id: "kashmiri_oud_perfume",
+    name: "Kashmiri Oud",
+    category: "perfumes",
+    price: 1100,
+    originalPrice: 1399,
+    size: "50 ml",
+    concentration: "Parfum",
+    badge: "Premium Collection",
+    isBestSeller: false,
+    inStock: true,
+    tag: "Oriental, Woody, and Spicy",
+    shortDescription: "A rich, deep and traditional oud fragrance with a warm, earthy and luxurious character.",
+    fullDescription: "Kashmiri Oud Parfum captures the timeless depth and richness of traditional Himalayan and Kashmiri oud in an elegant spray form. Its warm, woody character creates a sophisticated, enduring presence, blending precious saffron, velvety rose, deep agarwood, and grounding amber musk.",
+    images: ["kashperfume1.jpg", "kashperfume2.jpg", "kashperfume3.jpg"],
+    notes: {
+      top: "Spicy",
+      heart: "Floral, Spicy Floral",
+      base: "Musk, Woody"
+    },
+    sizes: [
+      { size: "50 ml", price: 1100, originalPrice: 1399, label: "50 ml Bottle", isDefault: true },
+      { size: "100 ml", price: 1799, originalPrice: 2299, label: "100 ml Bottle", isDefault: false },
+      { size: "30 ml", price: 549, originalPrice: 799, label: "30 ml Bottle", isDefault: false },
+      { size: "20 ml Vial", price: 399, originalPrice: 599, label: "Pocket Vial", isDefault: false }
+    ]
+  },
+  {
     id: "unisex_giftset",
     name: "Unisex Gift Set",
     category: "gifts",
