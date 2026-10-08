@@ -24,3 +24,8 @@ test_results/
 
 # Local orders database
 orders.json
+orders.json.tmp
+
+# Python cache
+__pycache__/
+*.py[cod]

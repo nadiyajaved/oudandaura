@@ -561,6 +561,9 @@
     <span id="adminToastText">Operation successful</span>
   </div>
 
+  <!-- Configuration -->
+  <script src="data/config.js"></script>
+
   <!-- =======================================================================
        5. JAVASCRIPT: DASHBOARD LOGIC, SECURITY & API INTEGRATION
        ======================================================================= -->
@@ -594,7 +597,7 @@
       if (!key) return;
 
       // Verify key by attempting to fetch orders
-      fetch(`/api/admin/orders?key=${encodeURIComponent(key)}`)
+      fetch(getApiUrl(`/api/admin/orders?key=${encodeURIComponent(key)}`))
         .then(res => {
           if (res.ok) {
             CURRENT_ADMIN_KEY = key;
@@ -628,7 +631,7 @@
       if (refreshIcon) refreshIcon.classList.add("animate-spin");
 
       try {
-        const res = await fetch(`/api/admin/orders?key=${encodeURIComponent(CURRENT_ADMIN_KEY)}`);
+        const res = await fetch(getApiUrl(`/api/admin/orders?key=${encodeURIComponent(CURRENT_ADMIN_KEY)}`));
         
         if (res.status === 401) {
           logoutAdmin();
@@ -945,7 +948,7 @@
       btn.textContent = "Updating...";
 
       try {
-        const res = await fetch("/api/admin/update-status", {
+        const res = await fetch(getApiUrl("/api/admin/update-status"), {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

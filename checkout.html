@@ -825,7 +825,7 @@
       }
 
       try {
-        const response = await fetch("/api/verify-payment", {
+        const response = await fetch(getApiUrl("/api/verify-payment"), {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -841,6 +841,10 @@
             }
           })
         });
+
+        if (!response.ok) {
+          throw new Error("HTTP " + response.status);
+        }
 
         const data = await response.json();
 
@@ -891,7 +895,7 @@
         btn.innerHTML = `<span class="material-symbols-outlined text-[18px] animate-spin">progress_activity</span><span>Securing COD Order...</span>`;
 
         try {
-          const codResponse = await fetch("/api/create-cod-order", {
+          const codResponse = await fetch(getApiUrl("/api/create-cod-order"), {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -901,6 +905,10 @@
               customer: customer
             })
           });
+
+          if (!codResponse.ok) {
+            throw new Error("HTTP " + codResponse.status);
+          }
 
           const codData = await codResponse.json();
           if (codData.success) {
@@ -920,6 +928,7 @@
             showCheckoutToast(codData.message || "Failed to book COD order.");
           }
         } catch (err) {
+          console.error("COD order error:", err);
           btn.disabled = false;
           btn.innerHTML = `<span class="material-symbols-outlined text-[18px] text-[#ffddba]">lock</span><span>Complete COD Order</span>`;
           showCheckoutToast("Unable to reach server. Please check your connection.");
@@ -932,7 +941,7 @@
       btn.innerHTML = `<span class="material-symbols-outlined text-[18px] animate-spin">progress_activity</span><span>Connecting to Razorpay...</span>`;
 
       try {
-        const orderResponse = await fetch("/api/create-order", {
+        const orderResponse = await fetch(getApiUrl("/api/create-order"), {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -942,6 +951,12 @@
             customer: customer
           })
         });
+
+        if (!orderResponse.ok) {
+          const errText = await orderResponse.text().catch(() => "");
+          console.error("Razorpay order creation HTTP error:", orderResponse.status, errText);
+          throw new Error("HTTP " + orderResponse.status);
+        }
 
         const orderData = await orderResponse.json();
 
@@ -984,7 +999,7 @@
               showCheckoutToast("Payment window closed. Your selections are preserved.");
               
               // Log abandonment on server
-              fetch("/api/payment-failed", {
+              fetch(getApiUrl("/api/payment-failed"), {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ razorpay_order_id: orderData.order_id, reason: "Modal closed by customer" })
@@ -1010,7 +1025,7 @@
           const reason = (failureResp.error && failureResp.error.description) || "Transaction declined";
           showCheckoutToast(`Payment failed: ${reason}`);
 
-          fetch("/api/payment-failed", {
+          fetch(getApiUrl("/api/payment-failed"), {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ razorpay_order_id: orderData.order_id, reason: reason })
@@ -1020,6 +1035,7 @@
         rzp.open();
 
       } catch (networkErr) {
+        console.error("Razorpay checkout connection error:", networkErr);
         btn.disabled = false;
         btn.innerHTML = `<span class="material-symbols-outlined text-[18px] text-[#ffddba]">lock</span><span>Pay ₹${pricing.final_amount} with Razorpay</span>`;
         showCheckoutToast("Unable to reach server. Ensure server.py is running.");
@@ -1076,7 +1092,7 @@
     // Verify Live Gateway Connectivity
     async function checkPaymentConfig() {
       try {
-        const res = await fetch("/api/payment-config");
+        const res = await fetch(getApiUrl("/api/payment-config"));
         const cfg = await res.json();
         if (!cfg.configured) {
           const modeBadge = document.getElementById("gatewayModeBadge");
