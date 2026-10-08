@@ -163,13 +163,12 @@
               <span class="material-symbols-outlined text-[18px] text-[#875200]">local_offer</span>
               <span class="text-xs font-bold uppercase tracking-wider text-[#121110]">Have a Coupon Code?</span>
             </div>
-            <span class="text-[10px] text-[#875200] font-medium bg-[#f5f2eb] px-2 py-0.5 rounded-full border border-[#e5ddcf]/60">Use code: <strong>AURAFAM</strong></span>
           </div>
 
           <!-- Unapplied state (Input form) -->
           <div id="couponInputContainer" class="flex gap-2">
             <div class="relative flex-1">
-              <input type="text" id="couponCodeInput" placeholder="Enter coupon code (e.g. AURAFAM)" 
+              <input type="text" id="couponCodeInput" placeholder="Enter coupon code" 
                 class="w-full px-3.5 py-2.5 rounded-xl border border-[#e5ddcf] bg-[#fbf9f6] text-xs uppercase font-mono tracking-wider text-[#121110] placeholder:normal-case placeholder:font-sans placeholder:tracking-normal"
                 onkeydown="if(event.key === 'Enter'){ event.preventDefault(); applyCoupon(); }" />
             </div>
@@ -184,7 +183,7 @@
             <div class="flex items-center gap-2 min-w-0">
               <span class="material-symbols-outlined text-[18px] text-[#1b7e3e]">check_circle</span>
               <div class="min-w-0">
-                <span class="text-xs font-bold text-[#1b7e3e] tracking-wide" id="couponAppliedCodeText">AURAFAM Applied</span>
+                <span class="text-xs font-bold text-[#1b7e3e] tracking-wide" id="couponAppliedCodeText">Coupon Applied</span>
                 <p class="text-[10px] text-[#2e6930]">Free Courier Delivery unlocked!</p>
               </div>
             </div>
@@ -215,7 +214,7 @@
           <div id="cartCouponDiscountRow" class="hidden justify-between text-xs text-[#1b7e3e]">
             <span class="flex items-center gap-1">
               <span class="material-symbols-outlined text-[14px]">local_offer</span>
-              <span id="cartCouponLabel">Coupon (AURAFAM)</span>
+              <span id="cartCouponLabel">Coupon Discount</span>
             </span>
             <span id="cartCouponDiscountText" class="font-semibold">-₹60 (Free Shipping)</span>
           </div>
@@ -652,17 +651,17 @@
         } catch (e) {}
 
         if (feedback) {
-          feedback.textContent = "✓ Code AURAFAM applied successfully! Free shipping unlocked.";
+          feedback.textContent = "✓ Coupon applied successfully! Free shipping unlocked.";
           feedback.className = "text-[11px] mt-2 font-medium text-[#1b7e3e] block";
         }
-        showCheckoutToast("Coupon AURAFAM applied — Free Shipping unlocked!");
+        showCheckoutToast("Coupon applied — Free Shipping unlocked!");
         refreshCheckoutCalculations();
       } else {
         if (feedback) {
-          feedback.textContent = `Coupon code "${code}" is invalid. Use code AURAFAM for free shipping.`;
+          feedback.textContent = `Coupon code "${code}" is invalid or expired.`;
           feedback.className = "text-[11px] mt-2 font-medium text-red-600 block";
         }
-        showCheckoutToast("Invalid coupon code. Try AURAFAM");
+        showCheckoutToast("Invalid coupon code");
       }
     }
 
@@ -709,14 +708,14 @@
       const progressBar = document.getElementById("shippingProgressBar");
       if (shippingMeter && progressBar) {
         if (qualifiesByCoupon) {
-          shippingMeter.innerHTML = `<span class="text-[#1b7e3e] font-bold">✨ AURAFAM Coupon Active:</span> <strong class="text-[#121110]">FREE Shipping Unlocked!</strong>`;
+          shippingMeter.innerHTML = `<span class="text-[#1b7e3e] font-bold">✨ Coupon Applied:</span> <strong class="text-[#121110]">FREE Shipping Unlocked!</strong>`;
           progressBar.style.width = "100%";
         } else if (subtotal >= freeThreshold) {
           shippingMeter.innerHTML = `<span class="text-[#875200] font-bold">🎉 Congratulations!</span> You qualify for <strong class="text-[#121110]">FREE Shipping</strong>`;
           progressBar.style.width = "100%";
         } else {
           const remaining = freeThreshold - subtotal;
-          shippingMeter.innerHTML = `Add <strong class="text-[#875200]">₹${remaining}</strong> more for <strong>FREE Shipping</strong> (or use code <strong>AURAFAM</strong>)`;
+          shippingMeter.innerHTML = `Add <strong class="text-[#875200]">₹${remaining}</strong> more for <strong>FREE Shipping</strong>`;
           const pct = Math.min(100, Math.round((subtotal / freeThreshold) * 100));
           progressBar.style.width = `${pct}%`;
         }
@@ -776,7 +775,7 @@
       const courierFee = document.getElementById("checkoutCourierFee");
       if (courierFee) {
         if (qualifiesByCoupon && !qualifiesByThreshold) {
-          courierFee.innerHTML = `<span class="line-through text-[#4b4640]/70 text-[11px] mr-1 font-normal">₹60</span><span class="text-[#1b7e3e] font-bold">FREE (AURAFAM)</span>`;
+          courierFee.innerHTML = `<span class="line-through text-[#4b4640]/70 text-[11px] mr-1 font-normal">₹60</span><span class="text-[#1b7e3e] font-bold">FREE (Coupon)</span>`;
         } else if (shipping === 0) {
           courierFee.textContent = "FREE";
         } else {
@@ -919,7 +918,7 @@
         if (order.coupon) {
           confCouponRow.classList.remove("hidden");
           confCouponRow.classList.add("flex");
-          confCouponCode.textContent = `${order.coupon} (Free Shipping)`;
+          confCouponCode.textContent = "Applied (Free Shipping)";
         } else {
           confCouponRow.classList.add("hidden");
           confCouponRow.classList.remove("flex");
