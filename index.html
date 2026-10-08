@@ -360,9 +360,10 @@
             A versatile collection of four captivating fragrances (Arabian Touch, Tam D'Or, Ruh Arab, and Hawaz Rush), blending rich, warm, woody, and fresh characters for every mood, occasion, and gifting.
           </p>
           <div class="flex flex-col sm:flex-row gap-2">
-            <a onclick="event.stopPropagation();" class="w-full py-3 bg-primary text-on-primary font-label-caps text-label-caps uppercase tracking-wider text-center rounded hover:bg-secondary transition-colors" href="product.html?id=unisex_giftset">
-              Explore Gift Set
-            </a>
+            <button onclick="event.stopPropagation(); addToCart('unisex_giftset', '4 × 20 ml', 777);" class="w-full py-3 bg-[#875200] hover:bg-[#6c4100] active:scale-[0.99] text-white font-label-caps text-label-caps uppercase tracking-wider text-center rounded transition-all flex items-center justify-center gap-2 cursor-pointer font-semibold shadow-xs" type="button">
+              <span class="material-symbols-outlined text-[16px]">shopping_bag</span>
+              <span>Order Now</span>
+            </button>
             <a onclick="event.stopPropagation();" id="homeGiftWhatsAppBtn" class="w-full py-3 bg-surface text-primary font-label-caps text-label-caps uppercase tracking-wider text-center rounded shadow-xs flex items-center justify-center gap-1.5 border border-[#E5DDCF] hover:bg-surface-container transition-colors" href="#" target="_blank" rel="noopener">
               <span>Order on WhatsApp</span>
               <span class="material-symbols-outlined text-[14px] text-secondary">send</span>
@@ -601,6 +602,10 @@
               <span class="font-body-md text-[14px] font-semibold text-[#0D0C0B] mt-1">${SITE_CONFIG.currencySymbol}${product.price}</span>
             </div>
             <div class="mt-3 flex flex-col gap-1.5">
+              <button onclick="event.stopPropagation(); addToCart('${product.id}', '${product.size}', ${product.price});" class="w-full py-2 text-center font-label-caps text-[10px] text-white uppercase tracking-wider bg-[#875200] hover:bg-[#6c4100] active:scale-[0.99] rounded flex items-center justify-center gap-1 transition-all cursor-pointer font-semibold shadow-xs" type="button">
+                <span class="material-symbols-outlined text-[13px] text-white">shopping_bag</span>
+                <span>Order Now</span>
+              </button>
               <a onclick="event.stopPropagation();" class="w-full py-2 text-center font-label-caps text-[10px] text-[#FAF6F0] uppercase tracking-wider bg-[#0D0C0B] hover:bg-[#141312] rounded flex items-center justify-center gap-1 transition-colors" href="${SITE_CONFIG.getProductWhatsAppUrl(product.name, product.size, product.price)}" target="_blank" rel="noopener">
                 <span>WhatsApp</span>
                 <span class="material-symbols-outlined text-[12px] text-[#CBB279]">send</span>
@@ -627,12 +632,17 @@
               <p class="font-body-sm text-[12px] text-on-surface-variant truncate">${p.shortDescription}</p>
               <span class="font-label-caps text-[10px] text-secondary mt-0.5">${p.size} · ${p.concentration}</span>
               <div class="flex items-center gap-2 mt-2">
-                <a class="font-label-caps text-[10px] text-primary underline hover:text-secondary" href="product.html?id=${encodeURIComponent(p.id)}">View Details</a>
+                <button onclick="event.stopPropagation(); addToCart('${p.id}', '${p.size}', ${p.price});" class="font-label-caps text-[10px] text-[#875200] font-semibold flex items-center gap-0.5 hover:underline cursor-pointer" type="button">
+                  <span class="material-symbols-outlined text-[12px]">shopping_bag</span>
+                  <span>Order Now</span>
+                </button>
                 <span class="text-outline-variant text-[10px]">·</span>
                 <a class="font-label-caps text-[10px] text-secondary flex items-center gap-0.5 hover:underline" href="${SITE_CONFIG.getProductWhatsAppUrl(p.name, p.size, p.price)}" target="_blank" rel="noopener">
-                  <span>Order via WhatsApp</span>
-                  <span class="material-symbols-outlined text-[12px]">arrow_forward</span>
+                  <span>WhatsApp</span>
+                  <span class="material-symbols-outlined text-[12px]">send</span>
                 </a>
+                <span class="text-outline-variant text-[10px]">·</span>
+                <a class="font-label-caps text-[10px] text-primary underline hover:text-secondary" href="product.html?id=${encodeURIComponent(p.id)}">Details</a>
               </div>
             </div>
           </div>

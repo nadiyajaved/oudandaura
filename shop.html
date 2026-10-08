@@ -383,6 +383,10 @@
             <p class="font-body-sm text-[11px] leading-snug text-on-surface-variant line-clamp-2 mt-1">${product.shortDescription}</p>
           </div>
           <div class="mt-3 flex flex-col gap-1.5 pt-2 border-t border-[#E5DDCF]/40">
+            <button onclick="event.stopPropagation(); addToCart('${product.id}', '${product.size}', ${product.price});" class="w-full py-2 px-2 rounded-lg bg-[#875200] hover:bg-[#6c4100] active:scale-[0.99] text-white transition-all flex items-center justify-center gap-1.5 shadow-sm cursor-pointer font-label-caps text-[10px] tracking-[0.14em] uppercase font-semibold" type="button">
+              <span class="material-symbols-outlined text-[14px] text-white">shopping_bag</span>
+              <span>Order Now</span>
+            </button>
             <a onclick="event.stopPropagation();" class="w-full py-2 px-2 rounded-lg bg-primary text-on-primary hover:bg-secondary transition-colors flex items-center justify-center gap-1.5 shadow-sm" href="${SITE_CONFIG.getProductWhatsAppUrl(product.name, product.size, product.price)}" target="_blank" rel="noopener" style="background-color: rgb(20, 19, 18); color: rgb(255, 255, 255);">
               <span class="material-symbols-outlined text-[15px] text-secondary-fixed">chat</span>
               <span class="font-label-caps text-[10px] tracking-[0.14em] uppercase">WhatsApp Order</span>
