@@ -331,7 +331,7 @@
         </div>
 
         <!-- TEST / MOCK MODE BANNER -->
-        <div class="p-3.5 rounded-xl bg-[#fff8e6] border border-[#d4af37]/60 text-[#875200] flex items-start gap-3 mb-6 shadow-xs">
+        <div id="sandboxNoticeBanner" class="p-3.5 rounded-xl bg-[#fff8e6] border border-[#d4af37]/60 text-[#875200] flex items-start gap-3 mb-6 shadow-xs">
           <span class="material-symbols-outlined text-[20px] text-[#875200] shrink-0 mt-0.5">info</span>
           <div class="text-xs">
             <strong class="font-bold block text-[#121110]">Test / Mock Mode Active</strong>
@@ -352,7 +352,7 @@
                   <span class="text-xs text-[#4b4640]">UPI (GPay, PhonePe, Paytm), Debit/Credit Cards &amp; NetBanking</span>
                 </div>
               </div>
-              <span class="px-2 py-0.5 text-[10px] font-bold rounded-full bg-[#875200]/10 text-[#875200] border border-[#875200]/30 flex items-center gap-1">
+              <span id="gatewayModeBadge" class="px-2 py-0.5 text-[10px] font-bold rounded-full bg-[#875200]/10 text-[#875200] border border-[#875200]/30 flex items-center gap-1">
                 <span class="w-1.5 h-1.5 rounded-full bg-[#875200] animate-pulse"></span>
                 <span>TEST MODE</span>
               </span>
@@ -361,15 +361,15 @@
             <!-- Razorpay Gateway Details Box -->
             <div id="upiSandboxBox" class="mt-4 pt-4 border-t border-[#e5ddcf]/60 space-y-3">
               <div class="p-3 rounded-lg bg-[#fbf9f6] border border-[#e5ddcf] flex flex-col sm:flex-row items-center justify-between gap-2.5 text-xs text-[#4b4640]">
-                <div class="flex items-center gap-2">
+                <div class="flex items-center gap-2" id="gatewayNameText">
                   <span class="material-symbols-outlined text-[18px] text-[#875200]">verified_user</span>
                   <span><strong>Gateway:</strong> Razorpay Sandbox</span>
                 </div>
                 <span class="font-mono text-[11px] font-semibold text-[#875200]">Server-Verified • HMAC SHA256</span>
               </div>
 
-              <!-- Test Dummy Credentials Helper (No Real Details Needed) -->
-              <div class="p-3.5 rounded-xl bg-[#fff8e6] border border-[#d4af37]/60 text-xs space-y-2.5">
+              <!-- Test Dummy Credentials Helper (Auto-hidden in Live Mode) -->
+              <div id="sandboxCredentialsHelper" class="p-3.5 rounded-xl bg-[#fff8e6] border border-[#d4af37]/60 text-xs space-y-2.5">
                 <div class="flex items-center gap-2 text-[#875200] font-semibold">
                   <span class="material-symbols-outlined text-[18px]">info</span>
                   <span>Do NOT enter real card/bank details (Test Mode active)</span>
@@ -441,7 +441,7 @@
         <div class="space-y-3">
           <button id="completeOrderBtn" onclick="processPaymentAndComplete()" type="button" class="w-full py-4 rounded-xl bg-[#121110] text-white hover:bg-[#875200] font-semibold text-xs uppercase tracking-[0.16em] flex items-center justify-center gap-2 transition-all shadow-md cursor-pointer">
             <span class="material-symbols-outlined text-[18px] text-[#ffddba]">lock</span>
-            <span id="completeOrderBtnText">Complete Test Order</span>
+            <span id="completeOrderBtnText">Pay Securely</span>
           </button>
 
           <button type="button" onclick="openWhatsAppWithOrderDetails()" class="w-full py-3.5 rounded-xl bg-white text-[#121110] hover:bg-[#fbf9f6] border border-[#e5ddcf] font-semibold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all cursor-pointer">
@@ -535,7 +535,7 @@
       <div class="flex items-center gap-2">
         <span class="font-serif font-semibold tracking-wider text-[#121110]">OUD &amp; AURA</span>
         <span>•</span>
-        <span>Secure Test Checkout</span>
+        <span>Secure 256-Bit Encrypted Checkout</span>
       </div>
       <div class="flex items-center gap-4 text-[11px]">
         <a href="contact.html" class="hover:text-[#121110] transition-colors">Support</a>
@@ -698,7 +698,7 @@
       if (paymentItemsCount) paymentItemsCount.textContent = `${totalItems} item(s)`;
 
       const completeBtnText = document.getElementById("completeOrderBtnText");
-      if (completeBtnText) completeBtnText.textContent = `Complete Test Order (₹${grandTotal})`;
+      if (completeBtnText) completeBtnText.textContent = `Pay ₹${grandTotal} Securely`;
 
       // Render Item List
       const listEl = document.getElementById("cartItemsList");
@@ -836,7 +836,7 @@
       const btn = document.getElementById("completeOrderBtn");
       if (btn) {
         btn.disabled = false;
-        btn.innerHTML = `<span class="material-symbols-outlined text-[18px] text-[#ffddba]">lock</span><span id="completeOrderBtnText">Complete Test Order</span>`;
+        btn.innerHTML = `<span class="material-symbols-outlined text-[18px] text-[#ffddba]">lock</span><span id="completeOrderBtnText">Pay Securely</span>`;
       }
 
       goToScreen('confirmation');
@@ -1175,9 +1175,39 @@
       }, 2500);
     }
 
+    // Dynamic Gateway Mode Checker (Live vs Test Mode)
+    async function checkPaymentConfig() {
+      try {
+        const res = await fetch("/api/payment-config");
+        const cfg = await res.json();
+        const modeBadge = document.getElementById("gatewayModeBadge");
+        const sandboxHelper = document.getElementById("sandboxCredentialsHelper");
+        const gatewayName = document.getElementById("gatewayNameText");
+
+        if (cfg.configured && !cfg.test_mode) {
+          // LIVE MODE
+          const noticeBanner = document.getElementById("sandboxNoticeBanner");
+          if (noticeBanner) {
+            noticeBanner.style.display = "none";
+          }
+          if (modeBadge) {
+            modeBadge.className = "px-2 py-0.5 text-[10px] font-bold rounded-full bg-[#25D366]/10 text-[#1b7e3e] border border-[#25D366]/30 flex items-center gap-1";
+            modeBadge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-[#25D366]"></span><span>100% SECURE</span>`;
+          }
+          if (gatewayName) {
+            gatewayName.innerHTML = `<span class="material-symbols-outlined text-[18px] text-[#25D366]">verified_user</span><span><strong>Gateway:</strong> Razorpay Official (Live)</span>`;
+          }
+          if (sandboxHelper) {
+            sandboxHelper.style.display = "none";
+          }
+        }
+      } catch (e) {}
+    }
+
     // Init on Load
     document.addEventListener("DOMContentLoaded", () => {
       syncCartFromStorage();
+      checkPaymentConfig();
 
       // Configure WhatsApp support header button
       const headerWa = document.getElementById("headerWhatsAppBtn");
