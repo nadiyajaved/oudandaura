@@ -123,25 +123,6 @@
        ========================================================================= -->
   <main class="max-w-4xl mx-auto px-4 py-6 sm:py-8 flex-1 w-full">
 
-    <!-- 1-RUPEE LIVE SANITY TEST BANNER -->
-    <div id="liveSanityBanner" class="hidden mb-6 p-4 rounded-xl bg-[#25D366]/10 border border-[#25D366]/40 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-[#121110] shadow-xs">
-      <div class="flex items-center gap-3">
-        <span class="material-symbols-outlined text-[24px] text-[#1b7e3e]">verified</span>
-        <div>
-          <strong class="font-bold text-[#121110] text-sm block">1-Rupee Live Sanity Test Active</strong>
-          <span class="text-[#4b4640] text-xs">Total set to ₹1.00 with ₹0 shipping for real UPI / Card verification.</span>
-        </div>
-      </div>
-      <div class="flex items-center gap-2 shrink-0">
-        <button type="button" onclick="goToScreen('payment')" class="px-3 py-1.5 rounded-lg bg-[#121110] text-white hover:bg-[#875200] text-xs font-semibold cursor-pointer transition-colors">
-          Go to Payment (₹1)
-        </button>
-        <button type="button" onclick="disableLiveSanityTest()" class="px-3 py-1.5 rounded-lg bg-white border border-[#e5ddcf] text-[#4b4640] hover:text-[#121110] text-xs font-semibold cursor-pointer transition-colors">
-          Exit Test
-        </button>
-      </div>
-    </div>
-
     <!-- =======================================================================
          SCREEN 1: SHOPPING BAG REVIEW
          ======================================================================= -->
@@ -157,20 +138,6 @@
             <span class="material-symbols-outlined text-[16px]">add</span>
             <span>Add More</span>
           </a>
-        </div>
-
-        <!-- Live Sanity Test Quick-Switch Card -->
-        <div class="p-3.5 rounded-xl bg-[#fbf9f6] border border-[#e5ddcf] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs mb-5">
-          <div class="flex items-center gap-2.5 text-[#121110]">
-            <span class="material-symbols-outlined text-[20px] text-[#875200]">science</span>
-            <div>
-              <span class="font-semibold block text-[#121110]">1-Rupee Live Sanity Test (₹1.00)</span>
-              <span class="text-[#4b4640] text-[11px]">Load a ₹1.00 test sample with ₹0 delivery to test live UPI payment.</span>
-            </div>
-          </div>
-          <button type="button" onclick="enableLiveSanityTest(); goToScreen('checkout');" class="px-3 py-1.5 rounded-lg bg-[#121110] text-white hover:bg-[#875200] text-xs font-semibold uppercase tracking-wider shrink-0 transition-colors cursor-pointer">
-            Run ₹1 Test
-          </button>
         </div>
 
         <!-- Free Delivery Progress Meter -->
@@ -370,20 +337,6 @@
             <strong class="font-bold block text-[#121110]">Test / Mock Mode Active</strong>
             <p class="text-[#4b4640] mt-0.5">This store is currently in sandbox testing mode. No live charges will be processed to your account.</p>
           </div>
-        </div>
-
-        <!-- Live Sanity Test Quick-Switch Card (Payment Screen) -->
-        <div id="paymentSanitySwitchCard" class="p-3.5 rounded-xl bg-[#fbf9f6] border border-[#e5ddcf] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs mb-6 shadow-xs">
-          <div class="flex items-center gap-2.5 text-[#121110]">
-            <span class="material-symbols-outlined text-[20px] text-[#875200]">science</span>
-            <div>
-              <span class="font-semibold block text-[#121110]">Want to test live payment with ₹1?</span>
-              <span class="text-[#4b4640] text-[11px]">Load a ₹1.00 test sample with ₹0 delivery to test live UPI payment.</span>
-            </div>
-          </div>
-          <button type="button" onclick="enableLiveSanityTest()" class="px-3.5 py-1.5 rounded-lg bg-[#121110] text-white hover:bg-[#875200] text-xs font-semibold uppercase tracking-wider shrink-0 transition-colors cursor-pointer">
-            Switch to ₹1 Test
-          </button>
         </div>
 
         <!-- Payment Method Options (UPI and COD ONLY) -->
@@ -647,65 +600,8 @@
       cart: [],
       shippingFee: 60,
       selectedPaymentMethod: "upi",
-      orderData: null,
-      isLiveSanityTest: false
+      orderData: null
     };
-
-    function enableLiveSanityTest() {
-      CHECKOUT_STATE.isLiveSanityTest = true;
-      if (!sessionStorage.getItem("oa_saved_cart")) {
-        sessionStorage.setItem("oa_saved_cart", JSON.stringify(CHECKOUT_STATE.cart));
-      }
-      CHECKOUT_STATE.cart = [{
-        id: "live-sanity-test",
-        name: "Live Gateway Sanity Test (Sample)",
-        size: "1ml Sample",
-        price: 1,
-        quantity: 1,
-        image: "assets/images/kashperfume1.jpg"
-      }];
-
-      // Pre-populate customer inputs if empty
-      const nameEl = document.getElementById("custName");
-      if (nameEl && !nameEl.value) nameEl.value = "Oud Aura Live Tester";
-      const phoneEl = document.getElementById("custPhone");
-      if (phoneEl && !phoneEl.value) phoneEl.value = "9876543210";
-      const emailEl = document.getElementById("custEmail");
-      if (emailEl && !emailEl.value) emailEl.value = "tester@oudandaura.com";
-      const addrEl = document.getElementById("custAddress1");
-      if (addrEl && !addrEl.value) addrEl.value = "Live Sanity Suite, Oud & Aura HQ";
-      const cityEl = document.getElementById("custCity");
-      if (cityEl && !cityEl.value) cityEl.value = "Mumbai";
-      const pinEl = document.getElementById("custPincode");
-      if (pinEl && !pinEl.value) pinEl.value = "400001";
-      const stateEl = document.getElementById("custState");
-      if (stateEl && !stateEl.value) stateEl.value = "Maharashtra";
-
-      const banner = document.getElementById("liveSanityBanner");
-      if (banner) banner.classList.remove("hidden");
-
-      refreshCheckoutCalculations();
-      showCheckoutToast("🧪 Live 1-Rupee Sanity Test Loaded (Total: ₹1.00)");
-    }
-
-    function disableLiveSanityTest() {
-      CHECKOUT_STATE.isLiveSanityTest = false;
-      const banner = document.getElementById("liveSanityBanner");
-      if (banner) banner.classList.add("hidden");
-
-      const saved = sessionStorage.getItem("oa_saved_cart");
-      if (saved) {
-        try {
-          CHECKOUT_STATE.cart = JSON.parse(saved);
-        } catch(e) {
-          CHECKOUT_STATE.cart = getCart();
-        }
-      } else {
-        CHECKOUT_STATE.cart = getCart();
-      }
-      refreshCheckoutCalculations();
-      showCheckoutToast("Restored your previous bag.");
-    }
 
     // Screen Router
     function goToScreen(screenName) {
@@ -757,9 +653,9 @@
       const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
       const subtotal = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
 
-      // Shipping Rule: Free over 999, else 60 (Free if Live Sanity Test active)
+      // Shipping Rule: Free over 999, else 60
       const freeThreshold = (typeof SITE_CONFIG !== 'undefined' && SITE_CONFIG.freeShippingThreshold) ? SITE_CONFIG.freeShippingThreshold : 999;
-      let shipping = (subtotal >= freeThreshold || cart.length === 0 || CHECKOUT_STATE.isLiveSanityTest) ? 0 : 60;
+      let shipping = (subtotal >= freeThreshold || cart.length === 0) ? 0 : 60;
       CHECKOUT_STATE.shippingFee = shipping;
       const grandTotal = subtotal + shipping;
 
@@ -975,7 +871,7 @@
     // Helper: Pricing details extractor
     function getPricingDetails() {
       const subtotal = CHECKOUT_STATE.cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
-      const shipping = CHECKOUT_STATE.isLiveSanityTest ? 0 : CHECKOUT_STATE.shippingFee;
+      const shipping = CHECKOUT_STATE.shippingFee;
       const final_amount = subtotal + shipping;
       return {
         subtotal,
@@ -1319,17 +1215,11 @@
         headerWa.href = SITE_CONFIG.getWhatsAppUrl("Hi Oud & Aura, I need assistance with my order checkout.");
       }
 
-      // Check URL parameters (e.g. ?test=1, ?live_test=1, or ?step=checkout)
+      // Check URL parameters (e.g. ?step=checkout to jump directly to address)
       const params = new URLSearchParams(window.location.search);
-      if (params.get("test") === "1" || params.get("amount") === "1" || params.get("live_test") === "1") {
-        enableLiveSanityTest();
-      }
-
       const step = params.get("step");
       if (step && (step === 'checkout' || step === 'payment')) {
         goToScreen(step);
-      } else if (params.get("test") === "1" || params.get("amount") === "1" || params.get("live_test") === "1") {
-        goToScreen('payment');
       }
     });
   </script>
