@@ -41,44 +41,10 @@ const SITE_CONFIG = {
     const msg = `Hi Oud & Aura, I would like to order ${productName}${sizePart}${pricePart}.`;
     return this.getWhatsAppUrl(msg);
   },
-  // Backend API URL (Optional remote server or Cloudflare tunnel)
-  // When empty or running on localhost, requests route to local server.py
-  // For remote devices, phones, or static hosting (like GitHub Pages), set your backend server URL here.
-  apiBaseUrl: "https://executive-troops-angel-bridges.trycloudflare.com",
-
-  // Helper method to resolve API endpoints across localhost, file://, tunnel, and GitHub Pages
-  getApiUrl(endpoint) {
-    const clean = endpoint.startsWith("/") ? endpoint : "/" + endpoint;
-    if (typeof window !== "undefined") {
-      const host = window.location.hostname;
-      // 1. Direct localhost or 127.0.0.1
-      if (host === "localhost" || host === "127.0.0.1") {
-        return clean;
-      }
-      // 2. Direct Cloudflare tunnel hostname
-      if (host.includes("trycloudflare.com")) {
-        return clean;
-      }
-      // 3. Double-clicked local file (file://)
-      if (window.location.protocol === "file:") {
-        return "http://localhost:8080" + clean;
-      }
-      // 4. Remote host (GitHub Pages, custom domain) -> Route to active backend
-      if (this.apiBaseUrl) {
-        return this.apiBaseUrl.replace(/\/$/, "") + clean;
-      }
-    }
-    return clean;
-  }
+  // Razorpay Gateway Configuration (Standard Client-Side Live Integration)
+  // Public Key ID (Safe for frontend production use - your Secret Key is never needed or exposed)
+  razorpayKeyId: "rzp_live_TlRnqoa5T28nel"
 };
-
-// Global helper for convenient access
-function getApiUrl(endpoint) {
-  if (typeof SITE_CONFIG !== 'undefined' && typeof SITE_CONFIG.getApiUrl === 'function') {
-    return SITE_CONFIG.getApiUrl(endpoint);
-  }
-  return endpoint;
-}
 
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = SITE_CONFIG;

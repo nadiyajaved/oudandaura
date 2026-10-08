@@ -129,7 +129,11 @@
       </div>
 
       <!-- Action Buttons -->
-      <div class="flex items-center gap-2 sm:gap-3">
+        <a href="https://dashboard.razorpay.com/app/orders" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-[#121110] text-xs font-semibold text-[#ffddba] hover:bg-[#875200] transition-colors" title="Open Razorpay Dashboard">
+          <span class="material-symbols-outlined text-[16px]">account_balance_wallet</span>
+          <span>Razorpay Live Dashboard</span>
+        </a>
+
         <a href="checkout.html" target="_blank" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-[#e5ddcf] text-xs font-medium text-[#121110] hover:bg-[#fbf9f6] transition-colors">
           <span class="material-symbols-outlined text-[16px]">storefront</span>
           <span>View Store</span>
@@ -596,24 +600,16 @@
       
       if (!key) return;
 
-      // Verify key by attempting to fetch orders
-      fetch(getApiUrl(`/api/admin/orders?key=${encodeURIComponent(key)}`))
-        .then(res => {
-          if (res.ok) {
-            CURRENT_ADMIN_KEY = key;
-            sessionStorage.setItem(ADMIN_STORAGE_KEY, key);
-            document.getElementById("authOverlay").classList.add("hidden");
-            err.classList.add("hidden");
-            fetchOrders();
-          } else {
-            err.textContent = "Incorrect admin passcode. Please check your .env file.";
-            err.classList.remove("hidden");
-          }
-        })
-        .catch(() => {
-          err.textContent = "Unable to connect to local server.";
-          err.classList.remove("hidden");
-        });
+      if (key === "oudaura2026") {
+        CURRENT_ADMIN_KEY = key;
+        sessionStorage.setItem(ADMIN_STORAGE_KEY, key);
+        document.getElementById("authOverlay").classList.add("hidden");
+        err.classList.add("hidden");
+        fetchOrders();
+      } else {
+        err.textContent = "Incorrect admin passcode. (Passcode: oudaura2026)";
+        err.classList.remove("hidden");
+      }
     }
 
     function logoutAdmin() {
@@ -623,31 +619,60 @@
       document.getElementById("adminKeyInput").value = "";
     }
 
-    // Fetch All Orders from Server API
-    async function fetchOrders() {
+    // Fetch All Orders from Local Storage / Session
+    function fetchOrders() {
       if (!CURRENT_ADMIN_KEY) return;
 
       const refreshIcon = document.getElementById("refreshIcon");
       if (refreshIcon) refreshIcon.classList.add("animate-spin");
 
       try {
-        const res = await fetch(getApiUrl(`/api/admin/orders?key=${encodeURIComponent(CURRENT_ADMIN_KEY)}`));
-        
-        if (res.status === 401) {
-          logoutAdmin();
-          return;
-        }
+        const stored = JSON.parse(localStorage.getItem("oud_aura_orders") || "[]");
+        ALL_ORDERS = stored.map(o => ({
+          order_id: o.orderId || o.order_id,
+          created_at: o.date || "Recent",
+          customer: {
+            name: o.name || "Customer",
+            phone: o.phone || "-",
+            email: o.email || "",
+            full_address: o.address || "",
+            city: o.city || "Mumbai",
+            state: o.state || "Maharashtra"
+          },
+          items: o.items || [],
+          pricing: {
+            final_amount: o.total || 0
+          },
+          total: o.total || 0,
+          payment: {
+            status: (o.paymentMethod || "").includes("COD") ? "COD_PENDING" : "PAID",
+            method: o.paymentMethod || "Razorpay Online",
+            razorpay_payment_id: o.razorpayPaymentId || "-"
+          },
+          order_status: (o.paymentMethod || "").includes("COD") ? "COD" : "PAID",
+          fulfillment: {
+            carrier: o.carrier || "",
+            tracking_number: o.tracking_number || "",
+            notes: o.notes || ""
+          }
+        }));
 
-        const data = await res.json();
-        if (data.success) {
-          ALL_ORDERS = data.orders || [];
-          updateKpis(data.stats);
-          renderOrdersTable();
-        } else {
-          showToast(data.message || "Failed to load orders", true);
-        }
+        const totalRev = ALL_ORDERS.filter(o => o.payment.status === "PAID").reduce((sum, o) => sum + (o.total || 0), 0);
+        const stats = {
+          total_revenue: totalRev,
+          total_orders: ALL_ORDERS.length,
+          paid_orders: ALL_ORDERS.filter(o => o.payment.status === "PAID").length,
+          processing_orders: 0,
+          shipped_orders: 0,
+          delivered_orders: 0,
+          cod_orders: ALL_ORDERS.filter(o => o.payment.status === "COD_PENDING").length,
+          cancelled_orders: 0
+        };
+
+        updateKpis(stats);
+        renderOrdersTable();
       } catch (err) {
-        showToast("Error connecting to server. Ensure server.py is running.", true);
+        console.error("Error loading orders:", err);
       } finally {
         if (refreshIcon) refreshIcon.classList.remove("animate-spin");
       }
@@ -935,47 +960,29 @@
     }
 
     // Save Order Status & Fulfillment Update
-    async function saveOrderStatusUpdate() {
-      if (!CURRENT_SELECTED_ORDER || !CURRENT_ADMIN_KEY) return;
+    function saveOrderStatusUpdate() {
+      if (!CURRENT_SELECTED_ORDER) return;
 
       const newStatus = document.getElementById("updateStatusSelect").value;
       const carrier = document.getElementById("updateCarrierInput").value.trim();
       const tracking = document.getElementById("updateTrackingInput").value.trim();
       const note = document.getElementById("updateNotesInput").value.trim();
 
-      const btn = document.getElementById("saveStatusBtn");
-      btn.disabled = true;
-      btn.textContent = "Updating...";
-
       try {
-        const res = await fetch(getApiUrl("/api/admin/update-status"), {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "X-Admin-Key": CURRENT_ADMIN_KEY
-          },
-          body: JSON.stringify({
-            order_id: CURRENT_SELECTED_ORDER.order_id,
-            new_status: newStatus,
-            carrier: carrier,
-            tracking_number: tracking,
-            note: note
-          })
-        });
-
-        const data = await res.json();
-        if (data.success) {
-          showToast(`Order #${CURRENT_SELECTED_ORDER.order_id} marked as ${newStatus}`);
-          await fetchOrders();
-          openOrderDetailModal(CURRENT_SELECTED_ORDER.order_id);
-        } else {
-          showToast(data.message || "Failed to update order status", true);
+        const stored = JSON.parse(localStorage.getItem("oud_aura_orders") || "[]");
+        const idx = stored.findIndex(o => (o.orderId || o.order_id) === CURRENT_SELECTED_ORDER.order_id);
+        if (idx !== -1) {
+          stored[idx].paymentMethod = newStatus;
+          stored[idx].carrier = carrier;
+          stored[idx].tracking_number = tracking;
+          stored[idx].notes = note;
+          localStorage.setItem("oud_aura_orders", JSON.stringify(stored));
         }
+        showToast(`Order #${CURRENT_SELECTED_ORDER.order_id} marked as ${newStatus}`);
+        fetchOrders();
+        closeOrderDetailModal();
       } catch (err) {
         showToast("Error updating order status", true);
-      } finally {
-        btn.disabled = false;
-        btn.textContent = "Save Status Update";
       }
     }
 
