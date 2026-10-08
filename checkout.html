@@ -514,6 +514,9 @@
 
   <!-- Checkout Flow Engine -->
   <script>
+    // @ts-nocheck
+    /* global Razorpay, SITE_CONFIG, getCart, saveCart, updateCartQuantity, removeFromCart, PRODUCTS */
+
     // State
     const CHECKOUT_STATE = {
       cart: [],
