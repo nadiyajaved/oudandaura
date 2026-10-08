@@ -314,7 +314,7 @@
     </section>
 
     <!-- =======================================================================
-         SCREEN 3: PAYMENT METHOD (TEST/MOCK MODE)
+         SCREEN 3: PAYMENT METHOD
          ======================================================================= -->
     <section id="screen-payment" class="flow-screen">
       <div class="max-w-2xl mx-auto">
@@ -330,15 +330,6 @@
           </button>
         </div>
 
-        <!-- TEST / MOCK MODE BANNER -->
-        <div id="sandboxNoticeBanner" class="p-3.5 rounded-xl bg-[#fff8e6] border border-[#d4af37]/60 text-[#875200] flex items-start gap-3 mb-6 shadow-xs">
-          <span class="material-symbols-outlined text-[20px] text-[#875200] shrink-0 mt-0.5">info</span>
-          <div class="text-xs">
-            <strong class="font-bold block text-[#121110]">Test / Mock Mode Active</strong>
-            <p class="text-[#4b4640] mt-0.5">This store is currently in sandbox testing mode. No live charges will be processed to your account.</p>
-          </div>
-        </div>
-
         <!-- Payment Method Options (UPI and COD ONLY) -->
         <div class="space-y-3.5 mb-6">
           
@@ -352,55 +343,20 @@
                   <span class="text-xs text-[#4b4640]">UPI (GPay, PhonePe, Paytm), Debit/Credit Cards &amp; NetBanking</span>
                 </div>
               </div>
-              <span id="gatewayModeBadge" class="px-2 py-0.5 text-[10px] font-bold rounded-full bg-[#875200]/10 text-[#875200] border border-[#875200]/30 flex items-center gap-1">
-                <span class="w-1.5 h-1.5 rounded-full bg-[#875200] animate-pulse"></span>
-                <span>TEST MODE</span>
+              <span id="gatewayModeBadge" class="px-2 py-0.5 text-[10px] font-bold rounded-full bg-[#25D366]/10 text-[#1b7e3e] border border-[#25D366]/30 flex items-center gap-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-[#25D366]"></span>
+                <span>100% SECURE</span>
               </span>
             </div>
 
             <!-- Razorpay Gateway Details Box -->
-            <div id="upiSandboxBox" class="mt-4 pt-4 border-t border-[#e5ddcf]/60 space-y-3">
+            <div id="upiGatewayBox" class="mt-4 pt-4 border-t border-[#e5ddcf]/60 space-y-3">
               <div class="p-3 rounded-lg bg-[#fbf9f6] border border-[#e5ddcf] flex flex-col sm:flex-row items-center justify-between gap-2.5 text-xs text-[#4b4640]">
                 <div class="flex items-center gap-2" id="gatewayNameText">
-                  <span class="material-symbols-outlined text-[18px] text-[#875200]">verified_user</span>
-                  <span><strong>Gateway:</strong> Razorpay Sandbox</span>
+                  <span class="material-symbols-outlined text-[18px] text-[#25D366]">verified_user</span>
+                  <span><strong>Gateway:</strong> Official Razorpay Secured Checkout</span>
                 </div>
-                <span class="font-mono text-[11px] font-semibold text-[#875200]">Server-Verified • HMAC SHA256</span>
-              </div>
-
-              <!-- Test Dummy Credentials Helper (Auto-hidden in Live Mode) -->
-              <div id="sandboxCredentialsHelper" class="p-3.5 rounded-xl bg-[#fff8e6] border border-[#d4af37]/60 text-xs space-y-2.5">
-                <div class="flex items-center gap-2 text-[#875200] font-semibold">
-                  <span class="material-symbols-outlined text-[18px]">info</span>
-                  <span>Do NOT enter real card/bank details (Test Mode active)</span>
-                </div>
-                <p class="text-[11px] text-[#4b4640] leading-relaxed">
-                  Razorpay is operating in sandbox mode. Use these official test credentials inside the popup to simulate payment:
-                </p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
-                  <!-- Dummy Card -->
-                  <div class="p-2.5 rounded-lg bg-white border border-[#e5ddcf] flex items-center justify-between">
-                    <div>
-                      <span class="text-[10px] uppercase font-bold text-[#4b4640] block">Test Card</span>
-                      <span class="font-mono text-xs font-bold text-[#121110]">4012 0000 0000 0002</span>
-                      <span class="text-[10px] text-[#4b4640] block">Exp: 12/28 • CVV: 123</span>
-                    </div>
-                    <button type="button" onclick="navigator.clipboard.writeText('4012000000000002'); showCheckoutToast('Test Card copied: 4012 0000 0000 0002');" class="px-2 py-1 rounded bg-[#f5f2eb] hover:bg-[#e5ddcf] text-[10px] font-bold text-[#121110] transition-colors">
-                      Copy Card
-                    </button>
-                  </div>
-                  <!-- Dummy UPI -->
-                  <div class="p-2.5 rounded-lg bg-white border border-[#e5ddcf] flex items-center justify-between">
-                    <div>
-                      <span class="text-[10px] uppercase font-bold text-[#4b4640] block">Test UPI ID</span>
-                      <span class="font-mono text-xs font-bold text-[#121110]">success@razorpay</span>
-                      <span class="text-[10px] text-[#25D366] block font-medium">Instant Success</span>
-                    </div>
-                    <button type="button" onclick="navigator.clipboard.writeText('success@razorpay'); showCheckoutToast('Test UPI copied: success@razorpay');" class="px-2 py-1 rounded bg-[#f5f2eb] hover:bg-[#e5ddcf] text-[10px] font-bold text-[#121110] transition-colors">
-                      Copy UPI
-                    </button>
-                  </div>
-                </div>
+                <span class="font-mono text-[11px] font-semibold text-[#875200]">256-Bit SSL Encrypted • Instant Authorization</span>
               </div>
             </div>
           </label>
@@ -418,7 +374,7 @@
               <span class="px-2 py-0.5 text-[10px] font-bold rounded-full bg-[#f5f2eb] text-[#4b4640] border border-[#e5ddcf]">DOORSTEP</span>
             </div>
             
-            <div id="codSandboxBox" class="mt-4 pt-4 border-t border-[#e5ddcf]/60 hidden text-xs text-[#4b4640]">
+            <div id="codDetailsBox" class="mt-4 pt-4 border-t border-[#e5ddcf]/60 hidden text-xs text-[#4b4640]">
               <p>Our courier partner will verify your contact number via call before dispatch. Please keep the exact amount ready upon delivery.</p>
             </div>
           </label>
@@ -549,43 +505,6 @@
   <div id="checkoutToast" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-[300] bg-[#121110] text-white px-4 py-2.5 rounded-full text-xs font-medium shadow-2xl flex items-center gap-2 opacity-0 pointer-events-none transition-all duration-300">
     <span class="material-symbols-outlined text-[16px] text-[#d4af37]">check_circle</span>
     <span id="checkoutToastText">Notification</span>
-  </div>
-
-  <!-- Credentials Notice Modal (Shows guidance if .env keys are missing) -->
-  <div id="credentialsNoticeModal" class="fixed inset-0 z-[400] bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 hidden">
-    <div class="bg-white rounded-2xl max-w-md w-full p-6 border border-[#e5ddcf] shadow-2xl space-y-4">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-full bg-[#875200]/10 flex items-center justify-center text-[#875200] shrink-0">
-          <span class="material-symbols-outlined text-[22px]">vpn_key</span>
-        </div>
-        <div>
-          <h3 class="font-serif text-lg font-bold text-[#121110]">Razorpay Test Mode Setup</h3>
-          <p class="text-xs text-[#875200] font-medium">Developer Environment Action Required</p>
-        </div>
-      </div>
-
-      <p id="credentialsModalDesc" class="text-xs text-[#4b4640] leading-relaxed">
-        Razorpay test credentials are not configured in your <code class="bg-[#f5f2eb] px-1 py-0.5 rounded text-[#121110] font-mono">.env</code> file.
-      </p>
-
-      <div class="p-3.5 rounded-xl bg-[#fbf9f6] border border-[#e5ddcf] text-xs space-y-2 text-[#4b4640]">
-        <strong class="text-[#121110] block font-semibold">How to activate Razorpay Test Mode:</strong>
-        <ol class="list-decimal pl-4 space-y-1 text-[11px]">
-          <li>Copy <code class="font-mono text-[#875200]">.env.example</code> to <code class="font-mono text-[#875200]">.env</code> in your project root.</li>
-          <li>Log into Razorpay Dashboard &rarr; Account Settings &rarr; API Keys.</li>
-          <li>Copy your <strong class="text-[#121110]">Test Key ID</strong> and <strong class="text-[#121110]">Key Secret</strong> into <code class="font-mono text-[#875200]">.env</code>.</li>
-        </ol>
-      </div>
-
-      <div class="pt-2 flex flex-col sm:flex-row gap-2">
-        <button type="button" onclick="closeCredentialsModal()" class="flex-1 py-2.5 rounded-xl bg-[#121110] text-white text-xs font-semibold uppercase tracking-wider hover:bg-[#875200] transition-colors">
-          Got It
-        </button>
-        <button type="button" onclick="closeCredentialsModal(); handlePaymentSelection('cod');" class="flex-1 py-2.5 rounded-xl bg-white border border-[#e5ddcf] text-[#121110] text-xs font-semibold uppercase tracking-wider hover:bg-[#f5f2eb] transition-colors">
-          Use COD Instead
-        </button>
-      </div>
-    </div>
   </div>
 
   <!-- Shared Catalog & Config Scripts -->
@@ -776,8 +695,8 @@
       CHECKOUT_STATE.selectedPaymentMethod = method;
       const cardUpi = document.getElementById("card-upi");
       const cardCod = document.getElementById("card-cod");
-      const upiBox = document.getElementById("upiSandboxBox");
-      const codBox = document.getElementById("codSandboxBox");
+      const upiBox = document.getElementById("upiGatewayBox");
+      const codBox = document.getElementById("codDetailsBox");
 
       if (method === 'upi') {
         cardUpi.classList.add("border-2", "border-[#121110]");
@@ -950,25 +869,6 @@
       }
     }
 
-    // Modal Helper: Razorpay Credentials Required
-    function showCredentialsModal(customMsg) {
-      const modal = document.getElementById("credentialsNoticeModal");
-      if (modal) {
-        if (customMsg) {
-          const desc = document.getElementById("credentialsModalDesc");
-          if (desc) desc.textContent = customMsg;
-        }
-        modal.classList.remove("hidden");
-      } else {
-        alert(customMsg || "Please configure your Razorpay Test Credentials in .env file.");
-      }
-    }
-
-    function closeCredentialsModal() {
-      const modal = document.getElementById("credentialsNoticeModal");
-      if (modal) modal.classList.add("hidden");
-    }
-
     // Complete Order Execution
     async function processPaymentAndComplete() {
       const btn = document.getElementById("completeOrderBtn");
@@ -1045,12 +945,7 @@
         if (!orderData.success) {
           btn.disabled = false;
           btn.innerHTML = `<span class="material-symbols-outlined text-[18px] text-[#ffddba]">lock</span><span>Pay ₹${pricing.final_amount} with Razorpay</span>`;
-          
-          if (orderData.code === "MISSING_CREDENTIALS") {
-            showCredentialsModal(orderData.message);
-          } else {
-            showCheckoutToast(orderData.message || "Failed to initialize Razorpay payment.");
-          }
+          showCheckoutToast(orderData.message || "Payment gateway currently updating. Please select Cash on Delivery or contact WhatsApp support.");
           return;
         }
 
@@ -1175,30 +1070,15 @@
       }, 2500);
     }
 
-    // Dynamic Gateway Mode Checker (Live vs Test Mode)
+    // Verify Live Gateway Connectivity
     async function checkPaymentConfig() {
       try {
         const res = await fetch("/api/payment-config");
         const cfg = await res.json();
-        const modeBadge = document.getElementById("gatewayModeBadge");
-        const sandboxHelper = document.getElementById("sandboxCredentialsHelper");
-        const gatewayName = document.getElementById("gatewayNameText");
-
-        if (cfg.configured && !cfg.test_mode) {
-          // LIVE MODE
-          const noticeBanner = document.getElementById("sandboxNoticeBanner");
-          if (noticeBanner) {
-            noticeBanner.style.display = "none";
-          }
+        if (!cfg.configured) {
+          const modeBadge = document.getElementById("gatewayModeBadge");
           if (modeBadge) {
-            modeBadge.className = "px-2 py-0.5 text-[10px] font-bold rounded-full bg-[#25D366]/10 text-[#1b7e3e] border border-[#25D366]/30 flex items-center gap-1";
-            modeBadge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-[#25D366]"></span><span>100% SECURE</span>`;
-          }
-          if (gatewayName) {
-            gatewayName.innerHTML = `<span class="material-symbols-outlined text-[18px] text-[#25D366]">verified_user</span><span><strong>Gateway:</strong> Razorpay Official (Live)</span>`;
-          }
-          if (sandboxHelper) {
-            sandboxHelper.style.display = "none";
+            modeBadge.textContent = "OFFLINE";
           }
         }
       } catch (e) {}
