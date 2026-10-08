@@ -509,7 +509,7 @@
 
   <!-- Shared Catalog & Config Scripts -->
   <script src="data/config.js"></script>
-  <script src="data/products.js?v=2"></script>
+  <script src="data/products.js?v=3"></script>
   <script src="js/main.js"></script>
 
   <!-- Checkout Flow Engine -->
@@ -575,10 +575,9 @@
       const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
       const subtotal = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
 
-      // Shipping Rule: Free over 999, else 60. Waived for 1-rupee demo test items.
+      // Shipping Rule: Free over 999, else 60
       const freeThreshold = (typeof SITE_CONFIG !== 'undefined' && SITE_CONFIG.freeShippingThreshold) ? SITE_CONFIG.freeShippingThreshold : 999;
-      const isDemoOnlyCart = cart.length > 0 && cart.every(i => i.price === 1 || i.id === 'demo_test_perfume');
-      let shipping = (subtotal >= freeThreshold || cart.length === 0 || isDemoOnlyCart) ? 0 : 60;
+      let shipping = (subtotal >= freeThreshold || cart.length === 0) ? 0 : 60;
       CHECKOUT_STATE.shippingFee = shipping;
       const grandTotal = subtotal + shipping;
 
@@ -1004,24 +1003,8 @@
         headerWa.href = SITE_CONFIG.getWhatsAppUrl("Hi Oud & Aura, I need assistance with my order checkout.");
       }
 
-      // Check URL parameters (e.g. ?step=checkout to jump directly to address, or ?test=1 for instant 1-Rupee test)
+      // Check URL parameters (e.g. ?step=checkout to jump directly to address)
       const params = new URLSearchParams(window.location.search);
-      if (params.get("test") === "1") {
-        const currentCart = getCart();
-        if (currentCart.length === 0) {
-          currentCart.push({
-            id: "demo_test_perfume",
-            name: "1-Rupee Live Sanity Test",
-            size: "1 ml Sample",
-            price: 1,
-            image: "homepagelogo.jpg",
-            quantity: 1
-          });
-          saveCart(currentCart);
-          syncCartFromStorage();
-        }
-      }
-
       const step = params.get("step");
       if (step && (step === 'checkout' || step === 'payment')) {
         goToScreen(step);

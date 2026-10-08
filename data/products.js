@@ -238,30 +238,6 @@ const PRODUCTS = [
     sizes: [
       { size: "4 × 20 ml", price: 777, originalPrice: 800, label: "Complete Set", isDefault: true }
     ]
-  },
-  {
-    id: "demo_test_perfume",
-    name: "1-Rupee Live Sanity Test",
-    category: "perfumes",
-    price: 1,
-    originalPrice: 100,
-    size: "1 ml",
-    concentration: "Sample",
-    badge: "Live Test ₹1",
-    isBestSeller: false,
-    inStock: true,
-    tag: "Payment Verification",
-    shortDescription: "1-Rupee Live Test Sample to verify online gateway & payment capture.",
-    fullDescription: "Quick ₹1.00 live payment test sample. Purchase this item to test real UPI, Debit/Credit Card, or Netbanking checkout and verify immediate reflection in your Razorpay Dashboard.",
-    images: ["homepagelogo.jpg"],
-    notes: {
-      top: "Citrus Bergamot",
-      heart: "French Rose",
-      base: "White Amber & Oud"
-    },
-    sizes: [
-      { size: "1 ml Sample", price: 1, originalPrice: 100, label: "1-Rupee Live Test", isDefault: true }
-    ]
   }
 ];
 

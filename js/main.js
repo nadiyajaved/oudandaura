@@ -8,7 +8,8 @@ const CART_STORAGE_KEY = "oud_aura_cart";
 function getCart() {
   try {
     const raw = localStorage.getItem(CART_STORAGE_KEY);
-    return raw ? JSON.parse(raw) : [];
+    const cart = raw ? JSON.parse(raw) : [];
+    return cart.filter(item => item && item.id !== "demo_test_perfume");
   } catch (e) {
     return [];
   }
