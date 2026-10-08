@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport">
+  <title>Checkout | Oud &amp; Aura - The Essence of Elegance</title>
+  
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&amp;family=Plus+Jakarta+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+  
+  <!-- Razorpay Checkout Script (Official Gateway SDK) -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#121110",
+            secondary: "#875200",
+            accent: "#d4af37",
+            surface: "#fbf9f6",
+            "surface-low": "#f5f3f0",
+            "surface-border": "#e5ddcf",
+            "text-main": "#1b1c1a",
+            "text-muted": "#4b4640"
+          },
+          fontFamily: {
+            serif: ["Playfair Display", "serif"],
+            sans: ["Plus Jakarta Sans", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+  
+  <style>
+    body {
+      background-color: #fbf9f6;
+      color: #1b1c1a;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      touch-action: manipulation;
+    }
+    .font-serif {
+      font-family: 'Playfair Display', serif;
+    }
+    .flow-screen {
+      display: none;
+      animation: fadeIn 0.25s ease-out forwards;
+    }
+    .flow-screen.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    ::-webkit-scrollbar {
+      width: 4px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #e5ddcf;
+      border-radius: 999px;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: #875200 !important;
+      box-shadow: 0 0 0 1px #875200;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-[#d4af37]/20">
+
+  <!-- =========================================================================
+       HEADER & NAVIGATION STEPPER
+       ========================================================================= -->
+  <header class="bg-[#fbf9f6]/95 backdrop-blur-md border-b border-[#e5ddcf]/80 sticky top-0 z-50 transition-all">
+    <div class="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-2 sm:gap-3">
+        <a id="backNavBtn" href="shop.html" class="w-10 h-10 flex items-center justify-center text-[#1b1c1a] hover:text-[#875200] transition-colors rounded-full hover:bg-[#f5f3f0]" aria-label="Go back">
+          <span class="material-symbols-outlined text-[22px]">arrow_back</span>
+        </a>
+        <a href="index.html" class="flex flex-col">
+          <span class="font-serif text-lg tracking-[0.2em] font-semibold uppercase text-[#121110]">OUD &amp; AURA</span>
+          <span class="text-[9px] tracking-[0.26em] text-[#875200] uppercase font-medium -mt-1">The Essence of Elegance</span>
+        </a>
+      </div>
+
+      <!-- Quick Step Indicator Pills -->
+      <div class="hidden sm:flex items-center gap-1.5" id="headerStepPills">
+        <button onclick="goToScreen('cart')" id="pill-cart" class="step-pill px-3 py-1 rounded-full text-xs font-medium transition-all bg-[#121110] text-white">
+          1. Bag (<span id="pillCartCount">0</span>)
+        </button>
+        <span class="text-[#e5ddcf] text-xs">/</span>
+        <button onclick="goToScreen('checkout')" id="pill-checkout" class="step-pill px-3 py-1 rounded-full text-xs font-medium transition-all text-[#4b4640] hover:text-[#121110]">
+          2. Address
+        </button>
+        <span class="text-[#e5ddcf] text-xs">/</span>
+        <button onclick="goToScreen('payment')" id="pill-payment" class="step-pill px-3 py-1 rounded-full text-xs font-medium transition-all text-[#4b4640] hover:text-[#121110]">
+          3. Payment
+        </button>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <a id="headerWhatsAppBtn" href="https://wa.me/919819929863?text=Hi%20Oud%20%26%20Aura%2C%20I%20have%20an%20inquiry%20regarding%20orders." target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium text-[#1d1b1a] bg-[#e5ddcf]/40 hover:bg-[#e5ddcf]/80 transition-all border border-[#e5ddcf]">
+          <span class="w-2 h-2 rounded-full bg-[#25D366]"></span>
+          <span class="hidden md:inline">WhatsApp Support</span>
+          <span class="md:hidden">Support</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- =========================================================================
+       MAIN CONTENT CONTAINER
+       ========================================================================= -->
+  <main class="max-w-4xl mx-auto px-4 py-6 sm:py-8 flex-1 w-full">
+
+    <!-- 1-RUPEE LIVE SANITY TEST BANNER -->
+    <div id="liveSanityBanner" class="hidden mb-6 p-4 rounded-xl bg-[#25D366]/10 border border-[#25D366]/40 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-[#121110] shadow-xs">
+      <div class="flex items-center gap-3">
+        <span class="material-symbols-outlined text-[24px] text-[#1b7e3e]">verified</span>
+        <div>
+          <strong class="font-bold text-[#121110] text-sm block">1-Rupee Live Sanity Test Active</strong>
+          <span class="text-[#4b4640] text-xs">Total set to ₹1.00 with ₹0 shipping for real UPI / Card verification.</span>
+        </div>
+      </div>
+      <div class="flex items-center gap-2 shrink-0">
+        <button type="button" onclick="goToScreen('payment')" class="px-3 py-1.5 rounded-lg bg-[#121110] text-white hover:bg-[#875200] text-xs font-semibold cursor-pointer transition-colors">
+          Go to Payment (₹1)
+        </button>
+        <button type="button" onclick="disableLiveSanityTest()" class="px-3 py-1.5 rounded-lg bg-white border border-[#e5ddcf] text-[#4b4640] hover:text-[#121110] text-xs font-semibold cursor-pointer transition-colors">
+          Exit Test
+        </button>
+      </div>
+    </div>
+
+    <!-- =======================================================================
+         SCREEN 1: SHOPPING BAG REVIEW
+         ======================================================================= -->
+    <section id="screen-cart" class="flow-screen active">
+      <div class="max-w-2xl mx-auto">
+        
+        <div class="flex items-center justify-between pb-4 border-b border-[#e5ddcf]/80 mb-6">
+          <div>
+            <h1 class="font-serif text-2xl sm:text-3xl text-[#121110]">Your Shopping Bag</h1>
+            <p class="text-xs text-[#4b4640] mt-0.5">Check your selections before delivery.</p>
+          </div>
+          <a href="shop.html" class="text-xs text-[#875200] hover:underline font-semibold flex items-center gap-1">
+            <span class="material-symbols-outlined text-[16px]">add</span>
+            <span>Add More</span>
+          </a>
+        </div>
+
+        <!-- Live Sanity Test Quick-Switch Card -->
+        <div class="p-3.5 rounded-xl bg-[#fbf9f6] border border-[#e5ddcf] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs mb-5">
+          <div class="flex items-center gap-2.5 text-[#121110]">
+            <span class="material-symbols-outlined text-[20px] text-[#875200]">science</span>
+            <div>
+              <span class="font-semibold block text-[#121110]">1-Rupee Live Sanity Test (₹1.00)</span>
+              <span class="text-[#4b4640] text-[11px]">Load a ₹1.00 test sample with ₹0 delivery to test live UPI payment.</span>
+            </div>
+          </div>
+          <button type="button" onclick="enableLiveSanityTest(); goToScreen('checkout');" class="px-3 py-1.5 rounded-lg bg-[#121110] text-white hover:bg-[#875200] text-xs font-semibold uppercase tracking-wider shrink-0 transition-colors cursor-pointer">
+            Run ₹1 Test
+          </button>
+        </div>
+
+        <!-- Free Delivery Progress Meter -->
+        <div class="p-4 rounded-xl bg-white border border-[#e5ddcf]/80 mb-6 shadow-xs">
+          <div class="flex items-center justify-between text-xs mb-2">
+            <span id="shippingMeterText" class="font-medium text-[#1b1c1a]">Calculating delivery perks...</span>
+            <span class="material-symbols-outlined text-[18px] text-[#875200]">local_shipping</span>
+          </div>
+          <div class="w-full h-2 rounded-full bg-[#f5f2eb] overflow-hidden">
+            <div id="shippingProgressBar" class="h-full bg-gradient-to-r from-[#d4af37] to-[#875200] transition-all duration-500" style="width: 0%;"></div>
+          </div>
+        </div>
+
+        <!-- Cart Items List Container -->
+        <div id="cartItemsList" class="space-y-3 mb-6">
+          <!-- Populated dynamically via JS -->
+        </div>
+
+        <!-- Order Summary Calculation Card -->
+        <div id="cartSummaryCard" class="rounded-2xl bg-white p-5 border border-[#e5ddcf]/80 shadow-sm space-y-3 mb-6">
+          <h3 class="font-serif text-lg text-[#121110] font-semibold border-b border-[#e5ddcf]/60 pb-2">Order Summary</h3>
+          
+          <div class="flex justify-between text-xs text-[#4b4640]">
+            <span>Subtotal</span>
+            <span id="cartSubtotalText" class="font-medium text-[#1b1c1a]">₹0</span>
+          </div>
+
+          <div class="flex justify-between text-xs text-[#4b4640]">
+            <span>Insured Courier</span>
+            <span id="cartShippingText" class="font-medium text-[#875200]">₹60</span>
+          </div>
+
+          <div class="flex justify-between text-xs text-[#4b4640]">
+            <span>Taxes &amp; Packaging</span>
+            <span class="font-medium text-[#1b1c1a]">Included</span>
+          </div>
+
+          <div class="pt-2 border-t border-[#e5ddcf]/80 flex justify-between items-baseline">
+            <div>
+              <span class="text-sm font-semibold text-[#121110]">Total Payable</span>
+              <p class="text-[10px] text-[#4b4640]">Inclusive of all applicable taxes</p>
+            </div>
+            <span id="cartTotalText" class="font-serif text-2xl font-bold text-[#121110]">₹0</span>
+          </div>
+        </div>
+
+        <!-- Dual Action Buttons -->
+        <div id="cartActionButtons" class="space-y-3">
+          <button onclick="goToScreen('checkout')" type="button" class="w-full py-4 rounded-xl bg-[#121110] text-white hover:bg-[#875200] font-semibold text-xs uppercase tracking-[0.16em] flex items-center justify-center gap-2 transition-all shadow-md cursor-pointer">
+            <span>Proceed to Delivery &amp; Address</span>
+            <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+          </button>
+
+          <button onclick="openWhatsAppWithCart()" type="button" class="w-full py-3.5 rounded-xl bg-white text-[#121110] hover:bg-[#fbf9f6] border border-[#e5ddcf] font-semibold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all cursor-pointer">
+            <span class="material-symbols-outlined text-[18px] text-[#25D366]">chat</span>
+            <span>Order Bag via WhatsApp</span>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =======================================================================
+         SCREEN 2: CUSTOMER & DELIVERY ADDRESS
+         ======================================================================= -->
+    <section id="screen-checkout" class="flow-screen">
+      <div class="max-w-2xl mx-auto">
+        
+        <div class="flex items-center justify-between pb-4 border-b border-[#e5ddcf]/80 mb-6">
+          <div>
+            <h1 class="font-serif text-2xl sm:text-3xl text-[#121110]">Shipping &amp; Delivery</h1>
+            <p class="text-xs text-[#4b4640] mt-0.5">Enter your delivery address for safe, insured courier dispatch</p>
+          </div>
+          <button onclick="goToScreen('cart')" class="text-xs text-[#875200] hover:underline font-semibold flex items-center gap-1">
+            <span class="material-symbols-outlined text-[16px]">shopping_bag</span>
+            <span>Back to Bag</span>
+          </button>
+        </div>
+
+        <form id="checkoutForm" onsubmit="handleAddressSubmit(event)" class="space-y-6">
+          
+          <!-- Contact Details -->
+          <div class="rounded-2xl bg-white p-5 border border-[#e5ddcf]/80 shadow-xs space-y-4">
+            <h3 class="font-serif text-base text-[#121110] font-semibold flex items-center gap-2">
+              <span class="material-symbols-outlined text-[18px] text-[#875200]">person</span>
+              <span>Contact Information</span>
+            </h3>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+              <div class="sm:col-span-2">
+                <label class="block text-xs font-medium text-[#1b1c1a] mb-1">Full Name <span class="text-red-600">*</span></label>
+                <input type="text" id="custName" required placeholder="e.g. Tariq Ahmad" class="w-full px-3.5 py-2.5 rounded-lg border border-[#e5ddcf] bg-[#fbf9f6] text-xs text-[#121110]">
+              </div>
+
+              <div>
+                <label class="block text-xs font-medium text-[#1b1c1a] mb-1">WhatsApp / Phone Number <span class="text-red-600">*</span></label>
+                <input type="tel" id="custPhone" required placeholder="+91 98765 43210" class="w-full px-3.5 py-2.5 rounded-lg border border-[#e5ddcf] bg-[#fbf9f6] text-xs text-[#121110]">
+                <p class="text-[10px] text-[#4b4640] mt-1">For delivery updates &amp; dispatch OTP</p>
+              </div>
+
+              <div>
+                <label class="block text-xs font-medium text-[#1b1c1a] mb-1">Email Address</label>
+                <input type="email" id="custEmail" placeholder="tariq@example.com" class="w-full px-3.5 py-2.5 rounded-lg border border-[#e5ddcf] bg-[#fbf9f6] text-xs text-[#121110]">
+                <p class="text-[10px] text-[#4b4640] mt-1">Order receipt will be sent here</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Shipping Address -->
+          <div class="rounded-2xl bg-white p-5 border border-[#e5ddcf]/80 shadow-xs space-y-4">
+            <h3 class="font-serif text-base text-[#121110] font-semibold flex items-center gap-2">
+              <span class="material-symbols-outlined text-[18px] text-[#875200]">home_pin</span>
+              <span>Delivery Address</span>
+            </h3>
+
+            <div class="space-y-3.5">
+              <div>
+                <label class="block text-xs font-medium text-[#1b1c1a] mb-1">House No. / Flat, Building &amp; Street <span class="text-red-600">*</span></label>
+                <input type="text" id="custAddress1" required placeholder="Flat 402, Royal Residency, M.G. Road" class="w-full px-3.5 py-2.5 rounded-lg border border-[#e5ddcf] bg-[#fbf9f6] text-xs text-[#121110]">
+              </div>
+
+              <div>
+                <label class="block text-xs font-medium text-[#1b1c1a] mb-1">Apartment, Suite, Landmark (Optional)</label>
+                <input type="text" id="custAddress2" placeholder="Near City Center / Landmark" class="w-full px-3.5 py-2.5 rounded-lg border border-[#e5ddcf] bg-[#fbf9f6] text-xs text-[#121110]">
+              </div>
+
+              <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                <div>
+                  <label class="block text-xs font-medium text-[#1b1c1a] mb-1">City <span class="text-red-600">*</span></label>
+                  <input type="text" id="custCity" required placeholder="Mumbai / Delhi" class="w-full px-3.5 py-2.5 rounded-lg border border-[#e5ddcf] bg-[#fbf9f6] text-xs text-[#121110]">
+                </div>
+
+                <div>
+                  <label class="block text-xs font-medium text-[#1b1c1a] mb-1">State <span class="text-red-600">*</span></label>
+                  <input type="text" id="custState" required placeholder="State" value="Maharashtra" class="w-full px-3.5 py-2.5 rounded-lg border border-[#e5ddcf] bg-[#fbf9f6] text-xs text-[#121110]">
+                </div>
+
+                <div class="col-span-2 sm:col-span-1">
+                  <label class="block text-xs font-medium text-[#1b1c1a] mb-1">PIN Code <span class="text-red-600">*</span></label>
+                  <input type="text" id="custPincode" required placeholder="400001" class="w-full px-3.5 py-2.5 rounded-lg border border-[#e5ddcf] bg-[#fbf9f6] text-xs text-[#121110]">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Courier Information Card -->
+          <div class="rounded-xl p-4 bg-[#f5f2eb]/70 border border-[#e5ddcf]/60 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-[22px] text-[#875200]">verified</span>
+              <div>
+                <h4 class="text-xs font-semibold text-[#121110]">Insured Standard Courier</h4>
+                <p class="text-[11px] text-[#4b4640]">Carefully bubble-wrapped in signature Oud &amp; Aura presentation box.</p>
+              </div>
+            </div>
+            <span id="checkoutCourierFee" class="text-xs font-bold text-[#121110]">₹60</span>
+          </div>
+
+          <!-- Submit Buttons -->
+          <div class="space-y-3 pt-2">
+            <button type="submit" class="w-full py-4 rounded-xl bg-[#121110] text-white hover:bg-[#875200] font-semibold text-xs uppercase tracking-[0.16em] flex items-center justify-center gap-2 transition-all shadow-md cursor-pointer">
+              <span>Continue to Payment Method</span>
+              <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+            </button>
+
+            <button type="button" onclick="openWhatsAppWithOrderDetails()" class="w-full py-3.5 rounded-xl bg-white text-[#121110] hover:bg-[#fbf9f6] border border-[#e5ddcf] font-semibold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all cursor-pointer">
+              <span class="material-symbols-outlined text-[18px] text-[#25D366]">chat</span>
+              <span>Confirm &amp; Complete via WhatsApp</span>
+            </button>
+          </div>
+
+        </form>
+
+      </div>
+    </section>
+
+    <!-- =======================================================================
+         SCREEN 3: PAYMENT METHOD (TEST/MOCK MODE)
+         ======================================================================= -->
+    <section id="screen-payment" class="flow-screen">
+      <div class="max-w-2xl mx-auto">
+        
+        <div class="flex items-center justify-between pb-4 border-b border-[#e5ddcf]/80 mb-6">
+          <div>
+            <h1 class="font-serif text-2xl sm:text-3xl text-[#121110]">Select Payment Method</h1>
+            <p class="text-xs text-[#4b4640] mt-0.5">Choose your preferred payment method to complete the order</p>
+          </div>
+          <button onclick="goToScreen('checkout')" class="text-xs text-[#875200] hover:underline font-semibold flex items-center gap-1">
+            <span class="material-symbols-outlined text-[16px]">arrow_back</span>
+            <span>Back to Address</span>
+          </button>
+        </div>
+
+        <!-- TEST / MOCK MODE BANNER -->
+        <div id="sandboxNoticeBanner" class="p-3.5 rounded-xl bg-[#fff8e6] border border-[#d4af37]/60 text-[#875200] flex items-start gap-3 mb-6 shadow-xs">
+          <span class="material-symbols-outlined text-[20px] text-[#875200] shrink-0 mt-0.5">info</span>
+          <div class="text-xs">
+            <strong class="font-bold block text-[#121110]">Test / Mock Mode Active</strong>
+            <p class="text-[#4b4640] mt-0.5">This store is currently in sandbox testing mode. No live charges will be processed to your account.</p>
+          </div>
+        </div>
+
+        <!-- Live Sanity Test Quick-Switch Card (Payment Screen) -->
+        <div id="paymentSanitySwitchCard" class="p-3.5 rounded-xl bg-[#fbf9f6] border border-[#e5ddcf] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs mb-6 shadow-xs">
+          <div class="flex items-center gap-2.5 text-[#121110]">
+            <span class="material-symbols-outlined text-[20px] text-[#875200]">science</span>
+            <div>
+              <span class="font-semibold block text-[#121110]">Want to test live payment with ₹1?</span>
+              <span class="text-[#4b4640] text-[11px]">Load a ₹1.00 test sample with ₹0 delivery to test live UPI payment.</span>
+            </div>
+          </div>
+          <button type="button" onclick="enableLiveSanityTest()" class="px-3.5 py-1.5 rounded-lg bg-[#121110] text-white hover:bg-[#875200] text-xs font-semibold uppercase tracking-wider shrink-0 transition-colors cursor-pointer">
+            Switch to ₹1 Test
+          </button>
+        </div>
+
+        <!-- Payment Method Options (UPI and COD ONLY) -->
+        <div class="space-y-3.5 mb-6">
+          
+          <!-- OPTION 1: RAZORPAY ONLINE GATEWAY (UPI, CARDS, NETBANKING) -->
+          <label class="block p-4 rounded-2xl bg-white border-2 border-[#121110] shadow-xs cursor-pointer transition-all payment-card relative" id="card-upi">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <input type="radio" name="paymentOption" value="upi" checked onchange="handlePaymentSelection('upi')" class="w-4 h-4 accent-[#121110]">
+                <div>
+                  <span class="text-sm font-bold text-[#121110] block">Razorpay Online Payment</span>
+                  <span class="text-xs text-[#4b4640]">UPI (GPay, PhonePe, Paytm), Debit/Credit Cards &amp; NetBanking</span>
+                </div>
+              </div>
+              <span id="gatewayModeBadge" class="px-2 py-0.5 text-[10px] font-bold rounded-full bg-[#875200]/10 text-[#875200] border border-[#875200]/30 flex items-center gap-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-[#875200] animate-pulse"></span>
+                <span>TEST MODE</span>
+              </span>
+            </div>
+
+            <!-- Razorpay Gateway Details Box -->
+            <div id="upiSandboxBox" class="mt-4 pt-4 border-t border-[#e5ddcf]/60 space-y-3">
+              <div class="p-3 rounded-lg bg-[#fbf9f6] border border-[#e5ddcf] flex flex-col sm:flex-row items-center justify-between gap-2.5 text-xs text-[#4b4640]">
+                <div class="flex items-center gap-2" id="gatewayNameText">
+                  <span class="material-symbols-outlined text-[18px] text-[#875200]">verified_user</span>
+                  <span><strong>Gateway:</strong> Razorpay Sandbox</span>
+                </div>
+                <span class="font-mono text-[11px] font-semibold text-[#875200]">Server-Verified • HMAC SHA256</span>
+              </div>
+
+              <!-- Test Dummy Credentials Helper (Auto-hidden in Live Mode) -->
+              <div id="sandboxCredentialsHelper" class="p-3.5 rounded-xl bg-[#fff8e6] border border-[#d4af37]/60 text-xs space-y-2.5">
+                <div class="flex items-center gap-2 text-[#875200] font-semibold">
+                  <span class="material-symbols-outlined text-[18px]">info</span>
+                  <span>Do NOT enter real card/bank details (Test Mode active)</span>
+                </div>
+                <p class="text-[11px] text-[#4b4640] leading-relaxed">
+                  Razorpay is operating in sandbox mode. Use these official test credentials inside the popup to simulate payment:
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+                  <!-- Dummy Card -->
+                  <div class="p-2.5 rounded-lg bg-white border border-[#e5ddcf] flex items-center justify-between">
+                    <div>
+                      <span class="text-[10px] uppercase font-bold text-[#4b4640] block">Test Card</span>
+                      <span class="font-mono text-xs font-bold text-[#121110]">4012 0000 0000 0002</span>
+                      <span class="text-[10px] text-[#4b4640] block">Exp: 12/28 • CVV: 123</span>
+                    </div>
+                    <button type="button" onclick="navigator.clipboard.writeText('4012000000000002'); showCheckoutToast('Test Card copied: 4012 0000 0000 0002');" class="px-2 py-1 rounded bg-[#f5f2eb] hover:bg-[#e5ddcf] text-[10px] font-bold text-[#121110] transition-colors">
+                      Copy Card
+                    </button>
+                  </div>
+                  <!-- Dummy UPI -->
+                  <div class="p-2.5 rounded-lg bg-white border border-[#e5ddcf] flex items-center justify-between">
+                    <div>
+                      <span class="text-[10px] uppercase font-bold text-[#4b4640] block">Test UPI ID</span>
+                      <span class="font-mono text-xs font-bold text-[#121110]">success@razorpay</span>
+                      <span class="text-[10px] text-[#25D366] block font-medium">Instant Success</span>
+                    </div>
+                    <button type="button" onclick="navigator.clipboard.writeText('success@razorpay'); showCheckoutToast('Test UPI copied: success@razorpay');" class="px-2 py-1 rounded bg-[#f5f2eb] hover:bg-[#e5ddcf] text-[10px] font-bold text-[#121110] transition-colors">
+                      Copy UPI
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </label>
+
+          <!-- OPTION 2: CASH ON DELIVERY (COD) -->
+          <label class="block p-4 rounded-2xl bg-white border border-[#e5ddcf] shadow-xs cursor-pointer hover:border-[#875200] transition-all payment-card" id="card-cod">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <input type="radio" name="paymentOption" value="cod" onchange="handlePaymentSelection('cod')" class="w-4 h-4 accent-[#121110]">
+                <div>
+                  <span class="text-sm font-bold text-[#121110] block">Cash on Delivery (COD)</span>
+                  <span class="text-xs text-[#4b4640]">Pay cash or scan QR when courier arrives at your doorstep</span>
+                </div>
+              </div>
+              <span class="px-2 py-0.5 text-[10px] font-bold rounded-full bg-[#f5f2eb] text-[#4b4640] border border-[#e5ddcf]">DOORSTEP</span>
+            </div>
+            
+            <div id="codSandboxBox" class="mt-4 pt-4 border-t border-[#e5ddcf]/60 hidden text-xs text-[#4b4640]">
+              <p>Our courier partner will verify your contact number via call before dispatch. Please keep the exact amount ready upon delivery.</p>
+            </div>
+          </label>
+
+        </div>
+
+        <!-- Total Payable Recap -->
+        <div class="rounded-xl p-4 bg-white border border-[#e5ddcf]/80 shadow-xs flex items-center justify-between mb-6">
+          <div>
+            <span class="text-xs text-[#4b4640] block">Total Payable (<span id="paymentItemsCount">0 items</span>)</span>
+            <span class="text-[11px] text-[#25D366] font-semibold flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-[#25D366]"></span>
+              Standard Insured Dispatch
+            </span>
+          </div>
+          <span id="paymentTotalDisplay" class="font-serif text-2xl font-bold text-[#121110]">₹0</span>
+        </div>
+
+        <!-- Complete Order Button -->
+        <div class="space-y-3">
+          <button id="completeOrderBtn" onclick="processPaymentAndComplete()" type="button" class="w-full py-4 rounded-xl bg-[#121110] text-white hover:bg-[#875200] font-semibold text-xs uppercase tracking-[0.16em] flex items-center justify-center gap-2 transition-all shadow-md cursor-pointer">
+            <span class="material-symbols-outlined text-[18px] text-[#ffddba]">lock</span>
+            <span id="completeOrderBtnText">Pay Securely</span>
+          </button>
+
+          <button type="button" onclick="openWhatsAppWithOrderDetails()" class="w-full py-3.5 rounded-xl bg-white text-[#121110] hover:bg-[#fbf9f6] border border-[#e5ddcf] font-semibold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all cursor-pointer">
+            <span class="material-symbols-outlined text-[18px] text-[#25D366]">chat</span>
+            <span>Order via WhatsApp Instead</span>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =======================================================================
+         SCREEN 4: ORDER CONFIRMATION / SUCCESS
+         ======================================================================= -->
+    <section id="screen-confirmation" class="flow-screen">
+      <div class="max-w-xl mx-auto text-center py-4">
+        
+        <!-- Animated Success Badge -->
+        <div class="w-16 h-16 rounded-full bg-[#d4af37]/20 border-2 border-[#d4af37] flex items-center justify-center mx-auto mb-4 text-[#875200] shadow-sm">
+          <span class="material-symbols-outlined text-[32px]">check_circle</span>
+        </div>
+
+        <span class="text-[11px] uppercase tracking-[0.2em] font-semibold text-[#875200]">Order Placed Successfully</span>
+        <h1 class="font-serif text-3xl sm:text-4xl text-[#121110] font-normal mt-1">Thank You For Your Order</h1>
+        <p class="text-xs text-[#4b4640] mt-1.5">Your order has been confirmed and scheduled for dispatch.</p>
+
+        <!-- Order Card Details -->
+        <div class="rounded-2xl bg-white p-5 border border-[#e5ddcf]/80 shadow-sm mt-6 text-left space-y-4">
+          <div class="flex items-center justify-between pb-3 border-b border-[#e5ddcf]/60">
+            <div>
+              <span class="text-[10px] text-[#4b4640] uppercase tracking-wider font-semibold">Order Reference</span>
+              <h3 id="confOrderId" class="font-serif text-lg font-bold text-[#121110]">#OA-00000</h3>
+            </div>
+            <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-[#d4af37]/20 text-[#875200] border border-[#d4af37]/30">CONFIRMED</span>
+          </div>
+
+          <div class="space-y-2 text-xs">
+            <div class="flex justify-between py-1 border-b border-[#e5ddcf]/40">
+              <span class="text-[#4b4640]">Customer Name</span>
+              <span id="confCustomerName" class="font-semibold text-[#121110]">-</span>
+            </div>
+            <div class="flex justify-between py-1 border-b border-[#e5ddcf]/40">
+              <span class="text-[#4b4640]">Delivery Address</span>
+              <span id="confCustomerAddress" class="font-semibold text-[#121110] text-right max-w-[240px]">-</span>
+            </div>
+            <div class="flex justify-between py-1 border-b border-[#e5ddcf]/40">
+              <span class="text-[#4b4640]">Contact Phone</span>
+              <span id="confCustomerPhone" class="font-semibold text-[#121110]">-</span>
+            </div>
+            <div class="flex justify-between py-1 border-b border-[#e5ddcf]/40">
+              <span class="text-[#4b4640]">Payment Method</span>
+              <span id="confPaymentMethod" class="font-semibold text-[#875200]">-</span>
+            </div>
+            <div class="flex justify-between py-1 pt-2 items-baseline">
+              <span class="text-sm font-bold text-[#121110]">Total Paid</span>
+              <span id="confTotalPaid" class="font-serif text-xl font-bold text-[#121110]">₹0</span>
+            </div>
+          </div>
+
+          <!-- Items Ordered Mini List -->
+          <div class="pt-3 border-t border-[#e5ddcf]/60">
+            <span class="text-[10px] uppercase tracking-wider text-[#4b4640] font-semibold block mb-2">Curated Items</span>
+            <div id="confItemsList" class="space-y-1.5">
+              <!-- Populated dynamically via JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Post-Order Actions -->
+        <div class="space-y-3 mt-6">
+          <button onclick="sendReceiptToWhatsApp()" type="button" class="w-full py-4 rounded-xl bg-[#25D366] hover:bg-[#1ebe5b] text-white font-semibold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer">
+            <span class="material-symbols-outlined text-[18px]">chat</span>
+            <span>Send Receipt to WhatsApp</span>
+          </button>
+
+          <a href="shop.html" class="inline-block w-full py-3.5 rounded-xl bg-white text-[#121110] hover:bg-[#fbf9f6] border border-[#e5ddcf] font-semibold text-xs uppercase tracking-wider transition-all">
+            Continue Exploring Fragrances
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- =========================================================================
+       FOOTER
+       ========================================================================= -->
+  <footer class="border-t border-[#e5ddcf]/80 bg-[#fbf9f6] py-6 text-center text-xs text-[#4b4640]">
+    <div class="max-w-4xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div class="flex items-center gap-2">
+        <span class="font-serif font-semibold tracking-wider text-[#121110]">OUD &amp; AURA</span>
+        <span>•</span>
+        <span>Secure 256-Bit Encrypted Checkout</span>
+      </div>
+      <div class="flex items-center gap-4 text-[11px]">
+        <a href="contact.html" class="hover:text-[#121110] transition-colors">Support</a>
+        <a href="about.html" class="hover:text-[#121110] transition-colors">About Us</a>
+        <a href="shop.html" class="hover:text-[#121110] transition-colors">Collection</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Notification Container -->
+  <div id="checkoutToast" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-[300] bg-[#121110] text-white px-4 py-2.5 rounded-full text-xs font-medium shadow-2xl flex items-center gap-2 opacity-0 pointer-events-none transition-all duration-300">
+    <span class="material-symbols-outlined text-[16px] text-[#d4af37]">check_circle</span>
+    <span id="checkoutToastText">Notification</span>
+  </div>
+
+  <!-- Credentials Notice Modal (Shows guidance if .env keys are missing) -->
+  <div id="credentialsNoticeModal" class="fixed inset-0 z-[400] bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 border border-[#e5ddcf] shadow-2xl space-y-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-[#875200]/10 flex items-center justify-center text-[#875200] shrink-0">
+          <span class="material-symbols-outlined text-[22px]">vpn_key</span>
+        </div>
+        <div>
+          <h3 class="font-serif text-lg font-bold text-[#121110]">Razorpay Test Mode Setup</h3>
+          <p class="text-xs text-[#875200] font-medium">Developer Environment Action Required</p>
+        </div>
+      </div>
+
+      <p id="credentialsModalDesc" class="text-xs text-[#4b4640] leading-relaxed">
+        Razorpay test credentials are not configured in your <code class="bg-[#f5f2eb] px-1 py-0.5 rounded text-[#121110] font-mono">.env</code> file.
+      </p>
+
+      <div class="p-3.5 rounded-xl bg-[#fbf9f6] border border-[#e5ddcf] text-xs space-y-2 text-[#4b4640]">
+        <strong class="text-[#121110] block font-semibold">How to activate Razorpay Test Mode:</strong>
+        <ol class="list-decimal pl-4 space-y-1 text-[11px]">
+          <li>Copy <code class="font-mono text-[#875200]">.env.example</code> to <code class="font-mono text-[#875200]">.env</code> in your project root.</li>
+          <li>Log into Razorpay Dashboard &rarr; Account Settings &rarr; API Keys.</li>
+          <li>Copy your <strong class="text-[#121110]">Test Key ID</strong> and <strong class="text-[#121110]">Key Secret</strong> into <code class="font-mono text-[#875200]">.env</code>.</li>
+        </ol>
+      </div>
+
+      <div class="pt-2 flex flex-col sm:flex-row gap-2">
+        <button type="button" onclick="closeCredentialsModal()" class="flex-1 py-2.5 rounded-xl bg-[#121110] text-white text-xs font-semibold uppercase tracking-wider hover:bg-[#875200] transition-colors">
+          Got It
+        </button>
+        <button type="button" onclick="closeCredentialsModal(); handlePaymentSelection('cod');" class="flex-1 py-2.5 rounded-xl bg-white border border-[#e5ddcf] text-[#121110] text-xs font-semibold uppercase tracking-wider hover:bg-[#f5f2eb] transition-colors">
+          Use COD Instead
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shared Catalog & Config Scripts -->
+  <script src="data/config.js"></script>
+  <script src="data/products.js?v=2"></script>
+  <script src="js/main.js"></script>
+
+  <!-- Checkout Flow Engine -->
+  <script>
+    // State
+    const CHECKOUT_STATE = {
+      cart: [],
+      shippingFee: 60,
+      selectedPaymentMethod: "upi",
+      orderData: null,
+      isLiveSanityTest: false
+    };
+
+    function enableLiveSanityTest() {
+      CHECKOUT_STATE.isLiveSanityTest = true;
+      if (!sessionStorage.getItem("oa_saved_cart")) {
+        sessionStorage.setItem("oa_saved_cart", JSON.stringify(CHECKOUT_STATE.cart));
+      }
+      CHECKOUT_STATE.cart = [{
+        id: "live-sanity-test",
+        name: "Live Gateway Sanity Test (Sample)",
+        size: "1ml Sample",
+        price: 1,
+        quantity: 1,
+        image: "assets/images/kashperfume1.jpg"
+      }];
+
+      // Pre-populate customer inputs if empty
+      const nameEl = document.getElementById("custName");
+      if (nameEl && !nameEl.value) nameEl.value = "Oud Aura Live Tester";
+      const phoneEl = document.getElementById("custPhone");
+      if (phoneEl && !phoneEl.value) phoneEl.value = "9876543210";
+      const emailEl = document.getElementById("custEmail");
+      if (emailEl && !emailEl.value) emailEl.value = "tester@oudandaura.com";
+      const addrEl = document.getElementById("custAddress1");
+      if (addrEl && !addrEl.value) addrEl.value = "Live Sanity Suite, Oud & Aura HQ";
+      const cityEl = document.getElementById("custCity");
+      if (cityEl && !cityEl.value) cityEl.value = "Mumbai";
+      const pinEl = document.getElementById("custPincode");
+      if (pinEl && !pinEl.value) pinEl.value = "400001";
+      const stateEl = document.getElementById("custState");
+      if (stateEl && !stateEl.value) stateEl.value = "Maharashtra";
+
+      const banner = document.getElementById("liveSanityBanner");
+      if (banner) banner.classList.remove("hidden");
+
+      refreshCheckoutCalculations();
+      showCheckoutToast("🧪 Live 1-Rupee Sanity Test Loaded (Total: ₹1.00)");
+    }
+
+    function disableLiveSanityTest() {
+      CHECKOUT_STATE.isLiveSanityTest = false;
+      const banner = document.getElementById("liveSanityBanner");
+      if (banner) banner.classList.add("hidden");
+
+      const saved = sessionStorage.getItem("oa_saved_cart");
+      if (saved) {
+        try {
+          CHECKOUT_STATE.cart = JSON.parse(saved);
+        } catch(e) {
+          CHECKOUT_STATE.cart = getCart();
+        }
+      } else {
+        CHECKOUT_STATE.cart = getCart();
+      }
+      refreshCheckoutCalculations();
+      showCheckoutToast("Restored your previous bag.");
+    }
+
+    // Screen Router
+    function goToScreen(screenName) {
+      document.querySelectorAll(".flow-screen").forEach(el => el.classList.remove("active"));
+      const target = document.getElementById("screen-" + screenName);
+      if (target) {
+        target.classList.add("active");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      // Update Header Stepper Pills
+      document.querySelectorAll(".step-pill").forEach(pill => {
+        pill.classList.remove("bg-[#121110]", "text-white");
+        pill.classList.add("text-[#4b4640]");
+      });
+      const activePill = document.getElementById("pill-" + screenName);
+      if (activePill) {
+        activePill.classList.remove("text-[#4b4640]");
+        activePill.classList.add("bg-[#121110]", "text-white");
+      }
+
+      // If returning to cart or going forward, refresh calculations
+      refreshCheckoutCalculations();
+    }
+
+    // Load Cart from localStorage
+    function syncCartFromStorage() {
+      CHECKOUT_STATE.cart = getCart();
+      refreshCheckoutCalculations();
+    }
+
+    // Cart Quantity Updates within Checkout
+    function handleQtyChange(index, delta) {
+      updateCartQuantity(index, delta);
+      CHECKOUT_STATE.cart = getCart();
+      refreshCheckoutCalculations();
+    }
+
+    function handleRemoveItem(index) {
+      removeFromCart(index);
+      CHECKOUT_STATE.cart = getCart();
+      showCheckoutToast("Item removed from bag");
+      refreshCheckoutCalculations();
+    }
+
+    // Calculations Engine
+    function refreshCheckoutCalculations() {
+      const cart = CHECKOUT_STATE.cart;
+      const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
+      const subtotal = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+
+      // Shipping Rule: Free over 999, else 60 (Free if Live Sanity Test active)
+      const freeThreshold = (typeof SITE_CONFIG !== 'undefined' && SITE_CONFIG.freeShippingThreshold) ? SITE_CONFIG.freeShippingThreshold : 999;
+      let shipping = (subtotal >= freeThreshold || cart.length === 0 || CHECKOUT_STATE.isLiveSanityTest) ? 0 : 60;
+      CHECKOUT_STATE.shippingFee = shipping;
+      const grandTotal = subtotal + shipping;
+
+      // Header Pill counter
+      const pillCount = document.getElementById("pillCartCount");
+      if (pillCount) pillCount.textContent = totalItems;
+
+      // Free delivery progress bar
+      const shippingMeter = document.getElementById("shippingMeterText");
+      const progressBar = document.getElementById("shippingProgressBar");
+      if (shippingMeter && progressBar) {
+        if (subtotal >= freeThreshold) {
+          shippingMeter.innerHTML = `<span class="text-[#875200] font-bold">🎉 Congratulations!</span> You qualify for <strong class="text-[#121110]">FREE Shipping</strong>`;
+          progressBar.style.width = "100%";
+        } else {
+          const remaining = freeThreshold - subtotal;
+          shippingMeter.innerHTML = `Add <strong class="text-[#875200]">₹${remaining}</strong> more for <strong>FREE Shipping</strong>`;
+          const pct = Math.min(100, Math.round((subtotal / freeThreshold) * 100));
+          progressBar.style.width = `${pct}%`;
+        }
+      }
+
+      // Subtotals & Grand Totals
+      const subtotalText = document.getElementById("cartSubtotalText");
+      if (subtotalText) subtotalText.textContent = `₹${subtotal}`;
+
+      const shippingText = document.getElementById("cartShippingText");
+      if (shippingText) shippingText.textContent = shipping === 0 ? "FREE" : `₹${shipping}`;
+
+      const totalText = document.getElementById("cartTotalText");
+      if (totalText) totalText.textContent = `₹${grandTotal}`;
+
+      const courierFee = document.getElementById("checkoutCourierFee");
+      if (courierFee) courierFee.textContent = shipping === 0 ? "FREE" : `₹${shipping}`;
+
+      const paymentTotal = document.getElementById("paymentTotalDisplay");
+      if (paymentTotal) paymentTotal.textContent = `₹${grandTotal}`;
+
+      const paymentItemsCount = document.getElementById("paymentItemsCount");
+      if (paymentItemsCount) paymentItemsCount.textContent = `${totalItems} item(s)`;
+
+      const completeBtnText = document.getElementById("completeOrderBtnText");
+      if (completeBtnText) completeBtnText.textContent = `Pay ₹${grandTotal} Securely`;
+
+      // Render Item List
+      const listEl = document.getElementById("cartItemsList");
+      const summaryCard = document.getElementById("cartSummaryCard");
+      const actionBtns = document.getElementById("cartActionButtons");
+
+      if (!listEl) return;
+
+      if (cart.length === 0) {
+        listEl.innerHTML = `
+          <div class="text-center py-12 bg-white rounded-2xl border border-[#e5ddcf]/80 p-6">
+            <span class="material-symbols-outlined text-[44px] text-[#cdc5bd]">shopping_bag</span>
+            <h3 class="font-serif text-lg font-bold text-[#121110] mt-2">Your Bag is Empty</h3>
+            <p class="text-xs text-[#4b4640] mt-1 max-w-sm mx-auto">Explore our artisanal perfumes and pure attars to begin your bespoke selection.</p>
+            <a href="shop.html" class="inline-block mt-4 px-6 py-2.5 bg-[#121110] text-white rounded-lg text-xs font-semibold uppercase tracking-wider hover:bg-[#875200] transition-colors">
+              Explore Collection
+            </a>
+          </div>
+        `;
+        if (summaryCard) summaryCard.style.display = "none";
+        if (actionBtns) actionBtns.style.display = "none";
+        return;
+      }
+
+      if (summaryCard) summaryCard.style.display = "block";
+      if (actionBtns) actionBtns.style.display = "block";
+
+      listEl.innerHTML = cart.map((item, idx) => `
+        <div class="flex items-center justify-between gap-3 p-3.5 rounded-xl bg-white border border-[#e5ddcf]/80 shadow-xs">
+          <div class="flex items-center gap-3 min-w-0">
+            <div class="w-16 h-16 rounded-lg bg-[#f5f2eb] border border-[#e5ddcf]/60 flex items-center justify-center p-1 overflow-hidden shrink-0">
+              <img src="${item.image}" alt="${item.name}" class="w-full h-full object-contain" onerror="this.src='https://via.placeholder.com/100?text=Oud'" />
+            </div>
+            <div class="min-w-0">
+              <h4 class="font-serif text-sm font-bold text-[#121110] truncate">${item.name}</h4>
+              <span class="text-[11px] text-[#875200] font-medium block">${item.size}</span>
+              <div class="text-xs font-semibold text-[#121110] mt-0.5">₹${item.price}</div>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3 shrink-0">
+            <!-- Stepper -->
+            <div class="inline-flex items-center border border-[#e5ddcf] bg-[#fbf9f6] rounded-lg p-0.5">
+              <button onclick="handleQtyChange(${idx}, -1)" class="w-7 h-7 flex items-center justify-center hover:bg-white rounded text-xs font-bold text-[#121110] cursor-pointer" type="button" aria-label="Decrease quantity">-</button>
+              <span class="w-7 text-center text-xs font-semibold">${item.quantity}</span>
+              <button onclick="handleQtyChange(${idx}, 1)" class="w-7 h-7 flex items-center justify-center hover:bg-white rounded text-xs font-bold text-[#121110] cursor-pointer" type="button" aria-label="Increase quantity">+</button>
+            </div>
+            <button onclick="handleRemoveItem(${idx})" class="w-8 h-8 flex items-center justify-center text-[#4b4640] hover:text-red-600 rounded-full hover:bg-[#f5f2eb] transition-colors cursor-pointer" type="button" aria-label="Remove item">
+              <span class="material-symbols-outlined text-[18px]">delete</span>
+            </button>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    // Step 2 Address Form Submission
+    function handleAddressSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById("custName").value.trim();
+      const phone = document.getElementById("custPhone").value.trim();
+      const addr1 = document.getElementById("custAddress1").value.trim();
+      const city = document.getElementById("custCity").value.trim();
+      const pin = document.getElementById("custPincode").value.trim();
+
+      if (!name || !phone || !addr1 || !city || !pin) {
+        showCheckoutToast("Please fill all required address fields");
+        return;
+      }
+
+      goToScreen('payment');
+    }
+
+    // Step 3 Payment Selection
+    function handlePaymentSelection(method) {
+      CHECKOUT_STATE.selectedPaymentMethod = method;
+      const cardUpi = document.getElementById("card-upi");
+      const cardCod = document.getElementById("card-cod");
+      const upiBox = document.getElementById("upiSandboxBox");
+      const codBox = document.getElementById("codSandboxBox");
+
+      if (method === 'upi') {
+        cardUpi.classList.add("border-2", "border-[#121110]");
+        cardUpi.classList.remove("border-[#e5ddcf]");
+        cardCod.classList.remove("border-2", "border-[#121110]");
+        cardCod.classList.add("border-[#e5ddcf]");
+        if (upiBox) upiBox.classList.remove("hidden");
+        if (codBox) codBox.classList.add("hidden");
+      } else {
+        cardCod.classList.add("border-2", "border-[#121110]");
+        cardCod.classList.remove("border-[#e5ddcf]");
+        cardUpi.classList.remove("border-2", "border-[#121110]");
+        cardUpi.classList.add("border-[#e5ddcf]");
+        if (codBox) codBox.classList.remove("hidden");
+        if (upiBox) upiBox.classList.add("hidden");
+      }
+    }
+
+    function copyUpiId() {
+      navigator.clipboard.writeText("oudandaura@upi").then(() => {
+        showCheckoutToast("UPI ID copied: oudandaura@upi");
+      }).catch(() => {
+        showCheckoutToast("UPI ID: oudandaura@upi");
+      });
+    }
+
+    // Helper: Finalize Confirmed Order (Used by both COD and Verified Razorpay Online)
+    function finalizeOrder(order) {
+      CHECKOUT_STATE.orderData = order;
+
+      // Populate Confirmation Screen
+      document.getElementById("confOrderId").textContent = `#${order.orderId}`;
+      document.getElementById("confCustomerName").textContent = order.name;
+      document.getElementById("confCustomerAddress").textContent = order.address;
+      document.getElementById("confCustomerPhone").textContent = order.phone;
+      document.getElementById("confPaymentMethod").textContent = order.paymentMethod;
+      document.getElementById("confTotalPaid").textContent = `₹${order.total}`;
+
+      const confItemsList = document.getElementById("confItemsList");
+      if (confItemsList) {
+        confItemsList.innerHTML = order.items.map(item => `
+          <div class="flex items-center justify-between text-xs py-1 border-b border-[#e5ddcf]/40">
+            <div>
+              <span class="font-bold text-[#121110]">${item.name}</span>
+              <span class="text-[#4b4640]">(${item.size}) × ${item.quantity}</span>
+            </div>
+            <span class="font-semibold text-[#875200]">₹${item.price * item.quantity}</span>
+          </div>
+        `).join("");
+      }
+
+      // Clear cart from storage upon successful confirmed order
+      saveCart([]);
+      CHECKOUT_STATE.cart = [];
+
+      const btn = document.getElementById("completeOrderBtn");
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = `<span class="material-symbols-outlined text-[18px] text-[#ffddba]">lock</span><span id="completeOrderBtnText">Pay Securely</span>`;
+      }
+
+      goToScreen('confirmation');
+      showCheckoutToast("Order placed & confirmed successfully!");
+    }
+
+    // Helper: Customer details extractor
+    function getCustomerDetails() {
+      const name = document.getElementById("custName").value.trim() || "Valued Customer";
+      const phone = document.getElementById("custPhone").value.trim() || "+91 98765 43210";
+      const email = (document.getElementById("custEmail") ? document.getElementById("custEmail").value.trim() : "") || "customer@oudandaura.com";
+      const addr1 = document.getElementById("custAddress1").value.trim() || "Grand Boulevard";
+      const addr2 = document.getElementById("custAddress2") ? document.getElementById("custAddress2").value.trim() : "";
+      const city = document.getElementById("custCity").value.trim() || "Mumbai";
+      const state = document.getElementById("custState").value.trim() || "Maharashtra";
+      const pin = document.getElementById("custPincode").value.trim() || "400001";
+      const fullAddress = `${addr1}${addr2 ? ', ' + addr2 : ''}, ${city}, ${state} - ${pin}`;
+
+      return {
+        name,
+        phone,
+        email,
+        address_line1: addr1,
+        address_line2: addr2,
+        city,
+        state,
+        pincode: pin,
+        full_address: fullAddress
+      };
+    }
+
+    // Helper: Pricing details extractor
+    function getPricingDetails() {
+      const subtotal = CHECKOUT_STATE.cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+      const shipping = CHECKOUT_STATE.isLiveSanityTest ? 0 : CHECKOUT_STATE.shippingFee;
+      const final_amount = subtotal + shipping;
+      return {
+        subtotal,
+        discount: 0,
+        shipping,
+        final_amount
+      };
+    }
+
+    // Helper: Rich line items extractor
+    function getRichCartItems() {
+      return CHECKOUT_STATE.cart.map(item => ({
+        id: item.id,
+        name: item.name,
+        size: item.size,
+        price: item.price,
+        quantity: item.quantity,
+        subtotal: item.price * item.quantity,
+        image: item.image || ""
+      }));
+    }
+
+    // Server-Side Payment Verification (HMAC SHA256)
+    async function verifyPaymentOnServer(rzpResponse, internalOrderId, pricing, customer) {
+      const btn = document.getElementById("completeOrderBtn");
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = `<span class="material-symbols-outlined text-[18px] animate-spin">progress_activity</span><span>Verifying HMAC Signature...</span>`;
+      }
+
+      try {
+        const response = await fetch("/api/verify-payment", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            razorpay_order_id: rzpResponse.razorpay_order_id,
+            razorpay_payment_id: rzpResponse.razorpay_payment_id,
+            razorpay_signature: rzpResponse.razorpay_signature,
+            order_details: {
+              orderId: internalOrderId,
+              customer: customer,
+              items: getRichCartItems(),
+              pricing: pricing,
+              total: pricing.final_amount
+            }
+          })
+        });
+
+        const data = await response.json();
+
+        if (data.success && data.verified) {
+          finalizeOrder({
+            orderId: data.order_id || internalOrderId,
+            name: customer.name,
+            phone: customer.phone,
+            email: customer.email,
+            address: customer.full_address,
+            paymentMethod: `Razorpay Online [Payment ID: ${rzpResponse.razorpay_payment_id}]`,
+            total: pricing.final_amount,
+            items: [...CHECKOUT_STATE.cart],
+            razorpayPaymentId: rzpResponse.razorpay_payment_id
+          });
+        } else {
+          if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = `<span class="material-symbols-outlined text-[18px] text-[#ffddba]">lock</span><span>Retry Payment (₹${pricing.final_amount})</span>`;
+          }
+          showCheckoutToast("Verification failed: " + (data.message || "Invalid signature"));
+        }
+      } catch (err) {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = `<span class="material-symbols-outlined text-[18px] text-[#ffddba]">lock</span><span>Retry Payment (₹${pricing.final_amount})</span>`;
+        }
+        showCheckoutToast("Server connection error during signature verification.");
+      }
+    }
+
+    // Modal Helper: Razorpay Credentials Required
+    function showCredentialsModal(customMsg) {
+      const modal = document.getElementById("credentialsNoticeModal");
+      if (modal) {
+        if (customMsg) {
+          const desc = document.getElementById("credentialsModalDesc");
+          if (desc) desc.textContent = customMsg;
+        }
+        modal.classList.remove("hidden");
+      } else {
+        alert(customMsg || "Please configure your Razorpay Test Credentials in .env file.");
+      }
+    }
+
+    function closeCredentialsModal() {
+      const modal = document.getElementById("credentialsNoticeModal");
+      if (modal) modal.classList.add("hidden");
+    }
+
+    // Complete Order Execution
+    async function processPaymentAndComplete() {
+      const btn = document.getElementById("completeOrderBtn");
+      
+      if (CHECKOUT_STATE.cart.length === 0) {
+        showCheckoutToast("Your shopping bag is empty.");
+        return;
+      }
+
+      const customer = getCustomerDetails();
+      const pricing = getPricingDetails();
+      const items = getRichCartItems();
+
+      // OPTION A: Cash on Delivery (COD) - Server-Stored
+      if (CHECKOUT_STATE.selectedPaymentMethod === 'cod') {
+        btn.disabled = true;
+        btn.innerHTML = `<span class="material-symbols-outlined text-[18px] animate-spin">progress_activity</span><span>Securing COD Order...</span>`;
+
+        try {
+          const codResponse = await fetch("/api/create-cod-order", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              amount: pricing.final_amount,
+              pricing: pricing,
+              items: items,
+              customer: customer
+            })
+          });
+
+          const codData = await codResponse.json();
+          if (codData.success) {
+            finalizeOrder({
+              orderId: codData.order_id,
+              name: customer.name,
+              phone: customer.phone,
+              email: customer.email,
+              address: customer.full_address,
+              paymentMethod: "Cash on Delivery (Pending Courier Handover)",
+              total: pricing.final_amount,
+              items: [...CHECKOUT_STATE.cart]
+            });
+          } else {
+            btn.disabled = false;
+            btn.innerHTML = `<span class="material-symbols-outlined text-[18px] text-[#ffddba]">lock</span><span>Complete COD Order</span>`;
+            showCheckoutToast(codData.message || "Failed to book COD order.");
+          }
+        } catch (err) {
+          btn.disabled = false;
+          btn.innerHTML = `<span class="material-symbols-outlined text-[18px] text-[#ffddba]">lock</span><span>Complete COD Order</span>`;
+          showCheckoutToast("Unable to reach server. Please check your connection.");
+        }
+        return;
+      }
+
+      // OPTION B: Razorpay Online Gateway (Server-Side Order + Client Modal + Server HMAC Verification)
+      btn.disabled = true;
+      btn.innerHTML = `<span class="material-symbols-outlined text-[18px] animate-spin">progress_activity</span><span>Connecting to Razorpay...</span>`;
+
+      try {
+        const orderResponse = await fetch("/api/create-order", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            amount: pricing.final_amount,
+            pricing: pricing,
+            items: items,
+            customer: customer
+          })
+        });
+
+        const orderData = await orderResponse.json();
+
+        if (!orderData.success) {
+          btn.disabled = false;
+          btn.innerHTML = `<span class="material-symbols-outlined text-[18px] text-[#ffddba]">lock</span><span>Pay ₹${pricing.final_amount} with Razorpay</span>`;
+          
+          if (orderData.code === "MISSING_CREDENTIALS") {
+            showCredentialsModal(orderData.message);
+          } else {
+            showCheckoutToast(orderData.message || "Failed to initialize Razorpay payment.");
+          }
+          return;
+        }
+
+        // Check if Razorpay JS SDK is loaded
+        if (typeof Razorpay === "undefined") {
+          btn.disabled = false;
+          btn.innerHTML = `<span class="material-symbols-outlined text-[18px] text-[#ffddba]">lock</span><span>Pay ₹${pricing.final_amount} with Razorpay</span>`;
+          showCheckoutToast("Razorpay SDK could not be loaded. Please check your internet connection.");
+          return;
+        }
+
+        // Initialize Razorpay Checkout Modal
+        const rzpOptions = {
+          key: orderData.key_id,
+          amount: orderData.amount,
+          currency: orderData.currency || "INR",
+          name: "Oud & Aura",
+          description: `The Essence of Elegance • #${orderData.internal_order_id}`,
+          order_id: orderData.order_id,
+          prefill: {
+            name: customer.name,
+            contact: customer.phone.replace(/[^0-9]/g, '').slice(-10),
+            email: customer.email
+          },
+          theme: {
+            color: "#121110"
+          },
+          modal: {
+            backdropclose: false,
+            ondismiss: function() {
+              btn.disabled = false;
+              btn.innerHTML = `<span class="material-symbols-outlined text-[18px] text-[#ffddba]">lock</span><span>Pay ₹${pricing.final_amount} with Razorpay</span>`;
+              showCheckoutToast("Payment window closed. Your selections are preserved.");
+              
+              // Log abandonment on server
+              fetch("/api/payment-failed", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ razorpay_order_id: orderData.order_id, reason: "Modal closed by customer" })
+              }).catch(() => {});
+            }
+          },
+          handler: function(response) {
+            // Callback when Razorpay authorizes: Proceed to SERVER-SIDE verification
+            verifyPaymentOnServer(
+              response,
+              orderData.internal_order_id,
+              pricing,
+              customer
+            );
+          }
+        };
+
+        const rzp = new Razorpay(rzpOptions);
+
+        rzp.on("payment.failed", function(failureResp) {
+          btn.disabled = false;
+          btn.innerHTML = `<span class="material-symbols-outlined text-[18px] text-[#ffddba]">lock</span><span>Retry Payment (₹${pricing.final_amount})</span>`;
+          const reason = (failureResp.error && failureResp.error.description) || "Transaction declined";
+          showCheckoutToast(`Payment failed: ${reason}`);
+
+          fetch("/api/payment-failed", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ razorpay_order_id: orderData.order_id, reason: reason })
+          }).catch(() => {});
+        });
+
+        rzp.open();
+
+      } catch (networkErr) {
+        btn.disabled = false;
+        btn.innerHTML = `<span class="material-symbols-outlined text-[18px] text-[#ffddba]">lock</span><span>Pay ₹${pricing.final_amount} with Razorpay</span>`;
+        showCheckoutToast("Unable to reach server. Ensure server.py is running.");
+      }
+    }
+
+    // WhatsApp Direct Integrations
+    function openWhatsAppWithCart() {
+      const cart = CHECKOUT_STATE.cart;
+      if (cart.length === 0) return;
+      const itemsText = cart.map(i => `• ${i.name} (${i.size}) × ${i.quantity} = ₹${i.price * i.quantity}`).join("\n");
+      const subtotal = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+      const total = subtotal + CHECKOUT_STATE.shippingFee;
+      const msg = encodeURIComponent(`Hi Oud & Aura, I would like to order my shopping bag:\n\n${itemsText}\n\nDelivery: ₹${CHECKOUT_STATE.shippingFee === 0 ? 'FREE' : CHECKOUT_STATE.shippingFee}\nEstimated Total: ₹${total}\n\nPlease confirm dispatch details!`);
+      const waNumber = (typeof SITE_CONFIG !== 'undefined' && SITE_CONFIG.whatsappNumber) ? SITE_CONFIG.whatsappNumber : "919819929863";
+      window.open(`https://wa.me/${waNumber}?text=${msg}`, "_blank");
+    }
+
+    function openWhatsAppWithOrderDetails() {
+      const name = document.getElementById("custName").value.trim() || "Customer";
+      const addr1 = document.getElementById("custAddress1").value.trim() || "Address";
+      const city = document.getElementById("custCity").value.trim() || "City";
+      const pin = document.getElementById("custPincode").value.trim() || "Pin";
+      const subtotal = CHECKOUT_STATE.cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+      const total = subtotal + CHECKOUT_STATE.shippingFee;
+
+      const itemsText = CHECKOUT_STATE.cart.map(i => `• ${i.name} (${i.size}) × ${i.quantity} = ₹${i.price * i.quantity}`).join("\n");
+      const msg = encodeURIComponent(`Hi Oud & Aura, I would like to confirm my order via WhatsApp:\n\nName: ${name}\nDelivery: ${addr1}, ${city} - ${pin}\n\n*Items:*\n${itemsText}\n\nTotal: ₹${total}\n\nPlease share payment/UPI confirmation.`);
+      const waNumber = (typeof SITE_CONFIG !== 'undefined' && SITE_CONFIG.whatsappNumber) ? SITE_CONFIG.whatsappNumber : "919819929863";
+      window.open(`https://wa.me/${waNumber}?text=${msg}`, "_blank");
+    }
+
+    function sendReceiptToWhatsApp() {
+      const o = CHECKOUT_STATE.orderData;
+      if (!o) return;
+      const itemsSummary = o.items.map(i => `• ${i.name} (${i.size}) × ${i.quantity} = ₹${i.price * i.quantity}`).join("\n");
+      const msg = encodeURIComponent(`*ORDER CONFIRMATION RECEIPT*\nOrder ID: #${o.orderId}\nCustomer: ${o.name}\nDelivery: ${o.address}\n\n*Ordered Items:*\n${itemsSummary}\n\n*Total:* ₹${o.total} (${o.paymentMethod})\n\nPlease share dispatch tracking when ready. Thank you!`);
+      const waNumber = (typeof SITE_CONFIG !== 'undefined' && SITE_CONFIG.whatsappNumber) ? SITE_CONFIG.whatsappNumber : "919819929863";
+      window.open(`https://wa.me/${waNumber}?text=${msg}`, "_blank");
+    }
+
+    // Toast Helper
+    function showCheckoutToast(text) {
+      const toast = document.getElementById("checkoutToast");
+      const toastText = document.getElementById("checkoutToastText");
+      if (!toast || !toastText) return;
+      toastText.textContent = text;
+      toast.classList.remove("opacity-0", "pointer-events-none");
+      setTimeout(() => {
+        toast.classList.add("opacity-0", "pointer-events-none");
+      }, 2500);
+    }
+
+    // Dynamic Gateway Mode Checker (Live vs Test Mode)
+    async function checkPaymentConfig() {
+      try {
+        const res = await fetch("/api/payment-config");
+        const cfg = await res.json();
+        const modeBadge = document.getElementById("gatewayModeBadge");
+        const sandboxHelper = document.getElementById("sandboxCredentialsHelper");
+        const gatewayName = document.getElementById("gatewayNameText");
+
+        if (cfg.configured && !cfg.test_mode) {
+          // LIVE MODE
+          const noticeBanner = document.getElementById("sandboxNoticeBanner");
+          if (noticeBanner) {
+            noticeBanner.style.display = "none";
+          }
+          if (modeBadge) {
+            modeBadge.className = "px-2 py-0.5 text-[10px] font-bold rounded-full bg-[#25D366]/10 text-[#1b7e3e] border border-[#25D366]/30 flex items-center gap-1";
+            modeBadge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-[#25D366]"></span><span>100% SECURE</span>`;
+          }
+          if (gatewayName) {
+            gatewayName.innerHTML = `<span class="material-symbols-outlined text-[18px] text-[#25D366]">verified_user</span><span><strong>Gateway:</strong> Razorpay Official (Live)</span>`;
+          }
+          if (sandboxHelper) {
+            sandboxHelper.style.display = "none";
+          }
+        }
+      } catch (e) {}
+    }
+
+    // Init on Load
+    document.addEventListener("DOMContentLoaded", () => {
+      syncCartFromStorage();
+      checkPaymentConfig();
+
+      // Configure WhatsApp support header button
+      const headerWa = document.getElementById("headerWhatsAppBtn");
+      if (headerWa && typeof SITE_CONFIG !== 'undefined') {
+        headerWa.href = SITE_CONFIG.getWhatsAppUrl("Hi Oud & Aura, I need assistance with my order checkout.");
+      }
+
+      // Check URL parameters (e.g. ?test=1, ?live_test=1, or ?step=checkout)
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("test") === "1" || params.get("amount") === "1" || params.get("live_test") === "1") {
+        enableLiveSanityTest();
+      }
+
+      const step = params.get("step");
+      if (step && (step === 'checkout' || step === 'payment')) {
+        goToScreen(step);
+      } else if (params.get("test") === "1" || params.get("amount") === "1" || params.get("live_test") === "1") {
+        goToScreen('payment');
+      }
+    });
+  </script>
+</body>
+</html>
