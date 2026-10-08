@@ -156,6 +156,47 @@
           <!-- Populated dynamically via JS -->
         </div>
 
+        <!-- Coupon Code Option Section -->
+        <div id="couponSectionCard" class="rounded-2xl bg-white p-4 sm:p-5 border border-[#e5ddcf]/80 shadow-sm mb-4">
+          <div class="flex items-center justify-between mb-2.5">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-[18px] text-[#875200]">local_offer</span>
+              <span class="text-xs font-bold uppercase tracking-wider text-[#121110]">Have a Coupon Code?</span>
+            </div>
+            <span class="text-[10px] text-[#875200] font-medium bg-[#f5f2eb] px-2 py-0.5 rounded-full border border-[#e5ddcf]/60">Use code: <strong>AURAFAM</strong></span>
+          </div>
+
+          <!-- Unapplied state (Input form) -->
+          <div id="couponInputContainer" class="flex gap-2">
+            <div class="relative flex-1">
+              <input type="text" id="couponCodeInput" placeholder="Enter coupon code (e.g. AURAFAM)" 
+                class="w-full px-3.5 py-2.5 rounded-xl border border-[#e5ddcf] bg-[#fbf9f6] text-xs uppercase font-mono tracking-wider text-[#121110] placeholder:normal-case placeholder:font-sans placeholder:tracking-normal"
+                onkeydown="if(event.key === 'Enter'){ event.preventDefault(); applyCoupon(); }" />
+            </div>
+            <button onclick="applyCoupon()" type="button" 
+              class="px-5 py-2.5 rounded-xl bg-[#121110] hover:bg-[#875200] text-white text-xs font-semibold uppercase tracking-wider transition-all cursor-pointer shrink-0">
+              Apply
+            </button>
+          </div>
+
+          <!-- Applied state banner (hidden by default) -->
+          <div id="couponAppliedBadge" class="hidden p-3 rounded-xl bg-[#25D366]/10 border border-[#25D366]/30 items-center justify-between gap-3">
+            <div class="flex items-center gap-2 min-w-0">
+              <span class="material-symbols-outlined text-[18px] text-[#1b7e3e]">check_circle</span>
+              <div class="min-w-0">
+                <span class="text-xs font-bold text-[#1b7e3e] tracking-wide" id="couponAppliedCodeText">AURAFAM Applied</span>
+                <p class="text-[10px] text-[#2e6930]">Free Courier Delivery unlocked!</p>
+              </div>
+            </div>
+            <button onclick="removeCoupon()" type="button" class="text-xs text-red-600 hover:text-red-800 font-semibold uppercase tracking-wider hover:underline flex items-center gap-0.5 cursor-pointer shrink-0" title="Remove coupon">
+              <span class="material-symbols-outlined text-[15px]">close</span>
+              <span>Remove</span>
+            </button>
+          </div>
+
+          <p id="couponFeedbackMessage" class="hidden text-[11px] mt-2 font-medium"></p>
+        </div>
+
         <!-- Order Summary Calculation Card -->
         <div id="cartSummaryCard" class="rounded-2xl bg-white p-5 border border-[#e5ddcf]/80 shadow-sm space-y-3 mb-6">
           <h3 class="font-serif text-lg text-[#121110] font-semibold border-b border-[#e5ddcf]/60 pb-2">Order Summary</h3>
@@ -168,6 +209,15 @@
           <div class="flex justify-between text-xs text-[#4b4640]">
             <span>Insured Courier</span>
             <span id="cartShippingText" class="font-medium text-[#875200]">₹60</span>
+          </div>
+
+          <!-- Coupon Free Shipping Row -->
+          <div id="cartCouponDiscountRow" class="hidden justify-between text-xs text-[#1b7e3e]">
+            <span class="flex items-center gap-1">
+              <span class="material-symbols-outlined text-[14px]">local_offer</span>
+              <span id="cartCouponLabel">Coupon (AURAFAM)</span>
+            </span>
+            <span id="cartCouponDiscountText" class="font-semibold">-₹60 (Free Shipping)</span>
           </div>
 
           <div class="flex justify-between text-xs text-[#4b4640]">
@@ -447,6 +497,10 @@
               <span class="text-[#4b4640]">Contact Phone</span>
               <span id="confCustomerPhone" class="font-semibold text-[#121110]">-</span>
             </div>
+            <div id="confCouponRow" class="hidden justify-between py-1 border-b border-[#e5ddcf]/40">
+              <span class="text-[#4b4640]">Coupon Applied</span>
+              <span id="confCouponCode" class="font-semibold text-[#1b7e3e]">-</span>
+            </div>
             <div class="flex justify-between py-1 border-b border-[#e5ddcf]/40">
               <span class="text-[#4b4640]">Payment Method</span>
               <span id="confPaymentMethod" class="font-semibold text-[#875200]">-</span>
@@ -521,6 +575,7 @@
     const CHECKOUT_STATE = {
       cart: [],
       shippingFee: 60,
+      appliedCoupon: null, // { code: 'AURAFAM', type: 'free_shipping', discount: 60 }
       selectedPaymentMethod: "upi",
       orderData: null
     };
@@ -569,15 +624,79 @@
       refreshCheckoutCalculations();
     }
 
+    // Coupon Engine
+    function applyCoupon() {
+      const input = document.getElementById("couponCodeInput");
+      const feedback = document.getElementById("couponFeedbackMessage");
+      const rawCode = input ? input.value : "";
+      const code = rawCode.trim().toUpperCase();
+
+      if (!code) {
+        showCheckoutToast("Please enter a coupon code");
+        if (feedback) {
+          feedback.textContent = "Please enter a coupon code.";
+          feedback.className = "text-[11px] mt-2 font-medium text-red-600 block";
+        }
+        return;
+      }
+
+      if (code === "AURAFAM") {
+        CHECKOUT_STATE.appliedCoupon = {
+          code: "AURAFAM",
+          type: "free_shipping",
+          discount: 60,
+          name: "Aura Family Free Delivery"
+        };
+        try {
+          sessionStorage.setItem("oud_aura_coupon", "AURAFAM");
+        } catch (e) {}
+
+        if (feedback) {
+          feedback.textContent = "✓ Code AURAFAM applied successfully! Free shipping unlocked.";
+          feedback.className = "text-[11px] mt-2 font-medium text-[#1b7e3e] block";
+        }
+        showCheckoutToast("Coupon AURAFAM applied — Free Shipping unlocked!");
+        refreshCheckoutCalculations();
+      } else {
+        if (feedback) {
+          feedback.textContent = `Coupon code "${code}" is invalid. Use code AURAFAM for free shipping.`;
+          feedback.className = "text-[11px] mt-2 font-medium text-red-600 block";
+        }
+        showCheckoutToast("Invalid coupon code. Try AURAFAM");
+      }
+    }
+
+    function removeCoupon() {
+      CHECKOUT_STATE.appliedCoupon = null;
+      try {
+        sessionStorage.removeItem("oud_aura_coupon");
+      } catch (e) {}
+
+      const input = document.getElementById("couponCodeInput");
+      if (input) input.value = "";
+      const feedback = document.getElementById("couponFeedbackMessage");
+      if (feedback) {
+        feedback.textContent = "";
+        feedback.className = "hidden text-[11px] mt-2 font-medium";
+      }
+
+      showCheckoutToast("Coupon removed");
+      refreshCheckoutCalculations();
+    }
+
     // Calculations Engine
     function refreshCheckoutCalculations() {
       const cart = CHECKOUT_STATE.cart;
       const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
       const subtotal = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
 
-      // Shipping Rule: Free over 999, else 60
+      // Shipping Rule: Free over 999 or when coupon AURAFAM is active
       const freeThreshold = (typeof SITE_CONFIG !== 'undefined' && SITE_CONFIG.freeShippingThreshold) ? SITE_CONFIG.freeShippingThreshold : 999;
-      let shipping = (subtotal >= freeThreshold || cart.length === 0) ? 0 : 60;
+      const qualifiesByThreshold = (subtotal >= freeThreshold && cart.length > 0);
+      const qualifiesByCoupon = Boolean(CHECKOUT_STATE.appliedCoupon && CHECKOUT_STATE.appliedCoupon.code === "AURAFAM" && cart.length > 0);
+      const isFreeShipping = qualifiesByThreshold || qualifiesByCoupon || cart.length === 0;
+
+      let shipping = isFreeShipping ? 0 : 60;
       CHECKOUT_STATE.shippingFee = shipping;
       const grandTotal = subtotal + shipping;
 
@@ -589,14 +708,50 @@
       const shippingMeter = document.getElementById("shippingMeterText");
       const progressBar = document.getElementById("shippingProgressBar");
       if (shippingMeter && progressBar) {
-        if (subtotal >= freeThreshold) {
+        if (qualifiesByCoupon) {
+          shippingMeter.innerHTML = `<span class="text-[#1b7e3e] font-bold">✨ AURAFAM Coupon Active:</span> <strong class="text-[#121110]">FREE Shipping Unlocked!</strong>`;
+          progressBar.style.width = "100%";
+        } else if (subtotal >= freeThreshold) {
           shippingMeter.innerHTML = `<span class="text-[#875200] font-bold">🎉 Congratulations!</span> You qualify for <strong class="text-[#121110]">FREE Shipping</strong>`;
           progressBar.style.width = "100%";
         } else {
           const remaining = freeThreshold - subtotal;
-          shippingMeter.innerHTML = `Add <strong class="text-[#875200]">₹${remaining}</strong> more for <strong>FREE Shipping</strong>`;
+          shippingMeter.innerHTML = `Add <strong class="text-[#875200]">₹${remaining}</strong> more for <strong>FREE Shipping</strong> (or use code <strong>AURAFAM</strong>)`;
           const pct = Math.min(100, Math.round((subtotal / freeThreshold) * 100));
           progressBar.style.width = `${pct}%`;
+        }
+      }
+
+      // Coupon UI State toggle
+      const couponInputBox = document.getElementById("couponInputContainer");
+      const couponBadge = document.getElementById("couponAppliedBadge");
+      const couponDiscountRow = document.getElementById("cartCouponDiscountRow");
+      const couponDiscountText = document.getElementById("cartCouponDiscountText");
+      const couponCodeInput = document.getElementById("couponCodeInput");
+
+      if (CHECKOUT_STATE.appliedCoupon && CHECKOUT_STATE.appliedCoupon.code === "AURAFAM") {
+        if (couponInputBox) couponInputBox.classList.add("hidden");
+        if (couponBadge) {
+          couponBadge.classList.remove("hidden");
+          couponBadge.classList.add("flex");
+        }
+        if (couponDiscountRow) {
+          couponDiscountRow.classList.remove("hidden");
+          couponDiscountRow.classList.add("flex");
+          if (couponDiscountText) {
+            couponDiscountText.textContent = qualifiesByThreshold ? "Free Shipping Active" : "-₹60 (Free Shipping)";
+          }
+        }
+        if (couponCodeInput) couponCodeInput.value = "AURAFAM";
+      } else {
+        if (couponInputBox) couponInputBox.classList.remove("hidden");
+        if (couponBadge) {
+          couponBadge.classList.add("hidden");
+          couponBadge.classList.remove("flex");
+        }
+        if (couponDiscountRow) {
+          couponDiscountRow.classList.add("hidden");
+          couponDiscountRow.classList.remove("flex");
         }
       }
 
@@ -605,13 +760,29 @@
       if (subtotalText) subtotalText.textContent = `₹${subtotal}`;
 
       const shippingText = document.getElementById("cartShippingText");
-      if (shippingText) shippingText.textContent = shipping === 0 ? "FREE" : `₹${shipping}`;
+      if (shippingText) {
+        if (qualifiesByCoupon && !qualifiesByThreshold) {
+          shippingText.innerHTML = `<span class="line-through text-[#4b4640]/70 mr-1.5 font-normal">₹60</span><span class="text-[#1b7e3e] font-bold">FREE</span>`;
+        } else if (shipping === 0) {
+          shippingText.textContent = "FREE";
+        } else {
+          shippingText.textContent = `₹${shipping}`;
+        }
+      }
 
       const totalText = document.getElementById("cartTotalText");
       if (totalText) totalText.textContent = `₹${grandTotal}`;
 
       const courierFee = document.getElementById("checkoutCourierFee");
-      if (courierFee) courierFee.textContent = shipping === 0 ? "FREE" : `₹${shipping}`;
+      if (courierFee) {
+        if (qualifiesByCoupon && !qualifiesByThreshold) {
+          courierFee.innerHTML = `<span class="line-through text-[#4b4640]/70 text-[11px] mr-1 font-normal">₹60</span><span class="text-[#1b7e3e] font-bold">FREE (AURAFAM)</span>`;
+        } else if (shipping === 0) {
+          courierFee.textContent = "FREE";
+        } else {
+          courierFee.textContent = `₹${shipping}`;
+        }
+      }
 
       const paymentTotal = document.getElementById("paymentTotalDisplay");
       if (paymentTotal) paymentTotal.textContent = `₹${grandTotal}`;
@@ -625,6 +796,7 @@
       // Render Item List
       const listEl = document.getElementById("cartItemsList");
       const summaryCard = document.getElementById("cartSummaryCard");
+      const couponCard = document.getElementById("couponSectionCard");
       const actionBtns = document.getElementById("cartActionButtons");
 
       if (!listEl) return;
@@ -641,11 +813,13 @@
           </div>
         `;
         if (summaryCard) summaryCard.style.display = "none";
+        if (couponCard) couponCard.style.display = "none";
         if (actionBtns) actionBtns.style.display = "none";
         return;
       }
 
       if (summaryCard) summaryCard.style.display = "block";
+      if (couponCard) couponCard.style.display = "block";
       if (actionBtns) actionBtns.style.display = "block";
 
       listEl.innerHTML = cart.map((item, idx) => `
@@ -738,6 +912,20 @@
       document.getElementById("confPaymentMethod").textContent = order.paymentMethod;
       document.getElementById("confTotalPaid").textContent = `₹${order.total}`;
 
+      // Coupon row in confirmation card
+      const confCouponRow = document.getElementById("confCouponRow");
+      const confCouponCode = document.getElementById("confCouponCode");
+      if (confCouponRow && confCouponCode) {
+        if (order.coupon) {
+          confCouponRow.classList.remove("hidden");
+          confCouponRow.classList.add("flex");
+          confCouponCode.textContent = `${order.coupon} (Free Shipping)`;
+        } else {
+          confCouponRow.classList.add("hidden");
+          confCouponRow.classList.remove("flex");
+        }
+      }
+
       const confItemsList = document.getElementById("confItemsList");
       if (confItemsList) {
         confItemsList.innerHTML = order.items.map(item => `
@@ -751,9 +939,12 @@
         `).join("");
       }
 
-      // Clear cart from storage upon successful confirmed order
+      // Clear cart and stored coupon upon successful confirmed order
       saveCart([]);
       CHECKOUT_STATE.cart = [];
+      try {
+        sessionStorage.removeItem("oud_aura_coupon");
+      } catch (e) {}
 
       const btn = document.getElementById("completeOrderBtn");
       if (btn) {
@@ -804,10 +995,13 @@
     function getPricingDetails() {
       const subtotal = CHECKOUT_STATE.cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
       const shipping = CHECKOUT_STATE.shippingFee;
+      const coupon = CHECKOUT_STATE.appliedCoupon ? CHECKOUT_STATE.appliedCoupon.code : null;
+      const discount = (coupon === "AURAFAM" && subtotal < 999) ? 60 : 0;
       const final_amount = subtotal + shipping;
       return {
         subtotal,
-        discount: 0,
+        discount,
+        coupon,
         shipping,
         final_amount
       };
@@ -825,6 +1019,7 @@
         image: item.image || ""
       }));
     }
+
     // Complete Order Execution (Direct Cloud / Razorpay Standard Integration)
     async function processPaymentAndComplete() {
       const btn = document.getElementById("completeOrderBtn");
@@ -847,6 +1042,7 @@
           phone: customer.phone,
           email: customer.email,
           address: customer.full_address,
+          coupon: pricing.coupon,
           paymentMethod: "Cash on Delivery (Pending Courier Handover)",
           total: pricing.final_amount,
           items: [...CHECKOUT_STATE.cart]
@@ -887,6 +1083,7 @@
           customer_phone: customer.phone,
           customer_email: customer.email,
           delivery_address: customer.full_address,
+          coupon_code: pricing.coupon || "NONE",
           ordered_items: items.map(i => `${i.name} (${i.size}) x${i.quantity}`).join("; ")
         },
         theme: {
@@ -909,6 +1106,7 @@
             phone: customer.phone,
             email: customer.email,
             address: customer.full_address,
+            coupon: pricing.coupon,
             paymentMethod: `Razorpay Online [Payment ID: ${paymentId}]`,
             total: pricing.final_amount,
             items: [...CHECKOUT_STATE.cart],
@@ -943,7 +1141,8 @@
       const itemsText = cart.map(i => `• ${i.name} (${i.size}) × ${i.quantity} = ₹${i.price * i.quantity}`).join("\n");
       const subtotal = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
       const total = subtotal + CHECKOUT_STATE.shippingFee;
-      const msg = encodeURIComponent(`Hi Oud & Aura, I would like to order my shopping bag:\n\n${itemsText}\n\nDelivery: ₹${CHECKOUT_STATE.shippingFee === 0 ? 'FREE' : CHECKOUT_STATE.shippingFee}\nEstimated Total: ₹${total}\n\nPlease confirm dispatch details!`);
+      const couponInfo = CHECKOUT_STATE.appliedCoupon ? `\nCoupon: ${CHECKOUT_STATE.appliedCoupon.code} (Free Shipping Applied)` : "";
+      const msg = encodeURIComponent(`Hi Oud & Aura, I would like to order my shopping bag:\n\n${itemsText}\n\nDelivery: ₹${CHECKOUT_STATE.shippingFee === 0 ? 'FREE' : CHECKOUT_STATE.shippingFee}${couponInfo}\nEstimated Total: ₹${total}\n\nPlease confirm dispatch details!`);
       const waNumber = (typeof SITE_CONFIG !== 'undefined' && SITE_CONFIG.whatsappNumber) ? SITE_CONFIG.whatsappNumber : "919819929863";
       window.open(`https://wa.me/${waNumber}?text=${msg}`, "_blank");
     }
@@ -955,9 +1154,10 @@
       const pin = document.getElementById("custPincode").value.trim() || "Pin";
       const subtotal = CHECKOUT_STATE.cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
       const total = subtotal + CHECKOUT_STATE.shippingFee;
+      const couponInfo = CHECKOUT_STATE.appliedCoupon ? `\nCoupon: ${CHECKOUT_STATE.appliedCoupon.code} (Free Shipping Applied)` : "";
 
       const itemsText = CHECKOUT_STATE.cart.map(i => `• ${i.name} (${i.size}) × ${i.quantity} = ₹${i.price * i.quantity}`).join("\n");
-      const msg = encodeURIComponent(`Hi Oud & Aura, I would like to confirm my order via WhatsApp:\n\nName: ${name}\nDelivery: ${addr1}, ${city} - ${pin}\n\n*Items:*\n${itemsText}\n\nTotal: ₹${total}\n\nPlease share payment/UPI confirmation.`);
+      const msg = encodeURIComponent(`Hi Oud & Aura, I would like to confirm my order via WhatsApp:\n\nName: ${name}\nDelivery: ${addr1}, ${city} - ${pin}\n\n*Items:*\n${itemsText}\n\nDelivery: ₹${CHECKOUT_STATE.shippingFee === 0 ? 'FREE' : CHECKOUT_STATE.shippingFee}${couponInfo}\nTotal: ₹${total}\n\nPlease share payment/UPI confirmation.`);
       const waNumber = (typeof SITE_CONFIG !== 'undefined' && SITE_CONFIG.whatsappNumber) ? SITE_CONFIG.whatsappNumber : "919819929863";
       window.open(`https://wa.me/${waNumber}?text=${msg}`, "_blank");
     }
@@ -966,7 +1166,8 @@
       const o = CHECKOUT_STATE.orderData;
       if (!o) return;
       const itemsSummary = o.items.map(i => `• ${i.name} (${i.size}) × ${i.quantity} = ₹${i.price * i.quantity}`).join("\n");
-      const msg = encodeURIComponent(`*ORDER CONFIRMATION RECEIPT*\nOrder ID: #${o.orderId}\nCustomer: ${o.name}\nDelivery: ${o.address}\n\n*Ordered Items:*\n${itemsSummary}\n\n*Total:* ₹${o.total} (${o.paymentMethod})\n\nPlease share dispatch tracking when ready. Thank you!`);
+      const couponLine = o.coupon ? `Coupon: ${o.coupon} (Free Shipping)\n` : "";
+      const msg = encodeURIComponent(`*ORDER CONFIRMATION RECEIPT*\nOrder ID: #${o.orderId}\nCustomer: ${o.name}\nDelivery: ${o.address}\n\n*Ordered Items:*\n${itemsSummary}\n\n${couponLine}*Total:* ₹${o.total} (${o.paymentMethod})\n\nPlease share dispatch tracking when ready. Thank you!`);
       const waNumber = (typeof SITE_CONFIG !== 'undefined' && SITE_CONFIG.whatsappNumber) ? SITE_CONFIG.whatsappNumber : "919819929863";
       window.open(`https://wa.me/${waNumber}?text=${msg}`, "_blank");
     }
@@ -994,6 +1195,19 @@
 
     // Init on Load
     document.addEventListener("DOMContentLoaded", () => {
+      // Restore saved coupon if available
+      try {
+        const savedCoupon = sessionStorage.getItem("oud_aura_coupon");
+        if (savedCoupon === "AURAFAM") {
+          CHECKOUT_STATE.appliedCoupon = {
+            code: "AURAFAM",
+            type: "free_shipping",
+            discount: 60,
+            name: "Aura Family Free Delivery"
+          };
+        }
+      } catch (e) {}
+
       syncCartFromStorage();
       checkPaymentConfig();
 
