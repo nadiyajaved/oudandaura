@@ -177,7 +177,7 @@ const PRODUCTS = [
     tag: "Woody Spicy",
     shortDescription: "A bold, warm and seductive fragrance with a rich, sweet and sophisticated character.",
     fullDescription: "A confident and captivating fragrance designed for those who enjoy a bold and luxurious scent. Its warm, sweet and inviting character creates a smooth, memorable aura that works especially well for evenings, special occasions and cooler weather.",
-    images: ["wanted1.jpg", "wanted2.jpg", "wanted3.jpg"],
+    images: ["wanted2.jpg", "wanted1.jpg", "wanted3.jpg"],
     notes: {
       top: "Red Ginger",
       heart: "Woodsy Notes",
