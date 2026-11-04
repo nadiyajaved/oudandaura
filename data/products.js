@@ -238,6 +238,37 @@ const PRODUCTS = [
     sizes: [
       { size: "4 × 20 ml", price: 777, originalPrice: 800, label: "Complete Set", isDefault: true }
     ]
+  },
+  {
+    id: "arabiantouch_gold",
+    name: "Arabian Touch Gold",
+    category: "perfumes",
+    price: 1199,
+    originalPrice: 1499,
+    size: "50 ml",
+    concentration: "Parfum",
+    badge: "Best Seller",
+    isBestSeller: true,
+    inStock: true,
+    tag: "Arabian Tonka",
+    shortDescription: "Intense sweetness, enormous projection and rich Middle Eastern profile.",
+    fullDescription: "Powerful, ultra-sweet amber woody fragrance that blends rich oud and warm tonka bean with sugary cane and spicy saffron.",
+    images: [
+      "arabiantouchgold1.png",
+      "arabiantouch2.jpg",
+      "arabiantouch3.jpg"
+    ],
+    notes: {
+      top: "Saffron, Bergamot",
+      heart: "Agarwood (Oud), Bulgarian Rose",
+      base: "Tonka Bean, Sugar Cane, Amber, White Musk, Oakmoss"
+    },
+    sizes: [
+      { size: "50 ml", price: 1199, originalPrice: 1499, label: "50 ml Bottle", isDefault: true },
+      { size: "100 ml", price: 2199, originalPrice: 2499, label: "100 ml Bottle", isDefault: false },
+      { size: "30 ml", price: 599, originalPrice: 799, label: "30 ml Bottle", isDefault: false },
+      { size: "20 ml Vial", price: 399, originalPrice: 599, label: "Pocket Vial", isDefault: false }
+    ]
   }
 ];
 

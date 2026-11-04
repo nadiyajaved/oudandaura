@@ -220,7 +220,7 @@ function renderCartDrawer() {
 
   if (whatsappCheckoutBtn) {
     whatsappCheckoutBtn.classList.remove("opacity-50", "pointer-events-none");
-    
+
     // Construct summarized WhatsApp order message
     let orderLines = cart.map(item => `- ${item.name} (${item.size}) x${item.quantity} : ${SITE_CONFIG.currencySymbol}${item.price * item.quantity}`).join("\n");
     let fullMsg = `Hi Oud & Aura, I would like to place an order:\n\n${orderLines}\n\nTotal: ${SITE_CONFIG.currencySymbol}${subtotal}\n\nPlease confirm availability and payment details.`;
@@ -268,13 +268,13 @@ function setupSearchModal() {
   function renderSearchResults(query) {
     if (!resultsContainer) return;
     const all = typeof getAllProducts === "function" ? getAllProducts() : [];
-    const filtered = query 
-      ? all.filter(p => 
-          p.name.toLowerCase().includes(query.toLowerCase()) || 
-          p.category.toLowerCase().includes(query.toLowerCase()) ||
-          p.shortDescription.toLowerCase().includes(query.toLowerCase()) ||
-          (p.notes && (p.notes.top + p.notes.heart + p.notes.base).toLowerCase().includes(query.toLowerCase()))
-        )
+    const filtered = query
+      ? all.filter(p =>
+        p.name.toLowerCase().includes(query.toLowerCase()) ||
+        p.category.toLowerCase().includes(query.toLowerCase()) ||
+        p.shortDescription.toLowerCase().includes(query.toLowerCase()) ||
+        (p.notes && (p.notes.top + p.notes.heart + p.notes.base).toLowerCase().includes(query.toLowerCase()))
+      )
       : all.slice(0, 4); // show initial 4 suggestions
 
     if (filtered.length === 0) {
