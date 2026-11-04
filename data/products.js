@@ -97,7 +97,6 @@ const PRODUCTS = [
     fullDescription: "Powerful, ultra-sweet amber woody fragrance that blends rich oud and warm tonka bean with sugary cane and spicy saffron.",
     images: [
       "arabiantouchgold1.png",
-      "arabiantouch2.jpg",
       "arabiantouch3.jpg"
     ],
     notes: {
