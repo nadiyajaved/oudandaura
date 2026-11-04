@@ -82,30 +82,34 @@ const PRODUCTS = [
     ]
   },
   {
-    id: "hawaz_rush",
-    name: "Hawaz Rush",
+    id: "arabiantouch_gold",
+    name: "Arabian Touch Gold",
     category: "perfumes",
-    price: 549,
-    originalPrice: 799,
+    price: 1199,
+    originalPrice: 1499,
     size: "50 ml",
     concentration: "Parfum",
-    badge: "Best Seller",
+    badge: "Premium collection",
     isBestSeller: true,
     inStock: true,
-    tag: "Fresh Aquatic",
-    shortDescription: "A fresh, aquatic and masculine fragrance with a vibrant, energetic character.",
-    fullDescription: "Refreshing and confident fragrance that combines a clean aquatic feel with a smooth, modern character. It is lively, bold, and effortlessly appealing, making it ideal for everyday wear as well as special occasions.",
-    images: ["hawazrush1.jpg", "hawazrush2.jpg", "hawazrush3.jpg"],
+    tag: "Arabian Tonka",
+    shortDescription: "Intense sweetness, enormous projection and rich Middle Eastern profile.",
+    fullDescription: "Powerful, ultra-sweet amber woody fragrance that blends rich oud and warm tonka bean with sugary cane and spicy saffron.",
+    images: [
+      "arabiantouchgold1.png",
+      "arabiantouch2.jpg",
+      "arabiantouch3.jpg"
+    ],
     notes: {
-      top: "Lemon, Apple, Cinnamon, Bergamot",
-      heart: "Watery Notes, Lavender, Violet, Cardamom",
-      base: "Musk, Amber, Sandalwood, Cedarwood, Moss"
+      top: "Saffron, Bergamot",
+      heart: "Agarwood (Oud), Bulgarian Rose",
+      base: "Tonka Bean, Sugar Cane, Amber, White Musk, Oakmoss"
     },
     sizes: [
-      { size: "50 ml", price: 549, originalPrice: 799, label: "50 ml Bottle", isDefault: true },
-      { size: "100 ml", price: 999, originalPrice: 1399, label: "100 ml Bottle", isDefault: false },
-      { size: "30 ml", price: 299, originalPrice: 449, label: "30 ml Bottle", isDefault: false },
-      { size: "20 ml Vial", price: 199, originalPrice: 299, label: "Pocket Vial", isDefault: false }
+      { size: "50 ml", price: 1199, originalPrice: 1499, label: "50 ml Bottle", isDefault: true },
+      { size: "100 ml", price: 2199, originalPrice: 2499, label: "100 ml Bottle", isDefault: false },
+      { size: "30 ml", price: 599, originalPrice: 799, label: "30 ml Bottle", isDefault: false },
+      { size: "20 ml Vial", price: 399, originalPrice: 599, label: "Pocket Vial", isDefault: false }
     ]
   },
   {
@@ -240,34 +244,30 @@ const PRODUCTS = [
     ]
   },
   {
-    id: "arabiantouch_gold",
-    name: "Arabian Touch Gold",
+    id: "hawaz_rush",
+    name: "Hawaz Rush",
     category: "perfumes",
-    price: 1199,
-    originalPrice: 1499,
+    price: 549,
+    originalPrice: 799,
     size: "50 ml",
     concentration: "Parfum",
-    badge: "Best Seller",
-    isBestSeller: true,
+    badge: "",
+    isBestSeller: false,
     inStock: true,
-    tag: "Arabian Tonka",
-    shortDescription: "Intense sweetness, enormous projection and rich Middle Eastern profile.",
-    fullDescription: "Powerful, ultra-sweet amber woody fragrance that blends rich oud and warm tonka bean with sugary cane and spicy saffron.",
-    images: [
-      "arabiantouchgold1.png",
-      "arabiantouch2.jpg",
-      "arabiantouch3.jpg"
-    ],
+    tag: "Fresh Aquatic",
+    shortDescription: "A fresh, aquatic and masculine fragrance with a vibrant, energetic character.",
+    fullDescription: "Refreshing and confident fragrance that combines a clean aquatic feel with a smooth, modern character. It is lively, bold, and effortlessly appealing, making it ideal for everyday wear as well as special occasions.",
+    images: ["hawazrush1.jpg", "hawazrush2.jpg", "hawazrush3.jpg"],
     notes: {
-      top: "Saffron, Bergamot",
-      heart: "Agarwood (Oud), Bulgarian Rose",
-      base: "Tonka Bean, Sugar Cane, Amber, White Musk, Oakmoss"
+      top: "Lemon, Apple, Cinnamon, Bergamot",
+      heart: "Watery Notes, Lavender, Violet, Cardamom",
+      base: "Musk, Amber, Sandalwood, Cedarwood, Moss"
     },
     sizes: [
-      { size: "50 ml", price: 1199, originalPrice: 1499, label: "50 ml Bottle", isDefault: true },
-      { size: "100 ml", price: 2199, originalPrice: 2499, label: "100 ml Bottle", isDefault: false },
-      { size: "30 ml", price: 599, originalPrice: 799, label: "30 ml Bottle", isDefault: false },
-      { size: "20 ml Vial", price: 399, originalPrice: 599, label: "Pocket Vial", isDefault: false }
+      { size: "50 ml", price: 549, originalPrice: 799, label: "50 ml Bottle", isDefault: true },
+      { size: "100 ml", price: 999, originalPrice: 1399, label: "100 ml Bottle", isDefault: false },
+      { size: "30 ml", price: 299, originalPrice: 449, label: "30 ml Bottle", isDefault: false },
+      { size: "20 ml Vial", price: 199, originalPrice: 299, label: "Pocket Vial", isDefault: false }
     ]
   }
 ];
