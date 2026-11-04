@@ -37,8 +37,8 @@ const PRODUCTS = [
     tag: "Arabian Tonka",
     shortDescription: "Intense sweetness, enormous projection and rich Middle Eastern profile.",
     fullDescription: " Powerful, ultra-sweet amber woody fragrance that blends rich oud and warm tonka bean with sugary cane and spicy saffron",
-    images: ["arabiantouch1.jpg",
-      "arabiantouch2.jpg",
+    images: ["arabiantouch2.jpg",
+      "arabiantouch1.jpg",
       "arabiantouch3.jpg"],
     notes: {
       top: "Saffron, Bergamot",
@@ -66,8 +66,8 @@ const PRODUCTS = [
     tag: "Woody Musk",
     shortDescription: "A smooth, woody fragrance with creamy sandalwood, warm cedarwood, and a subtle earthy touch.",
     fullDescription: "This woody fragrance is known for its smooth, creamy sandalwood character. It blends sandalwood, cedarwood, and cypress for a warm, elegant, calming, and subtly earthy scent.",
-    images: ["TamD'OR1.jpg",
-      "TamD'OR2.jpg",
+    images: ["TamD'OR2.jpg",
+      "TamD'OR1.jpg",
       "TamD'OR3.jpg"],
     notes: {
       top: "Cypress, Myrtle, Italian Cypress",
@@ -150,7 +150,7 @@ const PRODUCTS = [
     tag: "Amber Gourmand",
     shortDescription: "A warm, rich and addictive fragrance with a cozy, sweet and sophisticated character.",
     fullDescription: "Luxurious and inviting fragrance with a warm, indulgent character. It feels rich, smooth and comforting, creating an elegant aura that is perfect for evenings, special occasions and cooler weather. Its deep gourmand style makes it bold, memorable and effortlessly captivating.",
-    images: ["qahwaroyal1.jpg", "qahwaroyal2.jpg", "qahwaroyal3.jpg"],
+    images: ["qahwaroyal2.jpg", "qahwaroyal1.jpg", "qahwaroyal3.jpg"],
     notes: {
       top: "Ginger, Cinnamon, Cardamom",
       heart: "Praline, Candied Fruits, White Flowers",
@@ -204,7 +204,7 @@ const PRODUCTS = [
     tag: "Oriental, Woody, and Spicy",
     shortDescription: "A rich, deep and traditional oud fragrance with a warm, earthy and luxurious character.",
     fullDescription: "Kashmiri Oud Parfum captures the timeless depth and richness of traditional Himalayan and Kashmiri oud in an elegant spray form. Its warm, woody character creates a sophisticated, enduring presence, blending precious saffron, velvety rose, deep agarwood, and grounding amber musk.",
-    images: ["kashperfume1.jpg", "kashperfume2.jpg", "kashperfume3.jpg"],
+    images: ["kashperfume2.jpg", "kashperfume1.jpg", "kashperfume3.jpg"],
     notes: {
       top: "Spicy",
       heart: "Floral, Spicy Floral",
@@ -311,7 +311,7 @@ const PRODUCTS = [
     tag: "Fresh Aquatic",
     shortDescription: "A fresh, aquatic and masculine fragrance with a vibrant, energetic character.",
     fullDescription: "Refreshing and confident fragrance that combines a clean aquatic feel with a smooth, modern character. It is lively, bold, and effortlessly appealing, making it ideal for everyday wear as well as special occasions.",
-    images: ["hawazrush1.jpg", "hawazrush2.jpg", "hawazrush3.jpg"],
+    images: ["hawazrush2.jpg", "hawazrush1.jpg", "hawazrush3.jpg"],
     notes: {
       top: "Lemon, Apple, Cinnamon, Bergamot",
       heart: "Watery Notes, Lavender, Violet, Cardamom",
