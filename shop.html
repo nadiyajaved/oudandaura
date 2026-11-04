@@ -417,7 +417,7 @@
     document.addEventListener("DOMContentLoaded", () => {
       // Set allCount
       const allCountEl = document.getElementById("allCount");
-      if (allCountEl) allCountEl.textContent = PRODUCTS.length;
+      if (allCountEl) allCountEl.textContent = (typeof getAllProducts === 'function' ? getAllProducts() : PRODUCTS).length;
 
       // Check URL query for default category
       const urlParams = new URLSearchParams(window.location.search);

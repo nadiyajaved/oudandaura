@@ -25,6 +25,11 @@ function saveCart(cart) {
 }
 
 function addToCart(productId, size, price, quantity = 1) {
+  const product = typeof getProductById === "function" ? getProductById(productId) : null;
+  if (product && product.inStock === false) {
+    showToast(`${product.name} is currently out of stock`);
+    return;
+  }
   const cart = getCart();
   const existingIndex = cart.findIndex(item => item.id === productId && item.size === size);
   if (existingIndex > -1) {

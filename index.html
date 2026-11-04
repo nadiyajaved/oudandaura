@@ -617,7 +617,7 @@
 
       // 2. Render Featured Collection Items
       const featuredList = document.getElementById("featuredCatalogueList");
-      const catalogueItems = PRODUCTS.filter(p => !p.isBestSeller).concat(PRODUCTS.filter(p => p.isBestSeller)).slice(0, 3);
+      const allProds = typeof getAllProducts === 'function' ? getAllProducts() : PRODUCTS; const catalogueItems = allProds.filter(p => !p.isBestSeller).concat(allProds.filter(p => p.isBestSeller)).slice(0, 3);
       if (featuredList && catalogueItems.length > 0) {
         featuredList.innerHTML = catalogueItems.map(p => `
           <div class="flex items-center p-3 rounded-lg bg-surface shadow-sm gap-3 border border-[#E5DDCF]/50">

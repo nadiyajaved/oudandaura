@@ -1011,10 +1011,47 @@
       window.open(targetUrl, "_blank");
     }
 
-    // Export CSV
+    // Export CSV (Client-side offline & cloud compatible)
     function exportOrdersCsv() {
-      if (!CURRENT_ADMIN_KEY) return;
-      window.location.href = `/api/admin/export?key=${encodeURIComponent(CURRENT_ADMIN_KEY)}`;
+      if (!ALL_ORDERS || ALL_ORDERS.length === 0) {
+        showToast("No orders available to export", true);
+        return;
+      }
+      const headers = ["Order ID", "Date", "Customer Name", "Phone", "Email", "Address", "City", "State", "PIN", "Items", "Payment Method", "Payment Status", "Order Status", "Tracking", "Carrier", "Total Amount"];
+      const rows = ALL_ORDERS.map(o => {
+        const c = o.customer || {};
+        const p = o.payment || {};
+        const f = o.fulfillment || {};
+        const itemsStr = (o.items || []).map(i => `${i.name} (${i.size}) x${i.quantity}`).join(" | ");
+        return [
+          o.order_id,
+          o.created_at,
+          `"${(c.name || '').replace(/"/g, '""')}"`,
+          `"${(c.phone || '').replace(/"/g, '""')}"`,
+          `"${(c.email || '').replace(/"/g, '""')}"`,
+          `"${(c.full_address || '').replace(/"/g, '""')}"`,
+          `"${(c.city || '').replace(/"/g, '""')}"`,
+          `"${(c.state || '').replace(/"/g, '""')}"`,
+          `"${(c.pincode || '').replace(/"/g, '""')}"`,
+          `"${itemsStr.replace(/"/g, '""')}"`,
+          `"${(p.method || '').replace(/"/g, '""')}"`,
+          `"${(p.status || '').replace(/"/g, '""')}"`,
+          `"${(o.order_status || '').replace(/"/g, '""')}"`,
+          `"${(f.tracking_number || '').replace(/"/g, '""')}"`,
+          `"${(f.carrier || '').replace(/"/g, '""')}"`,
+          o.total || 0
+        ].join(",");
+      });
+
+      const csvContent = "data:text/csv;charset=utf-8," + [headers.join(","), ...rows].join("\n");
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", `Oud_Aura_Orders_${new Date().toISOString().slice(0, 10)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      showToast("Orders CSV exported successfully!");
     }
 
     // Auto-init on page load

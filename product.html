@@ -565,9 +565,17 @@
       }
 
       // Add to Bag Button
-      document.getElementById("addToBagBtn").addEventListener("click", () => {
-        addToCart(currentProduct.id, selectedSize, selectedPrice, currentQuantity);
-      });
+      const addBagBtn = document.getElementById("addToBagBtn");
+      if (currentProduct.inStock === false) {
+        addBagBtn.disabled = true;
+        addBagBtn.innerHTML = `<span class="material-symbols-outlined text-[20px]">block</span><span>Out of Stock</span>`;
+        addBagBtn.classList.remove("hover:bg-[#875200]", "cursor-pointer");
+        addBagBtn.classList.add("opacity-50", "cursor-not-allowed");
+      } else {
+        addBagBtn.addEventListener("click", () => {
+          addToCart(currentProduct.id, selectedSize, selectedPrice, currentQuantity);
+        });
+      }
 
       // Accordion setup
       document.querySelectorAll(".accordion-toggle").forEach(btn => {
@@ -851,7 +859,7 @@
 
     function renderRelated() {
       const container = document.getElementById("relatedFragrancesContainer");
-      const related = PRODUCTS.filter(p => p.id !== currentProduct.id).slice(0, 2);
+      const allProds = typeof getAllProducts === 'function' ? getAllProducts() : PRODUCTS; const related = allProds.filter(p => p.id !== currentProduct.id).slice(0, 2);
       
       container.innerHTML = related.map(p => `
         <div onclick="window.location.href='product.html?id=' + encodeURIComponent('${p.id}')" class="rounded-xl p-2.5 flex flex-col shadow-xs cursor-pointer hover:shadow-md transition-all" style="background-color: rgb(247, 242, 235); border: 1px solid rgb(229, 221, 207);">
