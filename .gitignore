@@ -6,6 +6,10 @@ cloudflared.exe
 *.png
 !storypageattar.png
 !arabiantouchgold1.png
+!nayel1.png
+!nayel2.png
+!boombelle1.png
+!boombelle2.png
 
 # Ignore system files
 .DS_Store

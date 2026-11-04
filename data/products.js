@@ -105,10 +105,10 @@ const PRODUCTS = [
       base: "Tonka Bean, Sugar Cane, Amber, White Musk, Oakmoss"
     },
     sizes: [
-      { size: "50 ml", price: 1199, originalPrice: 1499, label: "50 ml Bottle", isDefault: true },
-      { size: "100 ml", price: 2199, originalPrice: 2499, label: "100 ml Bottle", isDefault: false },
-      { size: "30 ml", price: 599, originalPrice: 799, label: "30 ml Bottle", isDefault: false },
-      { size: "20 ml Vial", price: 399, originalPrice: 599, label: "Pocket Vial", isDefault: false }
+      { size: "50 ml", price: 1499, originalPrice: 1799, label: "50 ml Bottle", isDefault: true },
+      { size: "100 ml", price: 2699, originalPrice: 2999, label: "100 ml Bottle", isDefault: false },
+      { size: "30 ml", price: 999, originalPrice: 1199, label: "30 ml Bottle", isDefault: false },
+      { size: "20 ml Vial", price: 699, originalPrice: 899, label: "Pocket Vial", isDefault: false }
     ]
   },
   {
@@ -215,6 +215,61 @@ const PRODUCTS = [
       { size: "100 ml", price: 1799, originalPrice: 2299, label: "100 ml Bottle", isDefault: false },
       { size: "30 ml", price: 549, originalPrice: 799, label: "30 ml Bottle", isDefault: false },
       { size: "20 ml Vial", price: 399, originalPrice: 599, label: "Pocket Vial", isDefault: false }
+    ]
+  },
+  {
+    id: "nayel",
+    name: "Nayel",
+    category: "perfumes",
+    price: 799,
+    originalPrice: 999,
+    size: "50 ml",
+    concentration: "Parfum",
+    badge: "",
+    isBestSeller: false,
+    inStock: true,
+    tag: "Fresh Citrus",
+    shortDescription: "A refreshing and elegant fragrance with bright citrus freshness, delicate floral touches and a smooth, warm finish.",
+    fullDescription: "A beautifully balanced fragrance that opens with a fresh, vibrant touch of mandarin. Its heart brings a delicate blend of citrus and soft florals, while the base creates a warm, smooth finish with musky and woody undertones. Perfect for everyday wear and special occasions.",
+    images: ["nayel1.png", "nayel2.png"],
+    notes: {
+      top: "Metallic, Mandarin",
+      heart: "Bergamot, Orange Flower",
+      base: "Amber, Lily"
+    },
+    sizes: [
+      { size: "50 ml", price: 799, originalPrice: 999, label: "50 ml Bottle", isDefault: true },
+      { size: "100 ml", price: 1499, originalPrice: 1799, label: "100 ml Bottle", isDefault: false },
+      { size: "30 ml", price: 499, originalPrice: 699, label: "30 ml Bottle", isDefault: false },
+      { size: "20 ml Vial", price: 349, originalPrice: 499, label: "Pocket Vial", isDefault: false }
+    ]
+  },
+  {
+    id: "boombelle",
+    name: "Boom Belle",
+    category: "perfumes",
+    price: 549,
+    originalPrice: 799,
+    size: "50 ml",
+    concentration: "Parfum",
+    badge: "",
+    isBestSeller: false,
+    inStock: true,
+    tag: "Fruity",
+    shortDescription: "A vibrant and feminine fragrance bursting with juicy fruits, delicate florals and a smooth, refreshing finish.",
+    fullDescription: "A lively and captivating fragrance that opens with a delicious blend of tropical fruits and juicy berries. Its floral heart adds a soft, elegant touch, while the musky and woody base leaves a smooth, fresh and long-lasting impression. Perfect for everyday wear and special occasions.",
+    images: ["boombelle1.png",
+      "boombelle2.png",],
+    notes: {
+      top: "Purple Passion Fruit, Grapefruit, Pineapple, Tangerine, Big Strawberry",
+      heart: "Shangri-La Peony, Vanilla Orchid, Red Berries, Jasmine, Lily-of-the-Valley",
+      base: "Musk, Woody Notes, Oakmoss, Italian Ligurian Pine"
+    },
+    sizes: [
+      { size: "50 ml", price: 549, originalPrice: 799, label: "50 ml Bottle", isDefault: true },
+      { size: "100 ml", price: 999, originalPrice: 1399, label: "100 ml Bottle", isDefault: false },
+      { size: "30 ml", price: 299, originalPrice: 449, label: "30 ml Bottle", isDefault: false },
+      { size: "20 ml Vial", price: 199, originalPrice: 299, label: "Pocket Vial", isDefault: false }
     ]
   },
   {
