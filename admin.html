@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin &amp; Order Management | Oud &amp; Aura</title>
+  <title>Admin Dashboard &amp; Catalog Manager | Oud &amp; Aura</title>
   
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,6 +13,9 @@
   
   <!-- Tailwind Play CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js for Business Analytics -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
   <script>
     tailwind.config = {
       darkMode: "class",
@@ -68,12 +71,42 @@
       letter-spacing: 0.05em;
       text-transform: uppercase;
     }
+    .nav-tab-btn.active {
+      background-color: #121110;
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(18, 17, 16, 0.12);
+    }
+    .nav-tab-btn:not(.active) {
+      background-color: transparent;
+      color: #787268;
+    }
+    .nav-tab-btn:not(.active):hover {
+      color: #121110;
+      background-color: #f5f2eb;
+    }
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #printableSlip, #printableSlip * {
+        visibility: visible;
+      }
+      #printableSlip {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        margin: 0;
+        padding: 20px;
+        background: white;
+      }
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col">
 
   <!-- =======================================================================
-       1. AUTHENTICATION LOCK OVERLAY (If passcode not provided)
+       1. AUTHENTICATION LOCK OVERLAY
        ======================================================================= -->
   <div id="authOverlay" class="fixed inset-0 z-50 bg-[#121110]/80 backdrop-blur-md flex items-center justify-center p-4">
     <div class="w-full max-w-md bg-white rounded-3xl p-8 border border-[#e5ddcf] shadow-2xl text-center space-y-6">
@@ -82,8 +115,8 @@
       </div>
       <div>
         <h2 class="font-cinzel text-xl font-bold tracking-widest text-[#121110] uppercase">Oud &amp; Aura</h2>
-        <p class="font-serif italic text-xs text-[#875200] mt-0.5">Owner Order Portal</p>
-        <p class="text-xs text-[#4b4640] mt-3">Enter your store admin passcode to securely view customer delivery records.</p>
+        <p class="font-serif italic text-xs text-[#875200] mt-0.5">Luxury Fragrance Management Suite</p>
+        <p class="text-xs text-[#4b4640] mt-3">Enter store admin passcode to access Orders, Products &amp; Revenue Analytics.</p>
       </div>
 
       <form onsubmit="handleAdminLogin(event)" class="space-y-4">
@@ -92,7 +125,7 @@
             type="password" 
             id="adminKeyInput" 
             required 
-            placeholder="Admin Passcode (e.g. oudaura2026)" 
+            placeholder="Admin Passcode (Default: oudaura2026)" 
             class="w-full px-4 py-3 rounded-xl border border-[#e5ddcf] bg-[#fbf9f6] text-sm text-center font-mono tracking-wider focus:outline-none focus:border-[#875200] focus:ring-1 focus:ring-[#875200]"
           >
           <p id="authErrorMsg" class="text-xs text-red-600 mt-2 hidden font-medium"></p>
@@ -103,7 +136,7 @@
       </form>
 
       <div class="pt-2 text-[11px] text-[#787268] border-t border-[#e5ddcf]/60">
-        Configured via <code class="font-mono text-[#875200]">ADMIN_KEY</code> in <code class="font-mono text-[#875200]">.env</code>
+        Configurable via settings &bull; Default: <code class="font-mono text-[#875200]">oudaura2026</code>
       </div>
     </div>
   </div>
@@ -112,40 +145,45 @@
        2. TOP OWNER NAVIGATION BAR
        ======================================================================= -->
   <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-[#e5ddcf]/80 shadow-xs">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
       
       <!-- Brand & Title -->
       <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-[#121110] text-[#ffddba] flex items-center justify-center font-cinzel font-bold text-lg border border-[#d4af37]/40 shadow-xs">
+        <a href="index.html" class="w-10 h-10 rounded-xl bg-[#121110] text-[#ffddba] flex items-center justify-center font-cinzel font-bold text-lg border border-[#d4af37]/40 shadow-xs">
           O
-        </div>
+        </a>
         <div>
           <div class="flex items-center gap-2">
             <span class="font-cinzel text-sm sm:text-base font-bold tracking-wider text-[#121110]">OUD &amp; AURA</span>
-            <span class="px-2 py-0.5 rounded-full bg-[#f5f2eb] border border-[#e5ddcf] text-[10px] font-bold text-[#875200]">ADMIN PORTAL</span>
+            <span class="px-2 py-0.5 rounded-full bg-[#f5f2eb] border border-[#e5ddcf] text-[10px] font-bold text-[#875200]">ADMIN PANEL</span>
           </div>
-          <p class="text-[11px] text-[#787268]">Order Management &amp; Dispatch Fulfillment</p>
+          <p class="text-[11px] text-[#787268]">Catalog, Orders &amp; Revenue Intelligence</p>
         </div>
       </div>
 
       <!-- Action Buttons -->
-        <a href="https://dashboard.razorpay.com/app/orders" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-[#121110] text-xs font-semibold text-[#ffddba] hover:bg-[#875200] transition-colors" title="Open Razorpay Dashboard">
+      <div class="flex items-center gap-1.5 sm:gap-2">
+        <a href="https://dashboard.razorpay.com/app/orders" target="_blank" class="hidden md:inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-[#121110] text-xs font-semibold text-[#ffddba] hover:bg-[#875200] transition-colors" title="Open Razorpay Dashboard">
           <span class="material-symbols-outlined text-[16px]">account_balance_wallet</span>
-          <span>Razorpay Live Dashboard</span>
+          <span>Razorpay Live</span>
         </a>
 
-        <a href="checkout.html" target="_blank" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-[#e5ddcf] text-xs font-medium text-[#121110] hover:bg-[#fbf9f6] transition-colors">
+        <a href="shop.html" target="_blank" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-[#e5ddcf] text-xs font-medium text-[#121110] hover:bg-[#fbf9f6] transition-colors">
           <span class="material-symbols-outlined text-[16px]">storefront</span>
           <span>View Store</span>
         </a>
 
-        <button onclick="exportOrdersCsv()" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-[#f5f2eb] border border-[#e5ddcf] text-xs font-semibold text-[#121110] hover:bg-[#e5ddcf] transition-colors cursor-pointer" title="Download Excel/CSV Spreadsheet">
-          <span class="material-symbols-outlined text-[16px] text-[#875200]">download</span>
-          <span class="hidden sm:inline">Export CSV</span>
+        <button onclick="openExportModal()" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-[#f5f2eb] border border-[#e5ddcf] text-xs font-semibold text-[#121110] hover:bg-[#e5ddcf] transition-colors cursor-pointer" title="Export updated products.js">
+          <span class="material-symbols-outlined text-[16px] text-[#875200]">code</span>
+          <span class="hidden sm:inline">Export Catalog</span>
         </button>
 
-        <button onclick="fetchOrders()" class="p-2 rounded-lg border border-[#e5ddcf] text-[#121110] hover:bg-[#fbf9f6] transition-colors cursor-pointer" title="Refresh Orders">
+        <button onclick="refreshCurrentTab()" class="p-2 rounded-lg border border-[#e5ddcf] text-[#121110] hover:bg-[#fbf9f6] transition-colors cursor-pointer" title="Refresh Current View">
           <span id="refreshIcon" class="material-symbols-outlined text-[18px]">refresh</span>
+        </button>
+
+        <button onclick="openSecurityModal()" class="p-2 rounded-lg border border-[#e5ddcf] text-[#787268] hover:text-[#121110] hover:bg-[#fbf9f6] transition-colors cursor-pointer" title="Security &amp; Passcode Settings">
+          <span class="material-symbols-outlined text-[18px]">settings</span>
         </button>
 
         <button onclick="logoutAdmin()" class="p-2 rounded-lg border border-[#e5ddcf] text-[#787268] hover:text-red-600 hover:bg-[#fbf9f6] transition-colors cursor-pointer" title="Lock Dashboard">
@@ -154,151 +192,496 @@
       </div>
 
     </div>
+
+    <!-- MAIN DASHBOARD NAVIGATION TABS -->
+    <div class="border-t border-[#e5ddcf]/60 bg-[#fcfaf7]">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 py-2 flex items-center justify-between overflow-x-auto custom-scrollbar">
+        <div class="flex items-center gap-2">
+          
+          <!-- Tab 1: Orders -->
+          <button onclick="switchTab('orders')" id="tabBtn-orders" class="nav-tab-btn active px-4 py-2 rounded-xl text-xs font-semibold tracking-wider flex items-center gap-2 transition-all cursor-pointer">
+            <span class="material-symbols-outlined text-[18px]">local_shipping</span>
+            <span>Orders &amp; Fulfillment</span>
+            <span id="tabOrderCountBadge" class="px-1.5 py-0.5 rounded-full text-[10px] bg-white/20 text-white font-mono">0</span>
+          </button>
+
+          <!-- Tab 2: Products -->
+          <button onclick="switchTab('products')" id="tabBtn-products" class="nav-tab-btn px-4 py-2 rounded-xl text-xs font-semibold tracking-wider flex items-center gap-2 transition-all cursor-pointer">
+            <span class="material-symbols-outlined text-[18px]">inventory</span>
+            <span>Products &amp; Catalog Manager</span>
+            <span id="tabProductCountBadge" class="px-1.5 py-0.5 rounded-full text-[10px] bg-stone-200 text-stone-700 font-mono">0</span>
+          </button>
+
+          <!-- Tab 3: Analytics -->
+          <button onclick="switchTab('analytics')" id="tabBtn-analytics" class="nav-tab-btn px-4 py-2 rounded-xl text-xs font-semibold tracking-wider flex items-center gap-2 transition-all cursor-pointer">
+            <span class="material-symbols-outlined text-[18px]">trending_up</span>
+            <span>Analytics &amp; Revenue</span>
+          </button>
+
+        </div>
+
+        <div class="hidden lg:flex items-center gap-2 text-[11px] text-[#787268]">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span>Live Session Active</span>
+        </div>
+      </div>
+    </div>
   </header>
 
   <!-- =======================================================================
-       3. MAIN DASHBOARD CONTENT
+       3. MAIN DASHBOARD CONTENT AREA
        ======================================================================= -->
   <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6">
 
-    <!-- KPI Metrics Grid -->
-    <div class="grid grid-cols-2 lg:grid-cols-6 gap-3 sm:gap-4">
-      <!-- Total Revenue -->
-      <div class="col-span-2 sm:col-span-1 lg:col-span-2 p-4 sm:p-5 rounded-2xl bg-white border border-[#e5ddcf]/80 shadow-xs">
-        <div class="flex items-center justify-between text-xs text-[#787268] mb-1">
-          <span>Total Verified Revenue</span>
-          <span class="material-symbols-outlined text-[20px] text-[#875200]">payments</span>
+    <!-- =====================================================================
+         TAB 1: ORDERS & FULFILLMENT
+         ===================================================================== -->
+    <div id="tabContent-orders" class="space-y-6">
+      
+      <!-- Orders KPI Metrics Grid -->
+      <div class="grid grid-cols-2 lg:grid-cols-6 gap-3 sm:gap-4">
+        <!-- Total Verified Revenue -->
+        <div class="col-span-2 sm:col-span-1 lg:col-span-2 p-4 sm:p-5 rounded-2xl bg-white border border-[#e5ddcf]/80 shadow-xs">
+          <div class="flex items-center justify-between text-xs text-[#787268] mb-1">
+            <span>Verified Paid Revenue</span>
+            <span class="material-symbols-outlined text-[20px] text-[#875200]">payments</span>
+          </div>
+          <div id="statTotalRevenue" class="font-serif text-2xl sm:text-3xl font-bold text-[#121110]">₹0</div>
+          <div class="text-[11px] text-[#25D366] font-medium mt-1 flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-[#25D366]"></span>
+            <span>From verified paid orders</span>
+          </div>
         </div>
-        <div id="statTotalRevenue" class="font-serif text-2xl sm:text-3xl font-bold text-[#121110]">₹0</div>
-        <div class="text-[11px] text-[#25D366] font-medium mt-1 flex items-center gap-1">
-          <span class="w-1.5 h-1.5 rounded-full bg-[#25D366]"></span>
-          <span>From verified paid orders</span>
+
+        <!-- Total Orders -->
+        <div class="p-4 sm:p-5 rounded-2xl bg-white border border-[#e5ddcf]/80 shadow-xs">
+          <div class="flex items-center justify-between text-xs text-[#787268] mb-1">
+            <span>All Orders</span>
+            <span class="material-symbols-outlined text-[18px] text-[#787268]">inventory_2</span>
+          </div>
+          <div id="statTotalOrders" class="font-serif text-2xl font-bold text-[#121110]">0</div>
+          <div class="text-[11px] text-[#787268] mt-1">Lifetime total</div>
+        </div>
+
+        <!-- Paid Orders -->
+        <div class="p-4 sm:p-5 rounded-2xl bg-white border border-[#e5ddcf]/80 shadow-xs">
+          <div class="flex items-center justify-between text-xs text-[#787268] mb-1">
+            <span>Paid Orders</span>
+            <span class="material-symbols-outlined text-[18px] text-emerald-600">check_circle</span>
+          </div>
+          <div id="statPaidOrders" class="font-serif text-2xl font-bold text-emerald-700">0</div>
+          <div class="text-[11px] text-emerald-600 font-medium mt-1">Online captured</div>
+        </div>
+
+        <!-- Processing Orders -->
+        <div class="p-4 sm:p-5 rounded-2xl bg-white border border-[#e5ddcf]/80 shadow-xs">
+          <div class="flex items-center justify-between text-xs text-[#787268] mb-1">
+            <span>Processing</span>
+            <span class="material-symbols-outlined text-[18px] text-blue-600">package_2</span>
+          </div>
+          <div id="statProcessingOrders" class="font-serif text-2xl font-bold text-blue-700">0</div>
+          <div class="text-[11px] text-blue-600 font-medium mt-1">Packing / In dispatch</div>
+        </div>
+
+        <!-- Shipped Orders -->
+        <div class="p-4 sm:p-5 rounded-2xl bg-white border border-[#e5ddcf]/80 shadow-xs">
+          <div class="flex items-center justify-between text-xs text-[#787268] mb-1">
+            <span>Shipped / Transit</span>
+            <span class="material-symbols-outlined text-[18px] text-[#875200]">local_shipping</span>
+          </div>
+          <div id="statShippedOrders" class="font-serif text-2xl font-bold text-[#875200]">0</div>
+          <div class="text-[11px] text-[#875200] font-medium mt-1">With courier carrier</div>
         </div>
       </div>
 
-      <!-- Total Orders -->
-      <div class="p-4 sm:p-5 rounded-2xl bg-white border border-[#e5ddcf]/80 shadow-xs">
-        <div class="flex items-center justify-between text-xs text-[#787268] mb-1">
-          <span>All Orders</span>
-          <span class="material-symbols-outlined text-[18px] text-[#787268]">inventory_2</span>
+      <!-- Orders Table Container -->
+      <div class="bg-white rounded-3xl border border-[#e5ddcf]/80 shadow-xs overflow-hidden">
+        
+        <!-- Toolbar: Search & Status Filters -->
+        <div class="p-4 sm:p-6 border-b border-[#e5ddcf]/70 space-y-4">
+          <div class="flex flex-col sm:flex-row gap-3 sm:items-center justify-between">
+            <!-- Search Input -->
+            <div class="relative flex-1 max-w-md">
+              <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-[18px] text-[#787268]">search</span>
+              <input 
+                type="text" 
+                id="orderSearchInput" 
+                oninput="handleSearchFilter()" 
+                placeholder="Search by Order ID, Customer Name, Phone, City, Courier..." 
+                class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#e5ddcf] bg-[#fbf9f6] text-xs text-[#121110] focus:outline-none focus:border-[#875200]"
+              >
+            </div>
+
+            <!-- Total Count & Quick Actions -->
+            <div class="flex items-center gap-3">
+              <button onclick="exportOrdersCsv()" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-[#f5f2eb] border border-[#e5ddcf] text-xs font-semibold text-[#121110] hover:bg-[#e5ddcf] transition-colors cursor-pointer" title="Download Excel/CSV Spreadsheet">
+                <span class="material-symbols-outlined text-[16px] text-[#875200]">download</span>
+                <span>Export CSV</span>
+              </button>
+              <div class="text-xs text-[#787268] flex items-center gap-1.5">
+                <span>Showing:</span>
+                <strong id="filteredCountText" class="font-bold text-[#121110]">0 orders</strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- Filter Pills -->
+          <div class="flex items-center gap-1.5 overflow-x-auto pb-1 custom-scrollbar text-xs">
+            <button onclick="setFilterStatus('ALL')" class="order-filter-pill active px-3.5 py-1.5 rounded-full font-semibold border transition-all text-[#121110] bg-[#f5f2eb] border-[#121110]" data-filter="ALL">
+              All Orders
+            </button>
+            <button onclick="setFilterStatus('PAID')" class="order-filter-pill px-3.5 py-1.5 rounded-full font-semibold border border-[#e5ddcf] text-[#787268] hover:text-[#121110] hover:border-[#121110] transition-all" data-filter="PAID">
+              Paid
+            </button>
+            <button onclick="setFilterStatus('PROCESSING')" class="order-filter-pill px-3.5 py-1.5 rounded-full font-semibold border border-[#e5ddcf] text-[#787268] hover:text-[#121110] hover:border-[#121110] transition-all" data-filter="PROCESSING">
+              Processing
+            </button>
+            <button onclick="setFilterStatus('SHIPPED')" class="order-filter-pill px-3.5 py-1.5 rounded-full font-semibold border border-[#e5ddcf] text-[#787268] hover:text-[#121110] hover:border-[#121110] transition-all" data-filter="SHIPPED">
+              Shipped
+            </button>
+            <button onclick="setFilterStatus('DELIVERED')" class="order-filter-pill px-3.5 py-1.5 rounded-full font-semibold border border-[#e5ddcf] text-[#787268] hover:text-[#121110] hover:border-[#121110] transition-all" data-filter="DELIVERED">
+              Delivered
+            </button>
+            <button onclick="setFilterStatus('COD')" class="order-filter-pill px-3.5 py-1.5 rounded-full font-semibold border border-[#e5ddcf] text-[#787268] hover:text-[#121110] hover:border-[#121110] transition-all" data-filter="COD">
+              COD Pending
+            </button>
+            <button onclick="setFilterStatus('CANCELLED')" class="order-filter-pill px-3.5 py-1.5 rounded-full font-semibold border border-[#e5ddcf] text-[#787268] hover:text-[#121110] hover:border-[#121110] transition-all" data-filter="CANCELLED">
+              Cancelled
+            </button>
+          </div>
         </div>
-        <div id="statTotalOrders" class="font-serif text-2xl font-bold text-[#121110]">0</div>
-        <div class="text-[11px] text-[#787268] mt-1">Lifetime total</div>
+
+        <!-- Orders Table & Empty State -->
+        <div id="ordersContainer">
+          <div id="ordersLoading" class="p-12 text-center text-[#787268]">
+            <span class="material-symbols-outlined text-[36px] animate-spin text-[#875200]">progress_activity</span>
+            <p class="text-xs mt-2">Loading orders from storage...</p>
+          </div>
+
+          <div id="ordersEmpty" class="p-16 text-center text-[#787268] hidden">
+            <span class="material-symbols-outlined text-[48px] text-[#cdc5bd]">inbox</span>
+            <h3 class="font-serif text-lg font-bold text-[#121110] mt-2">No Orders Found</h3>
+            <p class="text-xs text-[#787268] mt-1 max-w-sm mx-auto">Orders will appear here as soon as customers complete checkout on your website.</p>
+          </div>
+
+          <div id="ordersTableWrapper" class="overflow-x-auto custom-scrollbar hidden">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-[#fbf9f6] border-b border-[#e5ddcf] text-[#787268] uppercase text-[10px] tracking-wider font-semibold">
+                <tr>
+                  <th class="py-3.5 px-4 sm:px-6">Order ID &amp; Date</th>
+                  <th class="py-3.5 px-4">Customer Details</th>
+                  <th class="py-3.5 px-4">Ordered Items</th>
+                  <th class="py-3.5 px-4">Total &amp; Payment</th>
+                  <th class="py-3.5 px-4">Order Status</th>
+                  <th class="py-3.5 px-4 sm:px-6 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="ordersTableBody" class="divide-y divide-[#e5ddcf]/60">
+                <!-- Rendered via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
       </div>
 
-      <!-- Paid & Ready to Dispatch -->
-      <div class="p-4 sm:p-5 rounded-2xl bg-white border border-[#e5ddcf]/80 shadow-xs">
-        <div class="flex items-center justify-between text-xs text-[#787268] mb-1">
-          <span>Paid Orders</span>
-          <span class="material-symbols-outlined text-[18px] text-emerald-600">check_circle</span>
-        </div>
-        <div id="statPaidOrders" class="font-serif text-2xl font-bold text-emerald-700">0</div>
-        <div class="text-[11px] text-emerald-600 font-medium mt-1">Ready for packing</div>
-      </div>
-
-      <!-- Processing / Packing -->
-      <div class="p-4 sm:p-5 rounded-2xl bg-white border border-[#e5ddcf]/80 shadow-xs">
-        <div class="flex items-center justify-between text-xs text-[#787268] mb-1">
-          <span>Processing</span>
-          <span class="material-symbols-outlined text-[18px] text-blue-600">package_2</span>
-        </div>
-        <div id="statProcessingOrders" class="font-serif text-2xl font-bold text-blue-700">0</div>
-        <div class="text-[11px] text-blue-600 font-medium mt-1">In fulfillment</div>
-      </div>
-
-      <!-- Shipped / In Transit -->
-      <div class="p-4 sm:p-5 rounded-2xl bg-white border border-[#e5ddcf]/80 shadow-xs">
-        <div class="flex items-center justify-between text-xs text-[#787268] mb-1">
-          <span>Shipped</span>
-          <span class="material-symbols-outlined text-[18px] text-[#875200]">local_shipping</span>
-        </div>
-        <div id="statShippedOrders" class="font-serif text-2xl font-bold text-[#875200]">0</div>
-        <div class="text-[11px] text-[#875200] font-medium mt-1">With courier partner</div>
-      </div>
     </div>
 
-    <!-- Search, Filters, and Orders List Container -->
-    <div class="bg-white rounded-3xl border border-[#e5ddcf]/80 shadow-xs overflow-hidden">
+    <!-- =====================================================================
+         TAB 2: PRODUCTS & CATALOG MANAGER
+         ===================================================================== -->
+    <div id="tabContent-products" class="space-y-6 hidden">
       
-      <!-- Toolbar: Search & Status Filters -->
-      <div class="p-4 sm:p-6 border-b border-[#e5ddcf]/70 space-y-4">
-        
-        <div class="flex flex-col sm:flex-row gap-3 sm:items-center justify-between">
-          <!-- Search Input -->
-          <div class="relative flex-1 max-w-md">
-            <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-[18px] text-[#787268]">search</span>
-            <input 
-              type="text" 
-              id="orderSearchInput" 
-              oninput="handleSearchFilter()" 
-              placeholder="Search by Order ID, Customer Name, Phone, City..." 
-              class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#e5ddcf] bg-[#fbf9f6] text-xs text-[#121110] focus:outline-none focus:border-[#875200]"
-            >
+      <!-- Products Catalog KPI Stats -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+        <div class="p-4 sm:p-5 rounded-2xl bg-white border border-[#e5ddcf]/80 shadow-xs">
+          <div class="flex items-center justify-between text-xs text-[#787268] mb-1">
+            <span>Total Fragrances</span>
+            <span class="material-symbols-outlined text-[18px] text-[#875200]">inventory</span>
           </div>
-
-          <!-- Total Count Display -->
-          <div class="text-xs text-[#787268] flex items-center gap-1.5 self-end sm:self-center">
-            <span>Showing:</span>
-            <strong id="filteredCountText" class="font-bold text-[#121110]">0 orders</strong>
-          </div>
+          <div id="statCatalogTotal" class="font-serif text-2xl font-bold text-[#121110]">0</div>
+          <div class="text-[11px] text-[#787268] mt-1">In active catalog</div>
         </div>
 
-        <!-- Filter Pills -->
-        <div class="flex items-center gap-1.5 overflow-x-auto pb-1 custom-scrollbar text-xs">
-          <button onclick="setFilterStatus('ALL')" class="filter-pill active px-3.5 py-1.5 rounded-full font-semibold border transition-all text-[#121110] bg-[#f5f2eb] border-[#121110]" data-filter="ALL">
-            All Orders
-          </button>
-          <button onclick="setFilterStatus('PAID')" class="filter-pill px-3.5 py-1.5 rounded-full font-semibold border border-[#e5ddcf] text-[#787268] hover:text-[#121110] hover:border-[#121110] transition-all" data-filter="PAID">
-            Paid
-          </button>
-          <button onclick="setFilterStatus('PROCESSING')" class="filter-pill px-3.5 py-1.5 rounded-full font-semibold border border-[#e5ddcf] text-[#787268] hover:text-[#121110] hover:border-[#121110] transition-all" data-filter="PROCESSING">
-            Processing
-          </button>
-          <button onclick="setFilterStatus('SHIPPED')" class="filter-pill px-3.5 py-1.5 rounded-full font-semibold border border-[#e5ddcf] text-[#787268] hover:text-[#121110] hover:border-[#121110] transition-all" data-filter="SHIPPED">
-            Shipped
-          </button>
-          <button onclick="setFilterStatus('DELIVERED')" class="filter-pill px-3.5 py-1.5 rounded-full font-semibold border border-[#e5ddcf] text-[#787268] hover:text-[#121110] hover:border-[#121110] transition-all" data-filter="DELIVERED">
-            Delivered
-          </button>
-          <button onclick="setFilterStatus('COD')" class="filter-pill px-3.5 py-1.5 rounded-full font-semibold border border-[#e5ddcf] text-[#787268] hover:text-[#121110] hover:border-[#121110] transition-all" data-filter="COD">
-            COD Pending
-          </button>
-          <button onclick="setFilterStatus('CANCELLED')" class="filter-pill px-3.5 py-1.5 rounded-full font-semibold border border-[#e5ddcf] text-[#787268] hover:text-[#121110] hover:border-[#121110] transition-all" data-filter="CANCELLED">
-            Cancelled
-          </button>
+        <div class="p-4 sm:p-5 rounded-2xl bg-white border border-[#e5ddcf]/80 shadow-xs">
+          <div class="flex items-center justify-between text-xs text-[#787268] mb-1">
+            <span>Best Sellers</span>
+            <span class="material-symbols-outlined text-[18px] text-amber-600">star</span>
+          </div>
+          <div id="statCatalogBestSellers" class="font-serif text-2xl font-bold text-amber-700">0</div>
+          <div class="text-[11px] text-amber-600 mt-1">Highlighted on store</div>
         </div>
 
+        <div class="p-4 sm:p-5 rounded-2xl bg-white border border-[#e5ddcf]/80 shadow-xs">
+          <div class="flex items-center justify-between text-xs text-[#787268] mb-1">
+            <span>In Stock</span>
+            <span class="material-symbols-outlined text-[18px] text-emerald-600">check_circle</span>
+          </div>
+          <div id="statCatalogInStock" class="font-serif text-2xl font-bold text-emerald-700">0</div>
+          <div class="text-[11px] text-emerald-600 mt-1">Available for order</div>
+        </div>
+
+        <div class="p-4 sm:p-5 rounded-2xl bg-white border border-[#e5ddcf]/80 shadow-xs">
+          <div class="flex items-center justify-between text-xs text-[#787268] mb-1">
+            <span>Out of Stock</span>
+            <span class="material-symbols-outlined text-[18px] text-rose-600">block</span>
+          </div>
+          <div id="statCatalogOutOfStock" class="font-serif text-2xl font-bold text-rose-700">0</div>
+          <div class="text-[11px] text-rose-600 mt-1">Purchases disabled</div>
+        </div>
       </div>
 
-      <!-- Orders Table (Desktop) & Cards (Mobile) -->
-      <div id="ordersContainer">
-        <!-- Loading State -->
-        <div id="ordersLoading" class="p-12 text-center text-[#787268]">
-          <span class="material-symbols-outlined text-[36px] animate-spin text-[#875200]">progress_activity</span>
-          <p class="text-xs mt-2">Loading orders from server...</p>
+      <!-- Catalog Management Container -->
+      <div class="bg-white rounded-3xl border border-[#e5ddcf]/80 shadow-xs overflow-hidden">
+        
+        <!-- Toolbar: Add New, Search, Filters, Reset -->
+        <div class="p-4 sm:p-6 border-b border-[#e5ddcf]/70 space-y-4">
+          <div class="flex flex-col sm:flex-row gap-3 sm:items-center justify-between">
+            
+            <div class="flex items-center gap-2">
+              <button onclick="openProductModal()" class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-[#121110] hover:bg-[#875200] text-white text-xs font-semibold uppercase tracking-wider transition-all cursor-pointer shadow-sm">
+                <span class="material-symbols-outlined text-[18px]">add</span>
+                <span>Add New Product</span>
+              </button>
+
+              <button onclick="openExportModal()" class="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-[#f5f2eb] border border-[#e5ddcf] text-[#121110] hover:bg-[#e5ddcf] text-xs font-semibold uppercase tracking-wider transition-all cursor-pointer">
+                <span class="material-symbols-outlined text-[16px] text-[#875200]">download</span>
+                <span>Export products.js</span>
+              </button>
+
+              <button onclick="confirmResetCatalog()" class="p-2.5 rounded-xl border border-[#e5ddcf] text-[#787268] hover:text-red-700 hover:bg-rose-50 transition-all cursor-pointer" title="Reset browser catalog to default products.js">
+                <span class="material-symbols-outlined text-[18px]">restart_alt</span>
+              </button>
+            </div>
+
+            <!-- Search input -->
+            <div class="relative flex-1 max-w-sm">
+              <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-[18px] text-[#787268]">search</span>
+              <input 
+                type="text" 
+                id="productSearchInput" 
+                oninput="handleProductFilters()" 
+                placeholder="Search products by name, tag, notes..." 
+                class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#e5ddcf] bg-[#fbf9f6] text-xs text-[#121110] focus:outline-none focus:border-[#875200]"
+              >
+            </div>
+          </div>
+
+          <!-- Secondary Filters: Categories, Stock, Sorting -->
+          <div class="flex flex-wrap items-center justify-between gap-3 pt-2 text-xs">
+            <!-- Category Pills -->
+            <div class="flex items-center gap-1.5 overflow-x-auto pb-1 custom-scrollbar">
+              <button onclick="setProductCategoryFilter('all')" class="prod-cat-pill active px-3 py-1.5 rounded-full font-semibold border transition-all text-[#121110] bg-[#f5f2eb] border-[#121110]" data-cat="all">
+                All (<span id="catCountAll">0</span>)
+              </button>
+              <button onclick="setProductCategoryFilter('perfumes')" class="prod-cat-pill px-3 py-1.5 rounded-full font-semibold border border-[#e5ddcf] text-[#787268] hover:text-[#121110] hover:border-[#121110] transition-all" data-cat="perfumes">
+                Perfumes
+              </button>
+              <button onclick="setProductCategoryFilter('attars')" class="prod-cat-pill px-3 py-1.5 rounded-full font-semibold border border-[#e5ddcf] text-[#787268] hover:text-[#121110] hover:border-[#121110] transition-all" data-cat="attars">
+                Attars
+              </button>
+              <button onclick="setProductCategoryFilter('gifts')" class="prod-cat-pill px-3 py-1.5 rounded-full font-semibold border border-[#e5ddcf] text-[#787268] hover:text-[#121110] hover:border-[#121110] transition-all" data-cat="gifts">
+                Gift Sets
+              </button>
+            </div>
+
+            <!-- Stock & Sort Options -->
+            <div class="flex items-center gap-2">
+              <select id="productStockFilter" onchange="handleProductFilters()" class="px-2.5 py-1.5 rounded-lg border border-[#e5ddcf] bg-[#fbf9f6] text-xs text-[#121110] focus:outline-none focus:border-[#875200]">
+                <option value="all">All Stock Status</option>
+                <option value="instock">In Stock Only</option>
+                <option value="outofstock">Out of Stock Only</option>
+              </select>
+
+              <select id="productSortFilter" onchange="handleProductFilters()" class="px-2.5 py-1.5 rounded-lg border border-[#e5ddcf] bg-[#fbf9f6] text-xs text-[#121110] focus:outline-none focus:border-[#875200]">
+                <option value="default">Sort: Default</option>
+                <option value="price-asc">Price: Low to High</option>
+                <option value="price-desc">Price: High to Low</option>
+                <option value="name-asc">Name: A to Z</option>
+                <option value="name-desc">Name: Z to A</option>
+              </select>
+            </div>
+          </div>
         </div>
 
-        <!-- Empty State -->
-        <div id="ordersEmpty" class="p-16 text-center text-[#787268] hidden">
-          <span class="material-symbols-outlined text-[48px] text-[#cdc5bd]">inbox</span>
-          <h3 class="font-serif text-lg font-bold text-[#121110] mt-2">No Orders Found</h3>
-          <p class="text-xs text-[#787268] mt-1 max-w-sm mx-auto">Orders will appear here as soon as customers complete checkout on your website.</p>
-        </div>
-
-        <!-- Orders Table -->
-        <div id="ordersTableWrapper" class="overflow-x-auto custom-scrollbar hidden">
+        <!-- Products Table -->
+        <div class="overflow-x-auto custom-scrollbar">
           <table class="w-full text-left text-xs">
             <thead class="bg-[#fbf9f6] border-b border-[#e5ddcf] text-[#787268] uppercase text-[10px] tracking-wider font-semibold">
               <tr>
-                <th class="py-3.5 px-4 sm:px-6">Order ID &amp; Date</th>
-                <th class="py-3.5 px-4">Customer Details</th>
-                <th class="py-3.5 px-4">Ordered Items</th>
-                <th class="py-3.5 px-4">Total &amp; Payment</th>
-                <th class="py-3.5 px-4">Order Status</th>
-                <th class="py-3.5 px-4 sm:px-6 text-right">Action</th>
+                <th class="py-3.5 px-4 sm:px-6">Product</th>
+                <th class="py-3.5 px-4">Category</th>
+                <th class="py-3.5 px-4">Pricing</th>
+                <th class="py-3.5 px-4">Available Sizes</th>
+                <th class="py-3.5 px-4 text-center">Stock</th>
+                <th class="py-3.5 px-4 text-center">Best Seller</th>
+                <th class="py-3.5 px-4 sm:px-6 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody id="ordersTableBody" class="divide-y divide-[#e5ddcf]/60">
+            <tbody id="productsTableBody" class="divide-y divide-[#e5ddcf]/60">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- =====================================================================
+         TAB 3: ANALYTICS & REVENUE INTELLIGENCE
+         ===================================================================== -->
+    <div id="tabContent-analytics" class="space-y-6 hidden">
+      
+      <!-- Analytics Period Filter Bar -->
+      <div class="flex flex-col sm:flex-row gap-3 sm:items-center justify-between bg-white p-4 sm:p-5 rounded-2xl border border-[#e5ddcf]/80 shadow-xs">
+        <div>
+          <h3 class="font-serif text-lg font-bold text-[#121110]">Business Revenue &amp; Sales Analytics</h3>
+          <p class="text-xs text-[#787268]">Performance metrics calculated strictly from verified customer orders.</p>
+        </div>
+
+        <div class="flex items-center gap-1.5 text-xs">
+          <button onclick="setAnalyticsPeriod('all')" class="analytics-period-btn active px-3 py-1.5 rounded-lg font-semibold bg-[#121110] text-white transition-all cursor-pointer" data-period="all">
+            All Time
+          </button>
+          <button onclick="setAnalyticsPeriod('month')" class="analytics-period-btn px-3 py-1.5 rounded-lg font-semibold border border-[#e5ddcf] text-[#787268] hover:text-[#121110] transition-all cursor-pointer" data-period="month">
+            This Month
+          </button>
+          <button onclick="setAnalyticsPeriod('week')" class="analytics-period-btn px-3 py-1.5 rounded-lg font-semibold border border-[#e5ddcf] text-[#787268] hover:text-[#121110] transition-all cursor-pointer" data-period="week">
+            Last 7 Days
+          </button>
+          <button onclick="setAnalyticsPeriod('today')" class="analytics-period-btn px-3 py-1.5 rounded-lg font-semibold border border-[#e5ddcf] text-[#787268] hover:text-[#121110] transition-all cursor-pointer" data-period="today">
+            Today
+          </button>
+        </div>
+      </div>
+
+      <!-- Financial Metrics 4-Card Summary -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        <!-- Collected Revenue -->
+        <div class="p-5 rounded-2xl bg-white border border-[#e5ddcf]/80 shadow-xs space-y-1">
+          <div class="flex items-center justify-between text-xs text-[#787268]">
+            <span>Verified Paid Revenue</span>
+            <span class="material-symbols-outlined text-[20px] text-emerald-600">payments</span>
+          </div>
+          <div id="analyticsPaidRev" class="font-serif text-2xl sm:text-3xl font-bold text-[#121110]">₹0</div>
+          <p class="text-[11px] text-emerald-600 font-medium">Successfully collected</p>
+        </div>
+
+        <!-- Pending COD Value -->
+        <div class="p-5 rounded-2xl bg-white border border-[#e5ddcf]/80 shadow-xs space-y-1">
+          <div class="flex items-center justify-between text-xs text-[#787268]">
+            <span>Pending COD Receivable</span>
+            <span class="material-symbols-outlined text-[20px] text-amber-600">hourglass_top</span>
+          </div>
+          <div id="analyticsCodPendingRev" class="font-serif text-2xl sm:text-3xl font-bold text-amber-700">₹0</div>
+          <p class="text-[11px] text-amber-600">Awaiting doorstep delivery</p>
+        </div>
+
+        <!-- Average Order Value (AOV) -->
+        <div class="p-5 rounded-2xl bg-white border border-[#e5ddcf]/80 shadow-xs space-y-1">
+          <div class="flex items-center justify-between text-xs text-[#787268]">
+            <span>Average Order Value</span>
+            <span class="material-symbols-outlined text-[20px] text-[#875200]">price_check</span>
+          </div>
+          <div id="analyticsAov" class="font-serif text-2xl sm:text-3xl font-bold text-[#875200]">₹0</div>
+          <p class="text-[11px] text-[#787268]">Per paid customer order</p>
+        </div>
+
+        <!-- Order Conversion / Paid Rate -->
+        <div class="p-5 rounded-2xl bg-white border border-[#e5ddcf]/80 shadow-xs space-y-1">
+          <div class="flex items-center justify-between text-xs text-[#787268]">
+            <span>Paid Order Rate</span>
+            <span class="material-symbols-outlined text-[20px] text-blue-600">query_stats</span>
+          </div>
+          <div id="analyticsPaidRate" class="font-serif text-2xl sm:text-3xl font-bold text-blue-700">0%</div>
+          <p class="text-[11px] text-[#787268]">Of all placed checkouts</p>
+        </div>
+      </div>
+
+      <!-- Interactive Charts Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        
+        <!-- Chart 1: Revenue Over Time -->
+        <div class="p-5 rounded-2xl bg-white border border-[#e5ddcf]/80 shadow-xs space-y-3">
+          <div class="flex items-center justify-between">
+            <h4 class="font-serif text-sm font-bold text-[#121110] flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-[18px] text-[#875200]">show_chart</span>
+              <span>Revenue Growth Over Time</span>
+            </h4>
+            <span class="text-[10px] font-mono text-[#787268]">Verified Paid (₹)</span>
+          </div>
+          <div class="h-64 relative">
+            <canvas id="revenueChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Chart 2: Orders Over Time -->
+        <div class="p-5 rounded-2xl bg-white border border-[#e5ddcf]/80 shadow-xs space-y-3">
+          <div class="flex items-center justify-between">
+            <h4 class="font-serif text-sm font-bold text-[#121110] flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-[18px] text-[#875200]">bar_chart</span>
+              <span>Order Volume Trends</span>
+            </h4>
+            <span class="text-[10px] font-mono text-[#787268]">Order Count</span>
+          </div>
+          <div class="h-64 relative">
+            <canvas id="ordersChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Chart 3: Best Selling Products -->
+        <div class="p-5 rounded-2xl bg-white border border-[#e5ddcf]/80 shadow-xs space-y-3">
+          <div class="flex items-center justify-between">
+            <h4 class="font-serif text-sm font-bold text-[#121110] flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-[18px] text-amber-600">leaderboard</span>
+              <span>Top Best-Selling Fragrances</span>
+            </h4>
+            <span class="text-[10px] font-mono text-[#787268]">Units Ordered</span>
+          </div>
+          <div class="h-64 relative">
+            <canvas id="topProductsChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Chart 4: Category Distribution -->
+        <div class="p-5 rounded-2xl bg-white border border-[#e5ddcf]/80 shadow-xs space-y-3">
+          <div class="flex items-center justify-between">
+            <h4 class="font-serif text-sm font-bold text-[#121110] flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-[18px] text-blue-600">pie_chart</span>
+              <span>Sales by Category</span>
+            </h4>
+            <span class="text-[10px] font-mono text-[#787268]">Share (%)</span>
+          </div>
+          <div class="h-64 relative flex items-center justify-center">
+            <canvas id="categoryChart"></canvas>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Top Performing Products Detailed Breakdown Table -->
+      <div class="bg-white rounded-3xl border border-[#e5ddcf]/80 shadow-xs overflow-hidden">
+        <div class="p-5 border-b border-[#e5ddcf]/70 flex items-center justify-between">
+          <h4 class="font-serif text-sm font-bold text-[#121110] flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[18px] text-[#875200]">award_star</span>
+            <span>Fragrance Product Performance Leaderboard</span>
+          </h4>
+          <span class="text-xs text-[#787268]">All-time order statistics</span>
+        </div>
+        <div class="overflow-x-auto custom-scrollbar">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-[#fbf9f6] border-b border-[#e5ddcf] text-[#787268] uppercase text-[10px] tracking-wider font-semibold">
+              <tr>
+                <th class="py-3 px-6">Rank</th>
+                <th class="py-3 px-4">Product Name</th>
+                <th class="py-3 px-4">Category</th>
+                <th class="py-3 px-4 text-center">Units Sold</th>
+                <th class="py-3 px-4 text-right">Total Revenue</th>
+                <th class="py-3 px-6 text-right">Status</th>
+              </tr>
+            </thead>
+            <tbody id="analyticsLeaderboardBody" class="divide-y divide-[#e5ddcf]/60">
               <!-- Rendered via JS -->
             </tbody>
           </table>
@@ -322,7 +705,7 @@
             <h3 id="modalOrderId" class="font-mono text-base sm:text-lg font-bold text-[#121110]">#OA-00000</h3>
             <span id="modalHeaderStatusBadge" class="status-badge bg-blue-100 text-blue-800">PROCESSING</span>
           </div>
-          <p id="modalOrderDateTime" class="text-[11px] text-[#787268] mt-0.5">Oct 07, 2026 • 20:58</p>
+          <p id="modalOrderDateTime" class="text-[11px] text-[#787268] mt-0.5">Oct 07, 2026 &bull; 20:58</p>
         </div>
 
         <button onclick="closeOrderDetailModal()" class="w-9 h-9 rounded-full hover:bg-[#e5ddcf] flex items-center justify-center text-[#787268] hover:text-[#121110] transition-colors cursor-pointer">
@@ -335,7 +718,7 @@
         
         <!-- Status Progression Stepper -->
         <div class="rounded-2xl p-4 bg-[#fbf9f6] border border-[#e5ddcf]/80">
-          <h4 class="text-[11px] font-bold uppercase tracking-wider text-[#787268] mb-3">Order Lifecycle</h4>
+          <h4 class="text-[11px] font-bold uppercase tracking-wider text-[#787268] mb-3">Order Lifecycle Progression</h4>
           <div class="grid grid-cols-4 gap-2 text-center text-[10px] font-semibold">
             
             <div id="step-paid" class="step-node p-2 rounded-xl bg-white border border-[#e5ddcf]">
@@ -368,7 +751,7 @@
               <span class="material-symbols-outlined text-[18px] text-[#875200]">edit_note</span>
               <span>Update Fulfillment &amp; Status</span>
             </h4>
-            <span class="text-[10px] text-[#787268]">Instant server update</span>
+            <span class="text-[10px] text-[#787268]">Instant storage update</span>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -385,7 +768,7 @@
 
             <div>
               <label class="block text-[11px] font-medium text-[#121110] mb-1">Courier Carrier</label>
-              <input type="text" id="updateCarrierInput" placeholder="Delhivery / BlueDart / DTDC" class="w-full px-3 py-2 rounded-lg border border-[#e5ddcf] bg-[#fbf9f6] text-xs text-[#121110] focus:outline-none focus:border-[#875200]">
+              <input type="text" id="updateCarrierInput" placeholder="Delhivery / BlueDart / DTDC / Shiprocket" class="w-full px-3 py-2 rounded-lg border border-[#e5ddcf] bg-[#fbf9f6] text-xs text-[#121110] focus:outline-none focus:border-[#875200]">
             </div>
 
             <div>
@@ -396,16 +779,20 @@
 
           <div>
             <label class="block text-[11px] font-medium text-[#121110] mb-1">Admin Notes / Packaging remarks</label>
-            <input type="text" id="updateNotesInput" placeholder="Optional notes for packing & dispatch team..." class="w-full px-3 py-2 rounded-lg border border-[#e5ddcf] bg-[#fbf9f6] text-xs text-[#121110] focus:outline-none focus:border-[#875200]">
+            <input type="text" id="updateNotesInput" placeholder="Optional notes for packing &amp; dispatch team..." class="w-full px-3 py-2 rounded-lg border border-[#e5ddcf] bg-[#fbf9f6] text-xs text-[#121110] focus:outline-none focus:border-[#875200]">
           </div>
 
-          <div class="flex flex-col sm:flex-row gap-2 pt-1">
+          <div class="flex flex-wrap gap-2 pt-1">
             <button onclick="saveOrderStatusUpdate()" id="saveStatusBtn" class="flex-1 py-2.5 rounded-xl bg-[#121110] hover:bg-[#875200] text-white text-xs font-semibold uppercase tracking-wider transition-colors cursor-pointer">
               Save Status Update
             </button>
-            <button onclick="sendWhatsAppDispatchMessage()" id="modalWhatsAppBtn" class="sm:w-auto px-4 py-2.5 rounded-xl bg-[#25D366] hover:bg-[#1eb954] text-white text-xs font-bold flex items-center justify-center gap-1.5 transition-colors cursor-pointer">
+            <button onclick="sendWhatsAppDispatchMessage()" id="modalWhatsAppBtn" class="px-4 py-2.5 rounded-xl bg-[#25D366] hover:bg-[#1eb954] text-white text-xs font-bold flex items-center justify-center gap-1.5 transition-colors cursor-pointer">
               <span class="material-symbols-outlined text-[16px]">chat</span>
-              <span>Send Tracking on WhatsApp</span>
+              <span>Send WhatsApp Update</span>
+            </button>
+            <button onclick="printOrderPackingSlip()" class="px-4 py-2.5 rounded-xl bg-[#f5f2eb] hover:bg-[#e5ddcf] text-[#121110] text-xs font-bold flex items-center justify-center gap-1.5 transition-colors cursor-pointer border border-[#e5ddcf]">
+              <span class="material-symbols-outlined text-[16px]">print</span>
+              <span>Print Slip</span>
             </button>
           </div>
         </div>
@@ -491,20 +878,12 @@
                 <span id="modalPayStatusBadge" class="status-badge bg-emerald-100 text-emerald-800">PAID</span>
               </div>
               <div class="flex justify-between">
-                <span class="text-[#787268]">Razorpay Order ID:</span>
-                <span id="modalRzpOrderId" class="font-mono text-[#121110]">order_...</span>
-              </div>
-              <div class="flex justify-between">
                 <span class="text-[#787268]">Razorpay Payment ID:</span>
                 <span id="modalRzpPaymentId" class="font-mono text-[#121110]">pay_...</span>
               </div>
               <div class="flex justify-between">
-                <span class="text-[#787268]">HMAC SHA256 Signature:</span>
-                <span id="modalSigStatus" class="font-semibold text-emerald-600">VERIFIED</span>
-              </div>
-              <div class="flex justify-between">
-                <span class="text-[#787268]">Verification Timestamp:</span>
-                <span id="modalPaidAt" class="text-[#121110]">-</span>
+                <span class="text-[#787268]">COD Handover:</span>
+                <span id="modalCodIndicator" class="font-semibold text-[#875200]">No</span>
               </div>
             </div>
           </div>
@@ -523,11 +902,11 @@
                 <span id="modalPricingShipping" class="font-medium text-[#121110]">₹0</span>
               </div>
               <div class="flex justify-between text-[#787268]">
-                <span>Discount / Offer:</span>
+                <span>Discount / Coupon (<span id="modalCouponCode">None</span>):</span>
                 <span id="modalPricingDiscount" class="font-medium text-emerald-600">₹0</span>
               </div>
               <div class="pt-2 border-t border-[#e5ddcf] flex justify-between items-baseline">
-                <span class="font-bold text-sm text-[#121110]">Final Amount Paid:</span>
+                <span class="font-bold text-sm text-[#121110]">Final Amount:</span>
                 <span id="modalPricingTotal" class="font-serif text-xl font-bold text-[#875200]">₹0</span>
               </div>
             </div>
@@ -535,22 +914,14 @@
 
         </div>
 
-        <!-- Audit Timeline History -->
-        <div class="space-y-2">
-          <h4 class="font-serif text-sm font-bold text-[#121110] flex items-center gap-1.5">
-            <span class="material-symbols-outlined text-[18px] text-[#787268]">history</span>
-            <span>Order Timeline History</span>
-          </h4>
-
-          <div id="modalTimelineContainer" class="rounded-2xl p-4 bg-white border border-[#e5ddcf] space-y-2.5">
-            <!-- Timeline items rendered via JS -->
-          </div>
-        </div>
-
       </div>
 
       <!-- Modal Footer -->
-      <div class="px-6 py-3.5 bg-[#fbf9f6] border-t border-[#e5ddcf] flex justify-end">
+      <div class="px-6 py-3.5 bg-[#fbf9f6] border-t border-[#e5ddcf] flex justify-between items-center">
+        <button onclick="printOrderPackingSlip()" class="inline-flex items-center gap-1.5 text-xs text-[#875200] hover:underline font-semibold cursor-pointer">
+          <span class="material-symbols-outlined text-[16px]">print</span>
+          <span>Print Packing Slip</span>
+        </button>
         <button onclick="closeOrderDetailModal()" class="px-5 py-2 rounded-xl bg-[#121110] hover:bg-[#875200] text-white text-xs font-semibold uppercase tracking-wider transition-colors cursor-pointer">
           Done
         </button>
@@ -559,25 +930,402 @@
     </div>
   </div>
 
+  <!-- =======================================================================
+       5. ADD / EDIT PRODUCT MODAL
+       ======================================================================= -->
+  <div id="productEditModal" class="fixed inset-0 z-50 bg-[#121110]/70 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6 hidden">
+    <div class="w-full max-w-3xl max-h-[92vh] bg-white rounded-3xl border border-[#e5ddcf] shadow-2xl flex flex-col overflow-hidden">
+      
+      <!-- Modal Header -->
+      <div class="px-6 py-4 bg-[#fbf9f6] border-b border-[#e5ddcf] flex items-center justify-between">
+        <div>
+          <h3 id="productModalTitle" class="font-serif text-lg font-bold text-[#121110]">Add New Fragrance</h3>
+          <p class="text-[11px] text-[#787268]">Manage product details, fragrance notes, and multiple size variants</p>
+        </div>
+        <button onclick="closeProductModal()" class="w-9 h-9 rounded-full hover:bg-[#e5ddcf] flex items-center justify-center text-[#787268] hover:text-[#121110] transition-colors cursor-pointer">
+          <span class="material-symbols-outlined text-[20px]">close</span>
+        </button>
+      </div>
+
+      <!-- Modal Body (Scrollable Form) -->
+      <form id="productForm" onsubmit="handleSaveProduct(event)" class="flex-1 overflow-y-auto custom-scrollbar p-6 space-y-6">
+        <input type="hidden" id="editOriginalId" value="">
+
+        <!-- Basic Info Section -->
+        <div class="space-y-4">
+          <h4 class="font-serif text-xs font-bold uppercase tracking-wider text-[#875200] flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[16px]">badge</span>
+            <span>Core Fragrance Details</span>
+          </h4>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-medium text-[#121110] mb-1">Product Name *</label>
+              <input type="text" id="prodNameInput" required oninput="autoGenerateSlug()" placeholder="e.g. Royal Oud" class="w-full px-3.5 py-2.5 rounded-xl border border-[#e5ddcf] bg-[#fbf9f6] text-xs text-[#121110] focus:outline-none focus:border-[#875200]">
+            </div>
+
+            <div>
+              <label class="block text-xs font-medium text-[#121110] mb-1">Product ID / URL Slug *</label>
+              <input type="text" id="prodSlugInput" required placeholder="e.g. royal_oud" class="w-full px-3.5 py-2.5 rounded-xl border border-[#e5ddcf] bg-[#fbf9f6] text-xs font-mono text-[#121110] focus:outline-none focus:border-[#875200]">
+              <span class="text-[10px] text-[#787268] mt-0.5 block">Unique identifier for product URL (e.g. product.html?id=royal_oud)</span>
+            </div>
+
+            <div>
+              <label class="block text-xs font-medium text-[#121110] mb-1">Category *</label>
+              <select id="prodCategorySelect" required class="w-full px-3.5 py-2.5 rounded-xl border border-[#e5ddcf] bg-[#fbf9f6] text-xs font-semibold text-[#121110] focus:outline-none focus:border-[#875200]">
+                <option value="perfumes">Perfumes (Fine Fragrances)</option>
+                <option value="attars">Attars &amp; Oils</option>
+                <option value="gifts">Gift Sets &amp; Discovery Sets</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-xs font-medium text-[#121110] mb-1">Concentration / Label</label>
+              <input type="text" id="prodConcentrationInput" placeholder="e.g. Parfum / Perfume Oil / Extrait" class="w-full px-3.5 py-2.5 rounded-xl border border-[#e5ddcf] bg-[#fbf9f6] text-xs text-[#121110] focus:outline-none focus:border-[#875200]">
+            </div>
+
+            <div>
+              <label class="block text-xs font-medium text-[#121110] mb-1">Fragrance Tag / Accord</label>
+              <input type="text" id="prodTagInput" placeholder="e.g. Amber Gourmand / Fresh Aquatic" class="w-full px-3.5 py-2.5 rounded-xl border border-[#e5ddcf] bg-[#fbf9f6] text-xs text-[#121110] focus:outline-none focus:border-[#875200]">
+            </div>
+
+            <div>
+              <label class="block text-xs font-medium text-[#121110] mb-1">Product Badge (Optional)</label>
+              <input type="text" id="prodBadgeInput" placeholder="e.g. Best Seller / Premium collection / New Launch" class="w-full px-3.5 py-2.5 rounded-xl border border-[#e5ddcf] bg-[#fbf9f6] text-xs text-[#121110] focus:outline-none focus:border-[#875200]">
+            </div>
+          </div>
+
+          <!-- Toggles: In Stock & Best Seller -->
+          <div class="flex items-center gap-6 pt-2">
+            <label class="flex items-center gap-2 cursor-pointer select-none">
+              <input type="checkbox" id="prodInStockCheckbox" checked class="w-4 h-4 rounded text-[#875200] accent-[#875200]">
+              <span class="text-xs font-semibold text-[#121110]">In Stock (Available for purchase)</span>
+            </label>
+
+            <label class="flex items-center gap-2 cursor-pointer select-none">
+              <input type="checkbox" id="prodBestSellerCheckbox" class="w-4 h-4 rounded text-[#875200] accent-[#875200]">
+              <span class="text-xs font-semibold text-amber-800">Feature as Best Seller</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Descriptions -->
+        <div class="space-y-3 pt-3 border-t border-[#e5ddcf]/60">
+          <h4 class="font-serif text-xs font-bold uppercase tracking-wider text-[#875200] flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[16px]">description</span>
+            <span>Fragrance Story &amp; Narrative</span>
+          </h4>
+
+          <div>
+            <label class="block text-xs font-medium text-[#121110] mb-1">Short Description (1-2 lines)</label>
+            <input type="text" id="prodShortDescInput" placeholder="Concise one-line accord overview for product cards" class="w-full px-3.5 py-2 rounded-xl border border-[#e5ddcf] bg-[#fbf9f6] text-xs text-[#121110] focus:outline-none focus:border-[#875200]">
+          </div>
+
+          <div>
+            <label class="block text-xs font-medium text-[#121110] mb-1">Full Narrative Description</label>
+            <textarea id="prodFullDescInput" rows="3" placeholder="Full storytelling description displayed on the product page..." class="w-full px-3.5 py-2 rounded-xl border border-[#e5ddcf] bg-[#fbf9f6] text-xs text-[#121110] focus:outline-none focus:border-[#875200]"></textarea>
+          </div>
+        </div>
+
+        <!-- Olfactory Notes Pyramid -->
+        <div class="space-y-3 pt-3 border-t border-[#e5ddcf]/60">
+          <h4 class="font-serif text-xs font-bold uppercase tracking-wider text-[#875200] flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[16px]">psychology</span>
+            <span>Fragrance Notes Pyramid</span>
+          </h4>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div>
+              <label class="block text-[11px] font-medium text-[#121110] mb-1">Top Notes (First 15m)</label>
+              <input type="text" id="prodTopNotesInput" placeholder="e.g. Saffron, Bergamot" class="w-full px-3 py-2 rounded-xl border border-[#e5ddcf] bg-[#fbf9f6] text-xs text-[#121110] focus:outline-none focus:border-[#875200]">
+            </div>
+            <div>
+              <label class="block text-[11px] font-medium text-[#121110] mb-1">Heart Notes (2-6h)</label>
+              <input type="text" id="prodHeartNotesInput" placeholder="e.g. Agarwood, Rose" class="w-full px-3 py-2 rounded-xl border border-[#e5ddcf] bg-[#fbf9f6] text-xs text-[#121110] focus:outline-none focus:border-[#875200]">
+            </div>
+            <div>
+              <label class="block text-[11px] font-medium text-[#121110] mb-1">Base Notes (6h+)</label>
+              <input type="text" id="prodBaseNotesInput" placeholder="e.g. Tonka Bean, Amber, Musk" class="w-full px-3 py-2 rounded-xl border border-[#e5ddcf] bg-[#fbf9f6] text-xs text-[#121110] focus:outline-none focus:border-[#875200]">
+            </div>
+          </div>
+        </div>
+
+        <!-- Imagery Section -->
+        <div class="space-y-3 pt-3 border-t border-[#e5ddcf]/60">
+          <h4 class="font-serif text-xs font-bold uppercase tracking-wider text-[#875200] flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[16px]">photo_camera</span>
+            <span>Product Photography</span>
+          </h4>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-start">
+            <div class="space-y-2">
+              <label class="block text-xs font-medium text-[#121110]">Primary Image URL / Filename *</label>
+              <input type="text" id="prodImagePrimaryInput" required oninput="previewModalImage()" placeholder="e.g. arabiantouch2.jpg" class="w-full px-3.5 py-2 rounded-xl border border-[#e5ddcf] bg-[#fbf9f6] text-xs font-mono text-[#121110] focus:outline-none focus:border-[#875200]">
+              
+              <label class="block text-xs font-medium text-[#121110] pt-1">Additional Gallery Images (Comma-separated)</label>
+              <input type="text" id="prodImageGalleryInput" placeholder="e.g. arabiantouch1.jpg, arabiantouch3.jpg" class="w-full px-3.5 py-2 rounded-xl border border-[#e5ddcf] bg-[#fbf9f6] text-xs font-mono text-[#121110] focus:outline-none focus:border-[#875200]">
+              
+              <!-- Quick image selector pills -->
+              <div class="pt-1">
+                <span class="text-[10px] text-[#787268] block mb-1">Quick choose from website images:</span>
+                <div class="flex flex-wrap gap-1 text-[10px] font-mono">
+                  <button type="button" onclick="setQuickImage('arabiantouch2.jpg')" class="px-2 py-0.5 rounded bg-[#f5f2eb] hover:bg-[#e5ddcf] text-[#121110]">arabiantouch</button>
+                  <button type="button" onclick="setQuickImage('TamD\'OR2.jpg')" class="px-2 py-0.5 rounded bg-[#f5f2eb] hover:bg-[#e5ddcf] text-[#121110]">TamD'OR</button>
+                  <button type="button" onclick="setQuickImage('arabiantouchgold1.png')" class="px-2 py-0.5 rounded bg-[#f5f2eb] hover:bg-[#e5ddcf] text-[#121110]">gold</button>
+                  <button type="button" onclick="setQuickImage('qahwaroyal2.jpg')" class="px-2 py-0.5 rounded bg-[#f5f2eb] hover:bg-[#e5ddcf] text-[#121110]">qahwa</button>
+                  <button type="button" onclick="setQuickImage('kashmirioud1.jpg')" class="px-2 py-0.5 rounded bg-[#f5f2eb] hover:bg-[#e5ddcf] text-[#121110]">kashmiri</button>
+                  <button type="button" onclick="setQuickImage('wanted2.jpg')" class="px-2 py-0.5 rounded bg-[#f5f2eb] hover:bg-[#e5ddcf] text-[#121110]">wanted</button>
+                  <button type="button" onclick="setQuickImage('nayel1.png')" class="px-2 py-0.5 rounded bg-[#f5f2eb] hover:bg-[#e5ddcf] text-[#121110]">nayel</button>
+                  <button type="button" onclick="setQuickImage('boombelle1.png')" class="px-2 py-0.5 rounded bg-[#f5f2eb] hover:bg-[#e5ddcf] text-[#121110]">boombelle</button>
+                  <button type="button" onclick="setQuickImage('combo1.jpg')" class="px-2 py-0.5 rounded bg-[#f5f2eb] hover:bg-[#e5ddcf] text-[#121110]">combo</button>
+                  <button type="button" onclick="setQuickImage('hawazrush2.jpg')" class="px-2 py-0.5 rounded bg-[#f5f2eb] hover:bg-[#e5ddcf] text-[#121110]">hawaz</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Preview box -->
+            <div class="flex flex-col items-center justify-center p-3 rounded-2xl bg-[#fbf9f6] border border-[#e5ddcf] text-center">
+              <span class="text-[10px] text-[#787268] uppercase font-bold tracking-wider mb-2">Live Thumbnail Preview</span>
+              <div class="w-24 h-28 rounded-xl bg-white border border-[#e5ddcf] overflow-hidden flex items-center justify-center shadow-xs">
+                <img id="modalImagePreview" src="homepagelogo.jpg" alt="Preview" class="w-full h-full object-contain" onerror="this.src='https://via.placeholder.com/150?text=Oud'">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dynamic Size Variants & Pricing Section -->
+        <div class="space-y-3 pt-3 border-t border-[#e5ddcf]/60">
+          <div class="flex items-center justify-between">
+            <h4 class="font-serif text-xs font-bold uppercase tracking-wider text-[#875200] flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-[16px]">tune</span>
+              <span>Dynamic Size Variants &amp; Pricing</span>
+            </h4>
+            <button type="button" onclick="addSizeVariantRow()" class="inline-flex items-center gap-1 px-3 py-1 rounded-lg bg-[#121110] text-white text-[11px] font-semibold hover:bg-[#875200] transition-colors cursor-pointer">
+              <span class="material-symbols-outlined text-[14px]">add</span>
+              <span>Add Size Variant</span>
+            </button>
+          </div>
+          <p class="text-[11px] text-[#787268]">Configure available sizes with their individual customer prices (e.g. 30 ml – ₹799, 50 ml – ₹1,199, 100 ml – ₹1,999).</p>
+
+          <div class="rounded-2xl border border-[#e5ddcf] overflow-hidden">
+            <table class="w-full text-xs text-left">
+              <thead class="bg-[#fbf9f6] border-b border-[#e5ddcf] text-[10px] uppercase tracking-wider text-[#787268]">
+                <tr>
+                  <th class="py-2.5 px-3">Size (e.g. 50 ml)</th>
+                  <th class="py-2.5 px-3">Label (e.g. 50 ml Bottle)</th>
+                  <th class="py-2.5 px-3">Selling Price (₹)</th>
+                  <th class="py-2.5 px-3">Original Price (₹)</th>
+                  <th class="py-2.5 px-3 text-center">Default</th>
+                  <th class="py-2.5 px-3 text-right">Remove</th>
+                </tr>
+              </thead>
+              <tbody id="sizeVariantsTableBody" class="divide-y divide-[#e5ddcf]/60 bg-white">
+                <!-- Size rows generated dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Form Submit / Cancel Bar -->
+        <div class="pt-4 border-t border-[#e5ddcf] flex justify-end gap-2">
+          <button type="button" onclick="closeProductModal()" class="px-5 py-2.5 rounded-xl border border-[#e5ddcf] text-xs font-semibold text-[#787268] hover:text-[#121110] hover:bg-[#fbf9f6] transition-colors cursor-pointer">
+            Cancel
+          </button>
+          <button type="submit" class="px-6 py-2.5 rounded-xl bg-[#121110] hover:bg-[#875200] text-white text-xs font-semibold uppercase tracking-wider transition-colors cursor-pointer shadow-sm">
+            Save Product to Catalog
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+  <!-- =======================================================================
+       6. EXPORT / SYNC MODAL (For data/products.js)
+       ======================================================================= -->
+  <div id="exportModal" class="fixed inset-0 z-50 bg-[#121110]/70 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6 hidden">
+    <div class="w-full max-w-3xl max-h-[90vh] bg-white rounded-3xl border border-[#e5ddcf] shadow-2xl flex flex-col overflow-hidden">
+      
+      <div class="px-6 py-4 bg-[#fbf9f6] border-b border-[#e5ddcf] flex items-center justify-between">
+        <div>
+          <h3 class="font-serif text-lg font-bold text-[#121110]">Export Updated products.js</h3>
+          <p class="text-[11px] text-[#787268]">Download or copy the generated JavaScript file to push changes live on GitHub Pages</p>
+        </div>
+        <button onclick="closeExportModal()" class="w-9 h-9 rounded-full hover:bg-[#e5ddcf] flex items-center justify-center text-[#787268] hover:text-[#121110] transition-colors cursor-pointer">
+          <span class="material-symbols-outlined text-[20px]">close</span>
+        </button>
+      </div>
+
+      <div class="p-6 space-y-4 overflow-y-auto custom-scrollbar flex-1">
+        <div class="p-4 rounded-2xl bg-[#f5f2eb] border border-[#e5ddcf] space-y-2 text-xs">
+          <h4 class="font-bold text-[#875200] flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[18px]">info</span>
+            <span>How to publish updates for all website visitors:</span>
+          </h4>
+          <ol class="list-decimal list-inside space-y-1 text-[#4b4640] leading-relaxed">
+            <li>Click <strong>Download products.js</strong> below (or Copy Code).</li>
+            <li>Replace the file at <code class="font-mono text-[#875200]">data/products.js</code> in your project repository.</li>
+            <li>Commit and push to GitHub:
+              <div class="mt-1 p-2 rounded-lg bg-[#121110] text-[#ffddba] font-mono text-[11px]">
+                git add data/products.js &amp;&amp; git commit -m "Update catalog via Admin" &amp;&amp; git push origin main
+              </div>
+            </li>
+            <li>GitHub Pages will automatically deploy your latest products to all customers worldwide!</li>
+          </ol>
+        </div>
+
+        <div>
+          <div class="flex items-center justify-between mb-1.5">
+            <span class="text-xs font-semibold text-[#121110]">Generated products.js Code Preview</span>
+            <button onclick="copyExportedCode()" class="inline-flex items-center gap-1 text-xs text-[#875200] hover:underline font-semibold cursor-pointer">
+              <span class="material-symbols-outlined text-[15px]">content_copy</span>
+              <span id="copyCodeText">Copy Code</span>
+            </button>
+          </div>
+          <textarea id="exportedCodeTextarea" readonly rows="12" class="w-full p-4 rounded-xl border border-[#e5ddcf] bg-[#121110] text-[#ffddba] font-mono text-xs focus:outline-none custom-scrollbar"></textarea>
+        </div>
+      </div>
+
+      <div class="px-6 py-3.5 bg-[#fbf9f6] border-t border-[#e5ddcf] flex justify-between items-center">
+        <span class="text-[11px] text-[#787268]"><span id="exportProductCount">0</span> fragrances packaged</span>
+        <div class="flex gap-2">
+          <button onclick="copyExportedCode()" class="px-4 py-2 rounded-xl border border-[#e5ddcf] text-xs font-semibold text-[#121110] hover:bg-[#fbf9f6] transition-colors cursor-pointer">
+            Copy Code
+          </button>
+          <button onclick="downloadExportedFile()" class="px-5 py-2 rounded-xl bg-[#121110] hover:bg-[#875200] text-white text-xs font-semibold uppercase tracking-wider transition-colors cursor-pointer flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[16px]">download</span>
+            <span>Download products.js</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- =======================================================================
+       7. SECURITY & SETTINGS MODAL
+       ======================================================================= -->
+  <div id="securityModal" class="fixed inset-0 z-50 bg-[#121110]/70 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6 hidden">
+    <div class="w-full max-w-lg bg-white rounded-3xl border border-[#e5ddcf] shadow-2xl flex flex-col overflow-hidden">
+      
+      <div class="px-6 py-4 bg-[#fbf9f6] border-b border-[#e5ddcf] flex items-center justify-between">
+        <div>
+          <h3 class="font-serif text-lg font-bold text-[#121110]">Security &amp; Architecture Settings</h3>
+          <p class="text-[11px] text-[#787268]">Passcode configuration &amp; database integration notes</p>
+        </div>
+        <button onclick="closeSecurityModal()" class="w-9 h-9 rounded-full hover:bg-[#e5ddcf] flex items-center justify-center text-[#787268] hover:text-[#121110] transition-colors cursor-pointer">
+          <span class="material-symbols-outlined text-[20px]">close</span>
+        </button>
+      </div>
+
+      <div class="p-6 space-y-5 overflow-y-auto custom-scrollbar text-xs">
+        <!-- Passcode Setting -->
+        <div class="space-y-3">
+          <h4 class="font-bold uppercase tracking-wider text-[#121110] flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[18px] text-[#875200]">key</span>
+            <span>Admin Passcode Management</span>
+          </h4>
+          <p class="text-[#787268] leading-relaxed">
+            You can customize your browser passcode here. Default fallback: <code class="font-mono text-[#875200]">oudaura2026</code>.
+          </p>
+
+          <div class="space-y-2">
+            <div>
+              <label class="block text-[11px] font-medium text-[#121110] mb-1">New Passcode</label>
+              <input type="text" id="newPasscodeInput" placeholder="Enter new custom passcode" class="w-full px-3 py-2 rounded-xl border border-[#e5ddcf] bg-[#fbf9f6] font-mono text-xs focus:outline-none focus:border-[#875200]">
+            </div>
+            <div class="flex gap-2">
+              <button onclick="saveCustomPasscode()" class="flex-1 py-2 rounded-xl bg-[#121110] hover:bg-[#875200] text-white font-semibold uppercase tracking-wider transition-colors cursor-pointer">
+                Save New Passcode
+              </button>
+              <button onclick="resetPasscodeToDefault()" class="px-3 py-2 rounded-xl border border-[#e5ddcf] text-[#787268] hover:text-red-700 transition-colors cursor-pointer" title="Reset to oudaura2026">
+                Reset Default
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Security limitation explanation & Firebase Firestore Architecture -->
+        <div class="p-4 rounded-2xl bg-[#f5f2eb] border border-[#e5ddcf] space-y-2 text-[#4b4640] leading-relaxed">
+          <h5 class="font-bold text-[#121110] flex items-center gap-1">
+            <span class="material-symbols-outlined text-[16px] text-[#875200]">cloud_sync</span>
+            <span>Storage &amp; Multi-Device Persistence Note</span>
+          </h5>
+          <p>
+            This website is hosted statically on <strong>GitHub Pages</strong>. Orders and custom catalog changes are stored in client-side <code>localStorage</code>.
+          </p>
+          <ul class="list-disc list-inside space-y-1">
+            <li><strong>Cross-Device Syncing:</strong> To publish product updates worldwide, click <em>Export Catalog</em> and push <code>data/products.js</code> to GitHub.</li>
+            <li><strong>Firebase Firestore Integration:</strong> When connecting Cloud Firestore, use official Firestore SDK with proper Firestore Security Rules. Never expose private service account keys in static frontend code.</li>
+          </ul>
+        </div>
+
+        <!-- Razorpay Link -->
+        <div class="pt-2 border-t border-[#e5ddcf]/60 flex items-center justify-between">
+          <span class="text-[#787268]">Official Payment Gateway:</span>
+          <a href="https://dashboard.razorpay.com/app/orders" target="_blank" class="text-[#875200] font-semibold hover:underline flex items-center gap-1">
+            <span>Razorpay Dashboard</span>
+            <span class="material-symbols-outlined text-[14px]">open_in_new</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="px-6 py-3.5 bg-[#fbf9f6] border-t border-[#e5ddcf] flex justify-end">
+        <button onclick="closeSecurityModal()" class="px-5 py-2 rounded-xl bg-[#121110] hover:bg-[#875200] text-white text-xs font-semibold uppercase tracking-wider transition-colors cursor-pointer">
+          Close
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- =======================================================================
+       8. PRINTABLE PACKING SLIP CONTAINER (Hidden until printed)
+       ======================================================================= -->
+  <div id="printableSlip" class="hidden">
+    <!-- Populated by JavaScript before window.print() -->
+  </div>
+
   <!-- Toast Notification -->
   <div id="adminToast" class="fixed bottom-6 right-6 z-50 px-4 py-3 rounded-2xl bg-[#121110] text-white text-xs shadow-xl flex items-center gap-2 opacity-0 pointer-events-none transition-all duration-300">
     <span class="material-symbols-outlined text-[18px] text-[#25D366]">check_circle</span>
     <span id="adminToastText">Operation successful</span>
   </div>
 
-  <!-- Configuration -->
+  <!-- =======================================================================
+       9. SCRIPTS: CONFIGURATION & PRODUCTS CATALOG
+       ======================================================================= -->
   <script src="data/config.js"></script>
+  <script src="data/products.js?v=6"></script>
 
   <!-- =======================================================================
-       5. JAVASCRIPT: DASHBOARD LOGIC, SECURITY & API INTEGRATION
+       10. JAVASCRIPT: ADMIN CONTROLLER & APPLICATION LOGIC
        ======================================================================= -->
   <script>
     // @ts-nocheck
-    const ADMIN_STORAGE_KEY = "oud_aura_admin_token";
-    let CURRENT_ADMIN_KEY = sessionStorage.getItem(ADMIN_STORAGE_KEY) || "";
+    const ADMIN_SESSION_KEY = "oud_aura_admin_token";
+    const PASSCODE_STORAGE_KEY = "oud_aura_admin_passcode";
+    const DEFAULT_PASSCODE = "oudaura2026";
+
+    let CURRENT_ADMIN_KEY = sessionStorage.getItem(ADMIN_SESSION_KEY) || "";
+    let ACTIVE_TAB = "orders"; // 'orders' | 'products' | 'analytics'
     let ALL_ORDERS = [];
-    let ACTIVE_FILTER = "ALL";
+    let ALL_CATALOG_PRODUCTS = [];
+    let ACTIVE_ORDER_FILTER = "ALL";
+    let ACTIVE_CAT_FILTER = "all";
     let CURRENT_SELECTED_ORDER = null;
+
+    // Chart.js Instances
+    let chartRevenueInstance = null;
+    let chartOrdersInstance = null;
+    let chartTopProdsInstance = null;
+    let chartCategoryInstance = null;
+
+    // Get active valid passcode
+    function getAdminPasscode() {
+      return localStorage.getItem(PASSCODE_STORAGE_KEY) || DEFAULT_PASSCODE;
+    }
 
     // Toast helper
     function showToast(msg, isError = false) {
@@ -591,95 +1339,152 @@
       }, 2500);
     }
 
-    // Login Handler
+    // =========================================================================
+    // AUTHENTICATION LOGIC
+    // =========================================================================
     function handleAdminLogin(e) {
       e.preventDefault();
       const input = document.getElementById("adminKeyInput");
       const key = input.value.trim();
       const err = document.getElementById("authErrorMsg");
+      const validPasscode = getAdminPasscode();
       
       if (!key) return;
 
-      if (key === "oudaura2026") {
+      if (key === validPasscode || key === DEFAULT_PASSCODE) {
         CURRENT_ADMIN_KEY = key;
-        sessionStorage.setItem(ADMIN_STORAGE_KEY, key);
+        sessionStorage.setItem(ADMIN_SESSION_KEY, key);
         document.getElementById("authOverlay").classList.add("hidden");
         err.classList.add("hidden");
-        fetchOrders();
+        initDashboard();
       } else {
-        err.textContent = "Incorrect admin passcode. (Passcode: oudaura2026)";
+        err.textContent = `Incorrect admin passcode. (Default: ${DEFAULT_PASSCODE})`;
         err.classList.remove("hidden");
       }
     }
 
     function logoutAdmin() {
-      sessionStorage.removeItem(ADMIN_STORAGE_KEY);
+      sessionStorage.removeItem(ADMIN_SESSION_KEY);
       CURRENT_ADMIN_KEY = "";
       document.getElementById("authOverlay").classList.remove("hidden");
       document.getElementById("adminKeyInput").value = "";
     }
 
-    // Fetch All Orders from Local Storage / Session
-    function fetchOrders() {
-      if (!CURRENT_ADMIN_KEY) return;
+    // =========================================================================
+    // TAB NAVIGATION
+    // =========================================================================
+    function switchTab(tabId) {
+      ACTIVE_TAB = tabId;
+      ['orders', 'products', 'analytics'].forEach(t => {
+        const btn = document.getElementById(`tabBtn-${t}`);
+        const content = document.getElementById(`tabContent-${t}`);
+        if (t === tabId) {
+          btn.classList.add("active");
+          content.classList.remove("hidden");
+        } else {
+          btn.classList.remove("active");
+          content.classList.add("hidden");
+        }
+      });
 
-      const refreshIcon = document.getElementById("refreshIcon");
-      if (refreshIcon) refreshIcon.classList.add("animate-spin");
-
-      try {
-        const stored = JSON.parse(localStorage.getItem("oud_aura_orders") || "[]");
-        ALL_ORDERS = stored.map(o => ({
-          order_id: o.orderId || o.order_id,
-          created_at: o.date || "Recent",
-          customer: {
-            name: o.name || "Customer",
-            phone: o.phone || "-",
-            email: o.email || "",
-            full_address: o.address || "",
-            city: o.city || "Mumbai",
-            state: o.state || "Maharashtra"
-          },
-          items: o.items || [],
-          pricing: {
-            final_amount: o.total || 0
-          },
-          total: o.total || 0,
-          payment: {
-            status: (o.paymentMethod || "").includes("COD") ? "COD_PENDING" : "PAID",
-            method: o.paymentMethod || "Razorpay Online",
-            razorpay_payment_id: o.razorpayPaymentId || "-"
-          },
-          order_status: (o.paymentMethod || "").includes("COD") ? "COD" : "PAID",
-          fulfillment: {
-            carrier: o.carrier || "",
-            tracking_number: o.tracking_number || "",
-            notes: o.notes || ""
-          }
-        }));
-
-        const totalRev = ALL_ORDERS.filter(o => o.payment.status === "PAID").reduce((sum, o) => sum + (o.total || 0), 0);
-        const stats = {
-          total_revenue: totalRev,
-          total_orders: ALL_ORDERS.length,
-          paid_orders: ALL_ORDERS.filter(o => o.payment.status === "PAID").length,
-          processing_orders: 0,
-          shipped_orders: 0,
-          delivered_orders: 0,
-          cod_orders: ALL_ORDERS.filter(o => o.payment.status === "COD_PENDING").length,
-          cancelled_orders: 0
-        };
-
-        updateKpis(stats);
-        renderOrdersTable();
-      } catch (err) {
-        console.error("Error loading orders:", err);
-      } finally {
-        if (refreshIcon) refreshIcon.classList.remove("animate-spin");
+      if (tabId === 'orders') {
+        fetchOrders();
+      } else if (tabId === 'products') {
+        fetchCatalog();
+      } else if (tabId === 'analytics') {
+        renderAnalytics();
       }
     }
 
-    // Update KPI Display Cards
-    function updateKpis(stats) {
+    function refreshCurrentTab() {
+      const icon = document.getElementById("refreshIcon");
+      if (icon) icon.classList.add("animate-spin");
+      setTimeout(() => {
+        if (ACTIVE_TAB === 'orders') fetchOrders();
+        else if (ACTIVE_TAB === 'products') fetchCatalog();
+        else if (ACTIVE_TAB === 'analytics') renderAnalytics();
+        if (icon) icon.classList.remove("animate-spin");
+        showToast("Refreshed successfully");
+      }, 350);
+    }
+
+    // =========================================================================
+    // MODULE 1: ORDERS & FULFILLMENT
+    // =========================================================================
+    function fetchOrders() {
+      if (!CURRENT_ADMIN_KEY) return;
+      try {
+        const raw = JSON.parse(localStorage.getItem("oud_aura_orders") || "[]");
+        ALL_ORDERS = raw.map(o => {
+          const isCod = (o.paymentMethod || "").toLowerCase().includes("cash") || (o.paymentMethod || "").toLowerCase().includes("cod");
+          const orderStatus = o.order_status || o.orderStatus || (isCod ? "COD" : "PAID");
+          const paymentStatus = o.paymentStatus || (isCod ? (orderStatus === "DELIVERED" ? "PAID" : "COD_PENDING") : "PAID");
+          
+          return {
+            order_id: o.orderId || o.order_id || "OA-" + Math.floor(10000 + Math.random() * 90000),
+            created_at: o.date || "Recent",
+            customer: {
+              name: o.name || "Valued Customer",
+              phone: o.phone || "-",
+              email: o.email || "",
+              full_address: o.address || o.customer?.full_address || "Standard Address",
+              city: o.city || o.customer?.city || "Mumbai",
+              state: o.state || o.customer?.state || "Maharashtra",
+              pincode: o.pincode || o.customer?.pincode || "400001"
+            },
+            items: o.items || [],
+            coupon: o.coupon || (o.pricing && o.pricing.coupon) || null,
+            pricing: {
+              subtotal: (o.pricing && o.pricing.subtotal) || (o.total ? o.total - (o.total >= 999 ? 0 : 60) : 0),
+              shipping: (o.pricing && o.pricing.shipping !== undefined) ? o.pricing.shipping : (o.total >= 999 ? 0 : 60),
+              discount: (o.pricing && o.pricing.discount) || 0,
+              final_amount: o.total || (o.pricing && o.pricing.final_amount) || 0
+            },
+            total: o.total || 0,
+            payment: {
+              method: o.paymentMethod || (isCod ? "Cash on Delivery" : "Razorpay Online"),
+              status: paymentStatus,
+              razorpay_payment_id: o.razorpayPaymentId || o.payment?.razorpay_payment_id || (isCod ? "N/A (Cash on Delivery)" : "PAY-ONLINE-OK")
+            },
+            order_status: orderStatus,
+            fulfillment: {
+              carrier: o.carrier || o.fulfillment?.carrier || "",
+              tracking_number: o.tracking_number || o.fulfillment?.tracking_number || "",
+              notes: o.notes || o.fulfillment?.notes || ""
+            }
+          };
+        });
+
+        // Update tab badge
+        const badge = document.getElementById("tabOrderCountBadge");
+        if (badge) badge.textContent = ALL_ORDERS.length;
+
+        // Calculate verified KPIs
+        // Revenue is calculated strictly from PAID online orders OR DELIVERED COD orders
+        const verifiedPaidRev = ALL_ORDERS.reduce((sum, o) => {
+          const isPaid = o.payment.status === "PAID" || o.order_status === "DELIVERED";
+          return isPaid ? sum + (o.total || 0) : sum;
+        }, 0);
+
+        const stats = {
+          total_revenue: verifiedPaidRev,
+          total_orders: ALL_ORDERS.length,
+          paid_orders: ALL_ORDERS.filter(o => o.payment.status === "PAID" || o.order_status === "PAID").length,
+          processing_orders: ALL_ORDERS.filter(o => o.order_status === "PROCESSING").length,
+          shipped_orders: ALL_ORDERS.filter(o => o.order_status === "SHIPPED").length,
+          delivered_orders: ALL_ORDERS.filter(o => o.order_status === "DELIVERED").length,
+          cod_orders: ALL_ORDERS.filter(o => o.payment.status === "COD_PENDING" && o.order_status !== "DELIVERED").length,
+          cancelled_orders: ALL_ORDERS.filter(o => o.order_status === "CANCELLED").length
+        };
+
+        updateOrdersKpis(stats);
+        renderOrdersTable();
+      } catch (e) {
+        console.error("Error loading orders:", e);
+      }
+    }
+
+    function updateOrdersKpis(stats) {
       if (!stats) return;
       document.getElementById("statTotalRevenue").textContent = `₹${(stats.total_revenue || 0).toLocaleString('en-IN')}`;
       document.getElementById("statTotalOrders").textContent = stats.total_orders || 0;
@@ -688,10 +1493,9 @@
       document.getElementById("statShippedOrders").textContent = stats.shipped_orders || 0;
     }
 
-    // Filter Logic
     function setFilterStatus(status) {
-      ACTIVE_FILTER = status;
-      document.querySelectorAll(".filter-pill").forEach(p => {
+      ACTIVE_ORDER_FILTER = status;
+      document.querySelectorAll(".order-filter-pill").forEach(p => {
         if (p.getAttribute("data-filter") === status) {
           p.classList.add("bg-[#f5f2eb]", "border-[#121110]", "text-[#121110]");
           p.classList.remove("text-[#787268]");
@@ -709,14 +1513,13 @@
 
     function getFilteredOrders() {
       const query = (document.getElementById("orderSearchInput")?.value || "").toLowerCase().trim();
-      
       return ALL_ORDERS.filter(o => {
         // Status filter
-        if (ACTIVE_FILTER !== "ALL") {
-          if (ACTIVE_FILTER === "COD") {
+        if (ACTIVE_ORDER_FILTER !== "ALL") {
+          if (ACTIVE_ORDER_FILTER === "COD") {
             const isCod = (o.payment?.method || "").toUpperCase().includes("COD") || o.payment?.status === "COD_PENDING";
             if (!isCod) return false;
-          } else if (o.order_status !== ACTIVE_FILTER) {
+          } else if (o.order_status !== ACTIVE_ORDER_FILTER) {
             return false;
           }
         }
@@ -724,12 +1527,14 @@
         // Query filter
         if (query) {
           const id = (o.order_id || "").toLowerCase();
-          const rzpId = (o.payment?.razorpay_order_id || "").toLowerCase();
           const name = (o.customer?.name || "").toLowerCase();
           const phone = (o.customer?.phone || "").toLowerCase();
           const city = (o.customer?.city || "").toLowerCase();
           const addr = (o.customer?.full_address || "").toLowerCase();
-          const matches = id.includes(query) || rzpId.includes(query) || name.includes(query) || phone.includes(query) || city.includes(query) || addr.includes(query);
+          const carrier = (o.fulfillment?.carrier || "").toLowerCase();
+          const tracking = (o.fulfillment?.tracking_number || "").toLowerCase();
+          const itemsStr = (o.items || []).map(i => i.name).join(" ").toLowerCase();
+          const matches = id.includes(query) || name.includes(query) || phone.includes(query) || city.includes(query) || addr.includes(query) || carrier.includes(query) || tracking.includes(query) || itemsStr.includes(query);
           if (!matches) return false;
         }
 
@@ -737,7 +1542,6 @@
       });
     }
 
-    // Render Table
     function renderOrdersTable() {
       const container = document.getElementById("ordersTableWrapper");
       const emptyState = document.getElementById("ordersEmpty");
@@ -745,7 +1549,7 @@
       const tbody = document.getElementById("ordersTableBody");
       const countText = document.getElementById("filteredCountText");
 
-      loadingState.classList.add("hidden");
+      if (loadingState) loadingState.classList.add("hidden");
 
       const filtered = getFilteredOrders();
       if (countText) countText.textContent = `${filtered.length} order${filtered.length === 1 ? '' : 's'}`;
@@ -761,38 +1565,36 @@
 
       tbody.innerHTML = filtered.map(order => {
         const cust = order.customer || {};
-        const pricing = order.pricing || {};
         const pay = order.payment || {};
         const items = order.items || [];
-        
+        const isCod = (pay.method || "").toUpperCase().includes("COD") || (pay.method || "").toLowerCase().includes("cash");
+
         // Status badge color
         let statusBadgeClass = "bg-gray-100 text-gray-800";
         if (order.order_status === "PAID") statusBadgeClass = "bg-emerald-100 text-emerald-800";
         else if (order.order_status === "PROCESSING") statusBadgeClass = "bg-blue-100 text-blue-800";
         else if (order.order_status === "SHIPPED") statusBadgeClass = "bg-amber-100 text-amber-800";
         else if (order.order_status === "DELIVERED") statusBadgeClass = "bg-emerald-100 text-emerald-900";
-        else if (order.order_status === "CANCELLED" || order.order_status === "PAYMENT_FAILED") statusBadgeClass = "bg-rose-100 text-rose-800";
+        else if (order.order_status === "CANCELLED") statusBadgeClass = "bg-rose-100 text-rose-800";
+        else if (order.order_status === "COD") statusBadgeClass = "bg-amber-50 text-amber-800 border border-amber-200";
 
         // Payment status badge
-        let payBadgeClass = "bg-gray-100 text-gray-700";
-        let payLabel = pay.status || "PENDING";
-        if (pay.status === "PAID") {
-          payBadgeClass = "bg-emerald-50 text-emerald-700 border border-emerald-200";
-          payLabel = "PAID (ONLINE)";
-        } else if (pay.status === "COD_PENDING" || (pay.method || "").includes("Cash")) {
-          payBadgeClass = "bg-amber-50 text-amber-700 border border-amber-200";
-          payLabel = "COD (DOORSTEP)";
+        let payBadgeClass = "bg-emerald-50 text-emerald-700 border border-emerald-200";
+        let payLabel = "PAID (ONLINE)";
+        if (isCod) {
+          payBadgeClass = order.order_status === "DELIVERED" ? "bg-emerald-50 text-emerald-700 border border-emerald-200" : "bg-amber-50 text-amber-700 border border-amber-200";
+          payLabel = order.order_status === "DELIVERED" ? "COD (COLLECTED)" : "COD (DOORSTEP)";
         }
 
-        const itemsSummary = items.map(i => `${i.name} (${i.size}) × ${i.quantity}`).join(", ");
-        const firstThumb = items[0]?.image || "images/products/imperial_rose.jpg";
+        const firstThumb = items[0]?.image || "homepagelogo.jpg";
+        const itemsText = items.map(i => `${i.name} (${i.size}) × ${i.quantity}`).join(", ");
 
         return `
           <tr class="hover:bg-[#fbf9f6] transition-colors cursor-pointer" onclick="openOrderDetailModal('${order.order_id}')">
             <!-- Order ID & Date -->
             <td class="py-4 px-4 sm:px-6">
               <div class="font-mono font-bold text-xs text-[#121110]">#${order.order_id}</div>
-              <div class="text-[11px] text-[#787268] mt-0.5">${order.created_at || 'Just now'}</div>
+              <div class="text-[11px] text-[#787268] mt-0.5">${order.created_at || 'Recent'}</div>
             </td>
 
             <!-- Customer -->
@@ -802,25 +1604,25 @@
                 <span class="material-symbols-outlined text-[13px]">call</span>
                 <span>${cust.phone || '-'}</span>
               </div>
-              <div class="text-[10px] text-[#787268] mt-0.5 truncate max-w-[180px]">${cust.city || 'Mumbai'}, ${cust.state || ''}</div>
+              <div class="text-[10px] text-[#787268] mt-0.5 truncate max-w-[160px]">${cust.city || 'Mumbai'}, ${cust.state || ''}</div>
             </td>
 
             <!-- Items -->
             <td class="py-4 px-4">
               <div class="flex items-center gap-2">
                 <div class="w-9 h-9 rounded-lg bg-[#f5f2eb] border border-[#e5ddcf]/60 overflow-hidden shrink-0 flex items-center justify-center p-0.5">
-                  <img src="${firstThumb}" alt="item" class="w-full h-full object-contain" onerror="this.src='https://via.placeholder.com/60?text=Oud'" />
+                  <img src="${firstThumb}" alt="item" class="w-full h-full object-contain" onerror="this.src='homepagelogo.jpg'" />
                 </div>
-                <div class="min-w-0 max-w-[200px]">
-                  <div class="font-medium text-xs text-[#121110] truncate">${items[0]?.name || 'Perfume'}</div>
-                  <div class="text-[10px] text-[#787268]">${items.length} item(s) • ${items[0]?.size || ''}</div>
+                <div class="min-w-0 max-w-[180px]">
+                  <div class="font-medium text-xs text-[#121110] truncate">${items[0]?.name || 'Fragrance'}</div>
+                  <div class="text-[10px] text-[#787268]">${items.length} item(s) &bull; ${items[0]?.size || ''}</div>
                 </div>
               </div>
             </td>
 
             <!-- Total & Payment -->
             <td class="py-4 px-4">
-              <div class="font-serif font-bold text-sm text-[#121110]">₹${(pricing.final_amount || order.total || 0).toLocaleString('en-IN')}</div>
+              <div class="font-serif font-bold text-sm text-[#121110]">₹${(order.total || 0).toLocaleString('en-IN')}</div>
               <span class="inline-block mt-1 px-2 py-0.5 rounded text-[10px] font-bold ${payBadgeClass}">
                 ${payLabel}
               </span>
@@ -831,23 +1633,27 @@
               <span class="status-badge ${statusBadgeClass}">
                 ${order.order_status}
               </span>
-              ${order.fulfillment?.carrier ? `<div class="text-[10px] text-[#787268] mt-1 font-mono">${order.fulfillment.carrier}</div>` : ''}
+              ${order.fulfillment?.carrier ? `<div class="text-[10px] text-[#787268] mt-1 font-mono">${order.fulfillment.carrier} ${order.fulfillment.tracking_number ? '• ' + order.fulfillment.tracking_number : ''}</div>` : ''}
             </td>
 
-            <!-- Action -->
+            <!-- Actions -->
             <td class="py-4 px-4 sm:px-6 text-right" onclick="event.stopPropagation()">
-              <button onclick="openOrderDetailModal('${order.order_id}')" class="px-3 py-1.5 rounded-lg border border-[#e5ddcf] bg-white hover:bg-[#121110] hover:text-white text-xs font-semibold text-[#121110] transition-colors cursor-pointer">
-                Manage
-              </button>
+              <div class="flex items-center justify-end gap-1.5">
+                <button onclick="openOrderDetailModal('${order.order_id}')" class="px-3 py-1.5 rounded-lg border border-[#e5ddcf] bg-white hover:bg-[#121110] hover:text-white text-xs font-semibold text-[#121110] transition-colors cursor-pointer" title="Manage Order Details">
+                  Manage
+                </button>
+                <button onclick="triggerPrintForOrder('${order.order_id}')" class="p-1.5 rounded-lg border border-[#e5ddcf] bg-white hover:bg-[#f5f2eb] text-[#787268] hover:text-[#121110] transition-colors cursor-pointer" title="Print Packing Slip">
+                  <span class="material-symbols-outlined text-[16px]">print</span>
+                </button>
+              </div>
             </td>
           </tr>
         `;
       }).join("");
     }
 
-    // Open Single Order Detail Modal
     function openOrderDetailModal(orderId) {
-      const order = ALL_ORDERS.find(o => o.order_id === orderId || o.internal_order_id === orderId || o.key === orderId);
+      const order = ALL_ORDERS.find(o => o.order_id === orderId);
       if (!order) return;
 
       CURRENT_SELECTED_ORDER = order;
@@ -901,7 +1707,7 @@
       document.getElementById("modalCustPhoneLink").href = `tel:${cust.phone || ''}`;
       document.getElementById("modalCustEmail").textContent = cust.email || "Not specified";
       document.getElementById("modalCustEmailLink").href = `mailto:${cust.email || ''}`;
-      document.getElementById("modalCustAddress").textContent = cust.full_address || cust.address_line1 || "Address provided";
+      document.getElementById("modalCustAddress").textContent = cust.full_address || "Address provided";
       document.getElementById("modalCustCity").textContent = cust.city || "City";
       document.getElementById("modalCustState").textContent = cust.state || "State";
       document.getElementById("modalCustPin").textContent = cust.pincode || "PIN";
@@ -924,32 +1730,16 @@
       document.getElementById("modalPricingSubtotal").textContent = `₹${pricing.subtotal || order.total || 0}`;
       document.getElementById("modalPricingShipping").textContent = pricing.shipping === 0 ? "FREE" : `₹${pricing.shipping || 0}`;
       document.getElementById("modalPricingDiscount").textContent = `₹${pricing.discount || 0}`;
-      document.getElementById("modalPricingTotal").textContent = `₹${pricing.final_amount || order.total || 0}`;
+      document.getElementById("modalCouponCode").textContent = order.coupon || "None";
+      document.getElementById("modalPricingTotal").textContent = `₹${order.total || pricing.final_amount || 0}`;
 
       // Payment details
       const pay = order.payment || {};
+      const isCod = (pay.method || "").toUpperCase().includes("COD") || (pay.method || "").toLowerCase().includes("cash");
       document.getElementById("modalPayMethod").textContent = pay.method || "Razorpay Online";
-      document.getElementById("modalPayStatusBadge").textContent = pay.status || "PENDING";
-      document.getElementById("modalRzpOrderId").textContent = pay.razorpay_order_id || "-";
-      document.getElementById("modalRzpPaymentId").textContent = pay.razorpay_payment_id || "-";
-      document.getElementById("modalSigStatus").textContent = pay.signature_verified ? "VERIFIED (HMAC SHA256)" : "NOT APPLICABLE / COD";
-      document.getElementById("modalPaidAt").textContent = pay.paid_at || order.created_at || "-";
-
-      // Timeline
-      const timelineBox = document.getElementById("modalTimelineContainer");
-      const timeline = order.timeline || [];
-      timelineBox.innerHTML = timeline.map(t => `
-        <div class="flex items-start gap-2.5 text-xs py-1 border-b border-[#e5ddcf]/40 last:border-0">
-          <span class="material-symbols-outlined text-[16px] text-[#875200] shrink-0 mt-0.5">event_note</span>
-          <div class="flex-1 min-w-0">
-            <div class="flex justify-between items-baseline">
-              <strong class="font-bold text-[#121110]">${t.status}</strong>
-              <span class="text-[10px] text-[#787268] font-mono">${t.timestamp || ''}</span>
-            </div>
-            <p class="text-[11px] text-[#787268] mt-0.5">${t.note || ''}</p>
-          </div>
-        </div>
-      `).join("");
+      document.getElementById("modalPayStatusBadge").textContent = pay.status || "PAID";
+      document.getElementById("modalRzpPaymentId").textContent = pay.razorpay_payment_id || (isCod ? "N/A (Doorstep Cash)" : "Verified Online");
+      document.getElementById("modalCodIndicator").textContent = isCod ? "Yes (Cash On Delivery)" : "No (Prepaid Online)";
 
       modal.classList.remove("hidden");
     }
@@ -959,7 +1749,6 @@
       CURRENT_SELECTED_ORDER = null;
     }
 
-    // Save Order Status & Fulfillment Update
     function saveOrderStatusUpdate() {
       if (!CURRENT_SELECTED_ORDER) return;
 
@@ -972,12 +1761,22 @@
         const stored = JSON.parse(localStorage.getItem("oud_aura_orders") || "[]");
         const idx = stored.findIndex(o => (o.orderId || o.order_id) === CURRENT_SELECTED_ORDER.order_id);
         if (idx !== -1) {
-          stored[idx].paymentMethod = newStatus;
+          stored[idx].order_status = newStatus;
+          stored[idx].orderStatus = newStatus;
           stored[idx].carrier = carrier;
           stored[idx].tracking_number = tracking;
           stored[idx].notes = note;
+          
+          // If COD and marked DELIVERED, mark payment status as PAID
+          if ((stored[idx].paymentMethod || "").toLowerCase().includes("cash") || (stored[idx].paymentMethod || "").toLowerCase().includes("cod")) {
+            if (newStatus === "DELIVERED") {
+              stored[idx].paymentStatus = "PAID";
+            }
+          }
+
           localStorage.setItem("oud_aura_orders", JSON.stringify(stored));
         }
+
         showToast(`Order #${CURRENT_SELECTED_ORDER.order_id} marked as ${newStatus}`);
         fetchOrders();
         closeOrderDetailModal();
@@ -986,7 +1785,6 @@
       }
     }
 
-    // Send WhatsApp Tracking Dispatch Update to Customer
     function sendWhatsAppDispatchMessage() {
       if (!CURRENT_SELECTED_ORDER) return;
       const o = CURRENT_SELECTED_ORDER;
@@ -994,16 +1792,17 @@
       const fulf = o.fulfillment || {};
 
       const phone = (cust.phone || "").replace(/[^0-9]/g, '');
-      const carrier = fulf.carrier || "Courier";
-      const tracking = fulf.tracking_number || "To be updated";
+      const carrier = document.getElementById("updateCarrierInput").value.trim() || fulf.carrier || "Courier";
+      const tracking = document.getElementById("updateTrackingInput").value.trim() || fulf.tracking_number || "To be updated";
 
       const msg = encodeURIComponent(
         `Dear ${cust.name || 'Customer'},\n\n` +
-        `Your Oud & Aura fragrance order #${o.order_id} has been dispatched! ✨\n\n` +
-        `📦 *Courier Carrier:* ${carrier}\n` +
+        `Your Oud & Aura fragrance order #${o.order_id} update ✨\n\n` +
+        `📦 *Status:* ${document.getElementById("updateStatusSelect").value}\n` +
+        `🚚 *Courier Carrier:* ${carrier}\n` +
         `🔖 *Tracking / AWB:* ${tracking}\n` +
         `📍 *Destination:* ${cust.full_address || cust.city || ''}\n\n` +
-        `Your parcel is carefully bubble-wrapped in our presentation box. Please expect doorstep delivery within 2-4 business days.\n\n` +
+        `Your parcel is carefully packaged in our luxury box. Please contact us if you need any assistance with delivery.\n\n` +
         `Thank you for choosing Oud & Aura - The Essence of Elegance.`
       );
 
@@ -1011,13 +1810,119 @@
       window.open(targetUrl, "_blank");
     }
 
-    // Export CSV (Client-side offline & cloud compatible)
+    function triggerPrintForOrder(orderId) {
+      const order = ALL_ORDERS.find(o => o.order_id === orderId);
+      if (!order) return;
+      CURRENT_SELECTED_ORDER = order;
+      printOrderPackingSlip();
+    }
+
+    function printOrderPackingSlip() {
+      if (!CURRENT_SELECTED_ORDER) return;
+      const o = CURRENT_SELECTED_ORDER;
+      const cust = o.customer || {};
+      const fulf = o.fulfillment || {};
+      const items = o.items || [];
+      const isCod = (o.payment?.method || "").toUpperCase().includes("COD") || (o.payment?.method || "").toLowerCase().includes("cash");
+
+      const printEl = document.getElementById("printableSlip");
+      if (!printEl) return;
+
+      printEl.innerHTML = `
+        <div style="font-family: 'Plus Jakarta Sans', sans-serif; max-width: 700px; margin: 0 auto; color: #121110; padding: 20px; border: 1px solid #e5ddcf;">
+          <div style="display: flex; justify-content: space-between; border-bottom: 2px solid #121110; padding-bottom: 12px; margin-bottom: 20px;">
+            <div>
+              <h1 style="font-family: 'Cinzel', serif; font-size: 24px; font-weight: 800; margin: 0; letter-spacing: 0.1em;">OUD &amp; AURA</h1>
+              <p style="font-size: 11px; color: #875200; margin: 2px 0 0 0; text-transform: uppercase; letter-spacing: 0.15em;">The Essence of Elegance &bull; Packing Slip</p>
+            </div>
+            <div style="text-align: right;">
+              <h2 style="font-size: 16px; margin: 0; font-family: monospace;">#${o.order_id}</h2>
+              <p style="font-size: 11px; color: #787268; margin: 2px 0 0 0;">Date: ${o.created_at}</p>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 30px; margin-bottom: 20px;">
+            <div style="flex: 1;">
+              <h3 style="font-size: 11px; text-transform: uppercase; color: #787268; margin: 0 0 6px 0;">Ship To:</h3>
+              <p style="font-size: 13px; font-weight: bold; margin: 0 0 4px 0;">${cust.name}</p>
+              <p style="font-size: 12px; margin: 0 0 4px 0; line-height: 1.4;">${cust.full_address}</p>
+              <p style="font-size: 12px; margin: 0;">Phone: ${cust.phone} &bull; Email: ${cust.email || 'N/A'}</p>
+            </div>
+            <div style="flex: 1; text-align: right;">
+              <h3 style="font-size: 11px; text-transform: uppercase; color: #787268; margin: 0 0 6px 0;">Dispatch Info:</h3>
+              <p style="font-size: 12px; margin: 0 0 4px 0;"><strong>Carrier:</strong> ${fulf.carrier || 'Standard Courier'}</p>
+              <p style="font-size: 12px; margin: 0 0 4px 0;"><strong>AWB / Tracking:</strong> ${fulf.tracking_number || 'Pending'}</p>
+              <p style="font-size: 12px; margin: 0 0 4px 0;"><strong>Payment:</strong> ${o.payment?.method || 'Prepaid'}</p>
+              <p style="font-size: 13px; font-weight: bold; color: ${isCod ? '#875200' : '#121110'}; margin: 4px 0 0 0;">
+                ${isCod ? 'COLLECT AT DOORSTEP: ₹' + o.total : 'ALREADY PAID ONLINE: ₹' + o.total}
+              </p>
+            </div>
+          </div>
+
+          <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 12px;">
+            <thead>
+              <tr style="background: #f5f2eb; border-bottom: 1px solid #e5ddcf;">
+                <th style="padding: 8px; text-align: left;">Item Description</th>
+                <th style="padding: 8px; text-align: left;">Variant</th>
+                <th style="padding: 8px; text-align: center;">Qty</th>
+                <th style="padding: 8px; text-align: right;">Unit Price</th>
+                <th style="padding: 8px; text-align: right;">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${items.map(i => `
+                <tr style="border-bottom: 1px solid #f1ede4;">
+                  <td style="padding: 8px; font-weight: 600;">${i.name}</td>
+                  <td style="padding: 8px; color: #875200;">${i.size || 'Standard'}</td>
+                  <td style="padding: 8px; text-align: center;">${i.quantity}</td>
+                  <td style="padding: 8px; text-align: right;">₹${i.price}</td>
+                  <td style="padding: 8px; text-align: right; font-weight: 600;">₹${i.price * i.quantity}</td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+
+          <div style="display: flex; justify-content: flex-end; margin-bottom: 30px;">
+            <div style="width: 250px; font-size: 12px; line-height: 1.6;">
+              <div style="display: flex; justify-content: space-between;">
+                <span>Subtotal:</span>
+                <span>₹${o.pricing?.subtotal || o.total}</span>
+              </div>
+              <div style="display: flex; justify-content: space-between;">
+                <span>Shipping:</span>
+                <span>${o.pricing?.shipping === 0 ? 'FREE' : '₹' + (o.pricing?.shipping || 0)}</span>
+              </div>
+              ${o.pricing?.discount ? `
+                <div style="display: flex; justify-content: space-between; color: #1b7e3e;">
+                  <span>Discount:</span>
+                  <span>-₹${o.pricing.discount}</span>
+                </div>
+              ` : ''}
+              <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 14px; border-top: 1px solid #121110; padding-top: 4px; margin-top: 4px;">
+                <span>Total Amount:</span>
+                <span>₹${o.total}</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="border-top: 1px dashed #e5ddcf; padding-top: 15px; text-align: center; font-size: 11px; color: #787268;">
+            <p style="margin: 0 0 4px 0;">Thank you for shopping with Oud &amp; Aura. Fragrances are carefully inspected and securely sealed before dispatch.</p>
+            <p style="margin: 0;">For inquiries or concierge assistance, reach us on WhatsApp: +91 9819929863 &bull; Email: oudandaaura@gmail.com</p>
+          </div>
+        </div>
+      `;
+
+      printEl.classList.remove("hidden");
+      window.print();
+      printEl.classList.add("hidden");
+    }
+
     function exportOrdersCsv() {
       if (!ALL_ORDERS || ALL_ORDERS.length === 0) {
         showToast("No orders available to export", true);
         return;
       }
-      const headers = ["Order ID", "Date", "Customer Name", "Phone", "Email", "Address", "City", "State", "PIN", "Items", "Payment Method", "Payment Status", "Order Status", "Tracking", "Carrier", "Total Amount"];
+      const headers = ["Order ID", "Date", "Customer Name", "Phone", "Email", "Address", "City", "State", "PIN", "Items", "Coupon Code", "Payment Method", "Payment Status", "Order Status", "Tracking", "Carrier", "Total Amount"];
       const rows = ALL_ORDERS.map(o => {
         const c = o.customer || {};
         const p = o.payment || {};
@@ -1034,6 +1939,7 @@
           `"${(c.state || '').replace(/"/g, '""')}"`,
           `"${(c.pincode || '').replace(/"/g, '""')}"`,
           `"${itemsStr.replace(/"/g, '""')}"`,
+          `"${(o.coupon || '').replace(/"/g, '""')}"`,
           `"${(p.method || '').replace(/"/g, '""')}"`,
           `"${(p.status || '').replace(/"/g, '""')}"`,
           `"${(o.order_status || '').replace(/"/g, '""')}"`,
@@ -1054,19 +1960,878 @@
       showToast("Orders CSV exported successfully!");
     }
 
-    // Auto-init on page load
-    document.addEventListener("DOMContentLoaded", () => {
-      // Check URL param ?key=... to allow auto-login
-      const params = new URLSearchParams(window.location.search);
-      const urlKey = params.get("key");
-      if (urlKey) {
-        CURRENT_ADMIN_KEY = urlKey;
-        sessionStorage.setItem(ADMIN_STORAGE_KEY, urlKey);
+    // =========================================================================
+    // MODULE 2: PRODUCTS & CATALOG MANAGER
+    // =========================================================================
+    function fetchCatalog() {
+      if (typeof getAllProducts === "function") {
+        ALL_CATALOG_PRODUCTS = getAllProducts();
+      } else {
+        ALL_CATALOG_PRODUCTS = typeof PRODUCTS !== "undefined" ? PRODUCTS : [];
       }
 
-      if (CURRENT_ADMIN_KEY) {
+      // Update badge
+      const badge = document.getElementById("tabProductCountBadge");
+      if (badge) badge.textContent = ALL_CATALOG_PRODUCTS.length;
+
+      // Update KPIs
+      const bestSellersCount = ALL_CATALOG_PRODUCTS.filter(p => p.isBestSeller).length;
+      const inStockCount = ALL_CATALOG_PRODUCTS.filter(p => p.inStock !== false).length;
+      const outOfStockCount = ALL_CATALOG_PRODUCTS.filter(p => p.inStock === false).length;
+
+      document.getElementById("statCatalogTotal").textContent = ALL_CATALOG_PRODUCTS.length;
+      document.getElementById("statCatalogBestSellers").textContent = bestSellersCount;
+      document.getElementById("statCatalogInStock").textContent = inStockCount;
+      document.getElementById("statCatalogOutOfStock").textContent = outOfStockCount;
+
+      const catAll = document.getElementById("catCountAll");
+      if (catAll) catAll.textContent = ALL_CATALOG_PRODUCTS.length;
+
+      renderProductsTable();
+    }
+
+    function setProductCategoryFilter(cat) {
+      ACTIVE_CAT_FILTER = cat;
+      document.querySelectorAll(".prod-cat-pill").forEach(p => {
+        if (p.getAttribute("data-cat") === cat) {
+          p.classList.add("bg-[#f5f2eb]", "border-[#121110]", "text-[#121110]");
+          p.classList.remove("text-[#787268]");
+        } else {
+          p.classList.remove("bg-[#f5f2eb]", "border-[#121110]", "text-[#121110]");
+          p.classList.add("text-[#787268]");
+        }
+      });
+      renderProductsTable();
+    }
+
+    function handleProductFilters() {
+      renderProductsTable();
+    }
+
+    function getFilteredProducts() {
+      const query = (document.getElementById("productSearchInput")?.value || "").toLowerCase().trim();
+      const stockFilter = document.getElementById("productStockFilter")?.value || "all";
+      const sortFilter = document.getElementById("productSortFilter")?.value || "default";
+
+      let list = ALL_CATALOG_PRODUCTS.filter(p => {
+        // Category
+        if (ACTIVE_CAT_FILTER !== "all" && p.category !== ACTIVE_CAT_FILTER) {
+          return false;
+        }
+
+        // Stock
+        if (stockFilter === "instock" && p.inStock === false) return false;
+        if (stockFilter === "outofstock" && p.inStock !== false) return false;
+
+        // Query
+        if (query) {
+          const name = (p.name || "").toLowerCase();
+          const tag = (p.tag || "").toLowerCase();
+          const desc = (p.shortDescription || "").toLowerCase();
+          const id = (p.id || "").toLowerCase();
+          const notes = p.notes ? (Object.values(p.notes).join(" ")).toLowerCase() : "";
+          const matches = name.includes(query) || tag.includes(query) || desc.includes(query) || id.includes(query) || notes.includes(query);
+          if (!matches) return false;
+        }
+
+        return true;
+      });
+
+      // Sorting
+      if (sortFilter === "price-asc") {
+        list.sort((a, b) => (a.price || 0) - (b.price || 0));
+      } else if (sortFilter === "price-desc") {
+        list.sort((a, b) => (b.price || 0) - (a.price || 0));
+      } else if (sortFilter === "name-asc") {
+        list.sort((a, b) => (a.name || "").localeCompare(b.name || ""));
+      } else if (sortFilter === "name-desc") {
+        list.sort((a, b) => (b.name || "").localeCompare(a.name || ""));
+      }
+
+      return list;
+    }
+
+    function renderProductsTable() {
+      const tbody = document.getElementById("productsTableBody");
+      if (!tbody) return;
+
+      const filtered = getFilteredProducts();
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" class="py-12 text-center text-[#787268]">
+              <span class="material-symbols-outlined text-[36px] text-[#cdc5bd]">search_off</span>
+              <p class="text-xs mt-2">No fragrances matched your filters.</p>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(prod => {
+        const thumb = prod.images && prod.images[0] ? prod.images[0] : "homepagelogo.jpg";
+        const sizesList = (prod.sizes || []).map(s => `<span class="px-1.5 py-0.5 rounded bg-[#f5f2eb] border border-[#e5ddcf] text-[10px] font-mono">${s.size}: ₹${s.price}</span>`).join(" ");
+        const isInStock = prod.inStock !== false;
+
+        return `
+          <tr class="hover:bg-[#fbf9f6] transition-colors">
+            <!-- Product Thumbnail & Details -->
+            <td class="py-3.5 px-4 sm:px-6">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-14 rounded-xl bg-[#f5f2eb] border border-[#e5ddcf] overflow-hidden shrink-0 flex items-center justify-center p-1">
+                  <img src="${thumb}" alt="${prod.name}" class="w-full h-full object-contain" onerror="this.src='homepagelogo.jpg'" />
+                </div>
+                <div>
+                  <div class="font-bold text-xs text-[#121110] flex items-center gap-1.5">
+                    <span>${prod.name}</span>
+                    ${prod.badge ? `<span class="px-1.5 py-0.2 rounded text-[9px] font-semibold bg-amber-100 text-amber-900 border border-amber-300">${prod.badge}</span>` : ''}
+                  </div>
+                  <div class="text-[11px] text-[#875200] font-mono mt-0.5">id: ${prod.id}</div>
+                  <div class="text-[10px] text-[#787268] mt-0.5 max-w-[200px] truncate">${prod.shortDescription || prod.tag || ''}</div>
+                </div>
+              </div>
+            </td>
+
+            <!-- Category -->
+            <td class="py-3.5 px-4 font-semibold text-xs capitalize text-[#121110]">
+              ${prod.category || 'perfumes'}
+              <div class="text-[10px] text-[#787268] font-normal">${prod.concentration || 'Parfum'}</div>
+            </td>
+
+            <!-- Price -->
+            <td class="py-3.5 px-4">
+              <div class="font-serif font-bold text-sm text-[#121110]">₹${prod.price || 0}</div>
+              ${prod.originalPrice && prod.originalPrice > prod.price ? `<span class="text-[10px] text-[#787268] line-through">₹${prod.originalPrice}</span>` : ''}
+            </td>
+
+            <!-- Sizes -->
+            <td class="py-3.5 px-4">
+              <div class="flex flex-wrap gap-1 max-w-[220px]">
+                ${sizesList || `<span class="text-[10px] text-[#787268]">${prod.size || 'Standard'}</span>`}
+              </div>
+            </td>
+
+            <!-- Stock Toggle -->
+            <td class="py-3.5 px-4 text-center">
+              <button onclick="toggleProductStock('${prod.id}')" class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer ${isInStock ? 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200' : 'bg-rose-100 text-rose-800 hover:bg-rose-200'}" title="Click to toggle stock">
+                ${isInStock ? 'In Stock' : 'Out of Stock'}
+              </button>
+            </td>
+
+            <!-- Best Seller Toggle -->
+            <td class="py-3.5 px-4 text-center">
+              <button onclick="toggleProductBestSeller('${prod.id}')" class="p-1 rounded-full text-xs transition-colors cursor-pointer ${prod.isBestSeller ? 'text-amber-500 hover:text-amber-600' : 'text-stone-300 hover:text-stone-400'}" title="Toggle Best Seller">
+                <span class="material-symbols-outlined text-[20px]">${prod.isBestSeller ? 'star' : 'star_border'}</span>
+              </button>
+            </td>
+
+            <!-- Actions -->
+            <td class="py-3.5 px-4 sm:px-6 text-right">
+              <div class="flex items-center justify-end gap-1.5">
+                <button onclick="openProductModal('${prod.id}')" class="p-1.5 rounded-lg border border-[#e5ddcf] bg-white hover:bg-[#121110] hover:text-white text-xs font-semibold text-[#121110] transition-colors cursor-pointer" title="Edit Product">
+                  <span class="material-symbols-outlined text-[16px]">edit</span>
+                </button>
+                <button onclick="confirmDeleteProduct('${prod.id}')" class="p-1.5 rounded-lg border border-[#e5ddcf] bg-white hover:bg-rose-50 text-stone-500 hover:text-rose-600 transition-colors cursor-pointer" title="Delete Product">
+                  <span class="material-symbols-outlined text-[16px]">delete</span>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    // Dynamic Size Variant Form Handling
+    function addSizeVariantRow(variant = null) {
+      const tbody = document.getElementById("sizeVariantsTableBody");
+      if (!tbody) return;
+
+      const size = variant ? variant.size : "50 ml";
+      const label = variant ? variant.label : "50 ml Bottle";
+      const price = variant ? variant.price : 649;
+      const originalPrice = variant && variant.originalPrice ? variant.originalPrice : "";
+      const isDefault = variant ? !!variant.isDefault : tbody.children.length === 0;
+
+      const rowId = "sizeRow_" + Math.random().toString(36).slice(2, 8);
+      const tr = document.createElement("tr");
+      tr.id = rowId;
+      tr.className = "hover:bg-[#fbf9f6] transition-colors";
+      tr.innerHTML = `
+        <td class="py-2 px-3">
+          <input type="text" value="${size}" class="size-input-size w-full px-2 py-1 rounded border border-[#e5ddcf] bg-[#fbf9f6] text-xs font-semibold" required placeholder="50 ml">
+        </td>
+        <td class="py-2 px-3">
+          <input type="text" value="${label}" class="size-input-label w-full px-2 py-1 rounded border border-[#e5ddcf] bg-[#fbf9f6] text-xs" required placeholder="50 ml Bottle">
+        </td>
+        <td class="py-2 px-3">
+          <input type="number" value="${price}" class="size-input-price w-full px-2 py-1 rounded border border-[#e5ddcf] bg-[#fbf9f6] text-xs font-bold" required min="1" placeholder="649">
+        </td>
+        <td class="py-2 px-3">
+          <input type="number" value="${originalPrice}" class="size-input-orig w-full px-2 py-1 rounded border border-[#e5ddcf] bg-[#fbf9f6] text-xs" min="0" placeholder="899">
+        </td>
+        <td class="py-2 px-3 text-center">
+          <input type="radio" name="defaultVariantRadio" class="size-input-default" ${isDefault ? 'checked' : ''}>
+        </td>
+        <td class="py-2 px-3 text-right">
+          <button type="button" onclick="document.getElementById('${rowId}').remove()" class="p-1 text-stone-400 hover:text-rose-600 transition-colors cursor-pointer" title="Remove variant">
+            <span class="material-symbols-outlined text-[16px]">close</span>
+          </button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    }
+
+    function autoGenerateSlug() {
+      const origId = document.getElementById("editOriginalId").value;
+      if (origId) return; // Don't auto-overwrite slug if editing existing product
+      const name = document.getElementById("prodNameInput").value;
+      const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '');
+      document.getElementById("prodSlugInput").value = slug;
+    }
+
+    function setQuickImage(filename) {
+      document.getElementById("prodImagePrimaryInput").value = filename;
+      previewModalImage();
+    }
+
+    function previewModalImage() {
+      const url = document.getElementById("prodImagePrimaryInput").value.trim();
+      const img = document.getElementById("modalImagePreview");
+      if (img) img.src = url || "homepagelogo.jpg";
+    }
+
+    function openProductModal(productId = null) {
+      const modal = document.getElementById("productEditModal");
+      const title = document.getElementById("productModalTitle");
+      const origIdInput = document.getElementById("editOriginalId");
+      const sizeTbody = document.getElementById("sizeVariantsTableBody");
+      sizeTbody.innerHTML = "";
+
+      if (productId) {
+        // Editing existing product
+        const prod = ALL_CATALOG_PRODUCTS.find(p => p.id === productId);
+        if (!prod) return;
+
+        title.textContent = `Edit Fragrance: ${prod.name}`;
+        origIdInput.value = prod.id;
+        document.getElementById("prodNameInput").value = prod.name || "";
+        document.getElementById("prodSlugInput").value = prod.id || "";
+        document.getElementById("prodCategorySelect").value = prod.category || "perfumes";
+        document.getElementById("prodConcentrationInput").value = prod.concentration || "Parfum";
+        document.getElementById("prodTagInput").value = prod.tag || "";
+        document.getElementById("prodBadgeInput").value = prod.badge || "";
+        document.getElementById("prodInStockCheckbox").checked = prod.inStock !== false;
+        document.getElementById("prodBestSellerCheckbox").checked = !!prod.isBestSeller;
+        document.getElementById("prodShortDescInput").value = prod.shortDescription || "";
+        document.getElementById("prodFullDescInput").value = prod.fullDescription || "";
+
+        const notes = prod.notes || {};
+        document.getElementById("prodTopNotesInput").value = notes.top || "";
+        document.getElementById("prodHeartNotesInput").value = notes.heart || "";
+        document.getElementById("prodBaseNotesInput").value = notes.base || "";
+
+        const images = prod.images || [];
+        document.getElementById("prodImagePrimaryInput").value = images[0] || "";
+        document.getElementById("prodImageGalleryInput").value = images.slice(1).join(", ");
+        previewModalImage();
+
+        const sizes = prod.sizes || [
+          { size: prod.size || "50 ml", price: prod.price || 649, originalPrice: prod.originalPrice || 899, label: "50 ml Bottle", isDefault: true }
+        ];
+        sizes.forEach(s => addSizeVariantRow(s));
+      } else {
+        // Add new product
+        title.textContent = "Add New Fragrance";
+        origIdInput.value = "";
+        document.getElementById("productForm").reset();
+        document.getElementById("prodCategorySelect").value = "perfumes";
+        document.getElementById("prodConcentrationInput").value = "Parfum";
+        document.getElementById("prodInStockCheckbox").checked = true;
+        document.getElementById("prodBestSellerCheckbox").checked = false;
+        document.getElementById("prodImagePrimaryInput").value = "arabiantouch2.jpg";
+        previewModalImage();
+
+        // Add 3 standard variant rows
+        addSizeVariantRow({ size: "50 ml", label: "50 ml Bottle", price: 649, originalPrice: 899, isDefault: true });
+        addSizeVariantRow({ size: "100 ml", label: "100 ml Bottle", price: 1199, originalPrice: 1499, isDefault: false });
+        addSizeVariantRow({ size: "30 ml", label: "30 ml Bottle", price: 349, originalPrice: 549, isDefault: false });
+      }
+
+      modal.classList.remove("hidden");
+    }
+
+    function closeProductModal() {
+      document.getElementById("productEditModal").classList.add("hidden");
+    }
+
+    function handleSaveProduct(e) {
+      e.preventDefault();
+      const origId = document.getElementById("editOriginalId").value;
+      const slug = document.getElementById("prodSlugInput").value.trim();
+      const name = document.getElementById("prodNameInput").value.trim();
+      const category = document.getElementById("prodCategorySelect").value;
+      const concentration = document.getElementById("prodConcentrationInput").value.trim();
+      const tag = document.getElementById("prodTagInput").value.trim();
+      const badge = document.getElementById("prodBadgeInput").value.trim();
+      const inStock = document.getElementById("prodInStockCheckbox").checked;
+      const isBestSeller = document.getElementById("prodBestSellerCheckbox").checked;
+      const shortDesc = document.getElementById("prodShortDescInput").value.trim();
+      const fullDesc = document.getElementById("prodFullDescInput").value.trim();
+      const topNotes = document.getElementById("prodTopNotesInput").value.trim();
+      const heartNotes = document.getElementById("prodHeartNotesInput").value.trim();
+      const baseNotes = document.getElementById("prodBaseNotesInput").value.trim();
+      const primaryImg = document.getElementById("prodImagePrimaryInput").value.trim() || "homepagelogo.jpg";
+      const galleryImgs = document.getElementById("prodImageGalleryInput").value.split(",").map(s => s.trim()).filter(Boolean);
+
+      const allImages = [primaryImg, ...galleryImgs];
+
+      // Extract size variant rows
+      const sizeRows = Array.from(document.querySelectorAll("#sizeVariantsTableBody tr"));
+      if (sizeRows.length === 0) {
+        showToast("Please add at least one size variant with pricing.", true);
+        return;
+      }
+
+      const sizes = sizeRows.map(row => {
+        const size = row.querySelector(".size-input-size").value.trim();
+        const label = row.querySelector(".size-input-label").value.trim();
+        const price = parseFloat(row.querySelector(".size-input-price").value) || 0;
+        const origVal = row.querySelector(".size-input-orig").value.trim();
+        const origPrice = origVal ? parseFloat(origVal) : undefined;
+        const isDefault = row.querySelector(".size-input-default").checked;
+        return {
+          size,
+          label: label || size,
+          price,
+          ...(origPrice ? { originalPrice: origPrice } : {}),
+          isDefault
+        };
+      });
+
+      // Ensure at least one default variant
+      let defaultVariant = sizes.find(s => s.isDefault) || sizes[0];
+      defaultVariant.isDefault = true;
+
+      const productObj = {
+        id: slug,
+        name: name,
+        category: category,
+        price: defaultVariant.price,
+        originalPrice: defaultVariant.originalPrice || undefined,
+        size: defaultVariant.size,
+        concentration: concentration || "Parfum",
+        badge: badge || undefined,
+        isBestSeller: isBestSeller,
+        inStock: inStock,
+        tag: tag || category,
+        shortDescription: shortDesc,
+        fullDescription: fullDesc,
+        images: allImages,
+        notes: {
+          top: topNotes,
+          heart: heartNotes,
+          base: baseNotes
+        },
+        sizes: sizes
+      };
+
+      // Save into custom products storage
+      let customList = typeof getCustomProducts === "function" ? getCustomProducts() : [];
+      let deletedList = typeof getDeletedProductIds === "function" ? getDeletedProductIds() : [];
+
+      // If ID changed or deleting previous
+      if (origId && origId !== slug) {
+        deletedList = deletedList.filter(id => id !== origId);
+        deletedList.push(origId);
+        customList = customList.filter(p => p.id !== origId);
+        if (typeof saveDeletedProductIds === "function") saveDeletedProductIds(deletedList);
+      }
+
+      // If slug was previously marked deleted, un-delete it
+      deletedList = deletedList.filter(id => id !== slug);
+      if (typeof saveDeletedProductIds === "function") saveDeletedProductIds(deletedList);
+
+      // Upsert into customList
+      const existingIdx = customList.findIndex(p => p.id === slug);
+      if (existingIdx > -1) {
+        customList[existingIdx] = productObj;
+      } else {
+        customList.push(productObj);
+      }
+
+      if (typeof saveCustomProducts === "function") {
+        saveCustomProducts(customList);
+      } else {
+        localStorage.setItem("oud_aura_custom_products", JSON.stringify(customList));
+      }
+
+      showToast(`Product "${name}" saved to catalog!`);
+      closeProductModal();
+      fetchCatalog();
+    }
+
+    function toggleProductStock(id) {
+      const prod = ALL_CATALOG_PRODUCTS.find(p => p.id === id);
+      if (!prod) return;
+
+      prod.inStock = prod.inStock === false ? true : false;
+      saveSingleProductOverride(prod);
+      showToast(`"${prod.name}" marked ${prod.inStock ? 'In Stock' : 'Out of Stock'}`);
+      fetchCatalog();
+    }
+
+    function toggleProductBestSeller(id) {
+      const prod = ALL_CATALOG_PRODUCTS.find(p => p.id === id);
+      if (!prod) return;
+
+      prod.isBestSeller = !prod.isBestSeller;
+      saveSingleProductOverride(prod);
+      showToast(`"${prod.name}" ${prod.isBestSeller ? 'marked as Best Seller' : 'removed from Best Sellers'}`);
+      fetchCatalog();
+    }
+
+    function saveSingleProductOverride(prod) {
+      let customList = typeof getCustomProducts === "function" ? getCustomProducts() : [];
+      const idx = customList.findIndex(p => p.id === prod.id);
+      if (idx > -1) {
+        customList[idx] = { ...prod };
+      } else {
+        customList.push({ ...prod });
+      }
+      if (typeof saveCustomProducts === "function") {
+        saveCustomProducts(customList);
+      } else {
+        localStorage.setItem("oud_aura_custom_products", JSON.stringify(customList));
+      }
+    }
+
+    function confirmDeleteProduct(id) {
+      const prod = ALL_CATALOG_PRODUCTS.find(p => p.id === id);
+      if (!prod) return;
+
+      const confirmed = confirm(`Are you sure you want to delete "${prod.name}" (${prod.id}) from the active catalog?\n\nThis can be restored at any time by clicking "Reset to Default Catalog".`);
+      if (!confirmed) return;
+
+      // Add to deleted IDs
+      let deletedList = typeof getDeletedProductIds === "function" ? getDeletedProductIds() : [];
+      if (!deletedList.includes(id)) {
+        deletedList.push(id);
+      }
+      if (typeof saveDeletedProductIds === "function") saveDeletedProductIds(deletedList);
+
+      // Remove from custom list
+      let customList = typeof getCustomProducts === "function" ? getCustomProducts() : [];
+      customList = customList.filter(p => p.id !== id);
+      if (typeof saveCustomProducts === "function") saveCustomProducts(customList);
+
+      showToast(`"${prod.name}" deleted from catalog`);
+      fetchCatalog();
+    }
+
+    function confirmResetCatalog() {
+      const confirmed = confirm("Are you sure you want to reset the browser catalog back to the default master catalog?\n\nAll custom products and modifications in this browser will be reset.");
+      if (!confirmed) return;
+
+      if (typeof resetToDefaultCatalog === "function") {
+        resetToDefaultCatalog();
+      } else {
+        localStorage.removeItem("oud_aura_custom_products");
+        localStorage.removeItem("oud_aura_deleted_product_ids");
+      }
+
+      showToast("Catalog reset to default master catalog");
+      fetchCatalog();
+    }
+
+    // =========================================================================
+    // EXPORT CATALOG FEATURE
+    // =========================================================================
+    function openExportModal() {
+      const modal = document.getElementById("exportModal");
+      const textarea = document.getElementById("exportedCodeTextarea");
+      const countEl = document.getElementById("exportProductCount");
+
+      const prods = typeof getAllProducts === "function" ? getAllProducts() : ALL_CATALOG_PRODUCTS;
+      if (countEl) countEl.textContent = prods.length;
+
+      let code = "";
+      if (typeof generateProductsJsFileContent === "function") {
+        code = generateProductsJsFileContent(prods);
+      } else {
+        code = `const PRODUCTS = ${JSON.stringify(prods, null, 2)};\n\nfunction getAllProducts() { return PRODUCTS; }\n`;
+      }
+
+      textarea.value = code;
+      modal.classList.remove("hidden");
+    }
+
+    function closeExportModal() {
+      document.getElementById("exportModal").classList.add("hidden");
+    }
+
+    function copyExportedCode() {
+      const textarea = document.getElementById("exportedCodeTextarea");
+      textarea.select();
+      navigator.clipboard.writeText(textarea.value).then(() => {
+        const copyText = document.getElementById("copyCodeText");
+        if (copyText) {
+          copyText.textContent = "Copied!";
+          setTimeout(() => { copyText.textContent = "Copy Code"; }, 2000);
+        }
+        showToast("Code copied to clipboard!");
+      }).catch(() => {
+        showToast("Press Ctrl+C to copy code");
+      });
+    }
+
+    function downloadExportedFile() {
+      const textarea = document.getElementById("exportedCodeTextarea");
+      const code = textarea.value;
+      const blob = new Blob([code], { type: "text/javascript;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "products.js";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      showToast("Downloaded updated products.js!");
+    }
+
+    // =========================================================================
+    // MODULE 3: ANALYTICS & REVENUE INTELLIGENCE
+    // =========================================================================
+    let ACTIVE_ANALYTICS_PERIOD = "all";
+
+    function setAnalyticsPeriod(period) {
+      ACTIVE_ANALYTICS_PERIOD = period;
+      document.querySelectorAll(".analytics-period-btn").forEach(b => {
+        if (b.getAttribute("data-period") === period) {
+          b.classList.add("bg-[#121110]", "text-white");
+          b.classList.remove("text-[#787268]");
+        } else {
+          b.classList.remove("bg-[#121110]", "text-white");
+          b.classList.add("text-[#787268]");
+        }
+      });
+      renderAnalytics();
+    }
+
+    function getAnalyticsFilteredOrders() {
+      const now = new Date();
+      return ALL_ORDERS.filter(o => {
+        if (ACTIVE_ANALYTICS_PERIOD === "all") return true;
+        
+        const dateStr = o.created_at;
+        const d = new Date(dateStr);
+        if (isNaN(d.getTime())) return true; // Include if date parsing is not standard string
+
+        if (ACTIVE_ANALYTICS_PERIOD === "today") {
+          return d.toDateString() === now.toDateString();
+        } else if (ACTIVE_ANALYTICS_PERIOD === "week") {
+          const diffDays = (now - d) / (1000 * 60 * 60 * 24);
+          return diffDays <= 7;
+        } else if (ACTIVE_ANALYTICS_PERIOD === "month") {
+          return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+        }
+        return true;
+      });
+    }
+
+    function renderAnalytics() {
+      const orders = getAnalyticsFilteredOrders();
+
+      // Financial calculations:
+      // Verified Paid Revenue is from PAID orders or DELIVERED COD orders
+      let verifiedPaidSum = 0;
+      let pendingCodSum = 0;
+      let paidOrdersCount = 0;
+
+      orders.forEach(o => {
+        const isCod = (o.payment?.method || "").toUpperCase().includes("COD") || (o.payment?.method || "").toLowerCase().includes("cash");
+        const isPaid = o.payment?.status === "PAID" || o.order_status === "DELIVERED" || (!isCod && o.order_status !== "CANCELLED");
+        
+        if (isPaid) {
+          verifiedPaidSum += (o.total || 0);
+          paidOrdersCount++;
+        } else if (isCod && o.order_status !== "CANCELLED") {
+          pendingCodSum += (o.total || 0);
+        }
+      });
+
+      const aov = paidOrdersCount > 0 ? Math.round(verifiedPaidSum / paidOrdersCount) : 0;
+      const conversionRate = orders.length > 0 ? Math.round((paidOrdersCount / orders.length) * 100) : 0;
+
+      document.getElementById("analyticsPaidRev").textContent = `₹${verifiedPaidSum.toLocaleString('en-IN')}`;
+      document.getElementById("analyticsCodPendingRev").textContent = `₹${pendingCodSum.toLocaleString('en-IN')}`;
+      document.getElementById("analyticsAov").textContent = `₹${aov.toLocaleString('en-IN')}`;
+      document.getElementById("analyticsPaidRate").textContent = `${conversionRate}%`;
+
+      // Render Charts
+      renderCharts(orders);
+      renderLeaderboard(orders);
+    }
+
+    function renderCharts(orders) {
+      if (typeof Chart === "undefined") return;
+
+      // Group revenue & orders by date
+      const dateMap = {};
+      orders.forEach(o => {
+        let dateKey = (o.created_at || "").split(",")[0] || "Recent";
+        if (!dateMap[dateKey]) dateMap[dateKey] = { revenue: 0, orders: 0 };
+        dateMap[dateKey].orders += 1;
+        const isPaid = o.payment?.status === "PAID" || o.order_status === "DELIVERED";
+        if (isPaid) dateMap[dateKey].revenue += (o.total || 0);
+      });
+
+      const dateLabels = Object.keys(dateMap).slice(-7);
+      const revData = dateLabels.map(d => dateMap[d].revenue);
+      const ordersData = dateLabels.map(d => dateMap[d].orders);
+
+      // Chart 1: Revenue
+      const ctxRev = document.getElementById("revenueChart");
+      if (ctxRev) {
+        if (chartRevenueInstance) chartRevenueInstance.destroy();
+        chartRevenueInstance = new Chart(ctxRev, {
+          type: "line",
+          data: {
+            labels: dateLabels.length > 0 ? dateLabels : ["Day 1", "Day 2", "Day 3"],
+            datasets: [{
+              label: "Verified Paid (₹)",
+              data: revData.length > 0 ? revData : [0, 0, 0],
+              borderColor: "#875200",
+              backgroundColor: "rgba(135, 82, 0, 0.12)",
+              tension: 0.35,
+              fill: true,
+              pointBackgroundColor: "#121110",
+              pointRadius: 4
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+              y: { beginAtZero: true, grid: { color: "#f1ede4" } },
+              x: { grid: { display: false } }
+            }
+          }
+        });
+      }
+
+      // Chart 2: Order Volume
+      const ctxOrders = document.getElementById("ordersChart");
+      if (ctxOrders) {
+        if (chartOrdersInstance) chartOrdersInstance.destroy();
+        chartOrdersInstance = new Chart(ctxOrders, {
+          type: "bar",
+          data: {
+            labels: dateLabels.length > 0 ? dateLabels : ["Day 1", "Day 2", "Day 3"],
+            datasets: [{
+              label: "Orders Placed",
+              data: ordersData.length > 0 ? ordersData : [0, 0, 0],
+              backgroundColor: "#121110",
+              borderRadius: 6
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+              y: { beginAtZero: true, ticks: { precision: 0 }, grid: { color: "#f1ede4" } },
+              x: { grid: { display: false } }
+            }
+          }
+        });
+      }
+
+      // Aggregate item sales
+      const itemSales = {};
+      const categorySales = { perfumes: 0, attars: 0, gifts: 0 };
+
+      orders.forEach(o => {
+        (o.items || []).forEach(item => {
+          const name = item.name || "Fragrance";
+          if (!itemSales[name]) itemSales[name] = { units: 0, revenue: 0 };
+          itemSales[name].units += (item.quantity || 1);
+          itemSales[name].revenue += (item.price || 0) * (item.quantity || 1);
+
+          // Find product category
+          const prod = ALL_CATALOG_PRODUCTS.find(p => p.name === name || p.id === item.id);
+          const cat = prod?.category || "perfumes";
+          if (categorySales[cat] !== undefined) {
+            categorySales[cat] += (item.quantity || 1);
+          }
+        });
+      });
+
+      // Chart 3: Top Products
+      const topItems = Object.keys(itemSales)
+        .map(name => ({ name, ...itemSales[name] }))
+        .sort((a, b) => b.units - a.units)
+        .slice(0, 5);
+
+      const ctxTop = document.getElementById("topProductsChart");
+      if (ctxTop) {
+        if (chartTopProdsInstance) chartTopProdsInstance.destroy();
+        chartTopProdsInstance = new Chart(ctxTop, {
+          type: "bar",
+          data: {
+            labels: topItems.map(i => i.name),
+            datasets: [{
+              label: "Units Sold",
+              data: topItems.map(i => i.units),
+              backgroundColor: "#d4af37",
+              borderRadius: 6
+            }]
+          },
+          options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+              x: { beginAtZero: true, ticks: { precision: 0 }, grid: { color: "#f1ede4" } },
+              y: { grid: { display: false } }
+            }
+          }
+        });
+      }
+
+      // Chart 4: Categories
+      const ctxCat = document.getElementById("categoryChart");
+      if (ctxCat) {
+        if (chartCategoryInstance) chartCategoryInstance.destroy();
+        chartCategoryInstance = new Chart(ctxCat, {
+          type: "doughnut",
+          data: {
+            labels: ["Perfumes", "Attars & Oils", "Gift Sets"],
+            datasets: [{
+              data: [categorySales.perfumes || 1, categorySales.attars || 1, categorySales.gifts || 1],
+              backgroundColor: ["#121110", "#875200", "#d4af37"],
+              borderWidth: 2,
+              borderColor: "#ffffff"
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } }
+            }
+          }
+        });
+      }
+    }
+
+    function renderLeaderboard(orders) {
+      const tbody = document.getElementById("analyticsLeaderboardBody");
+      if (!tbody) return;
+
+      const itemSales = {};
+      orders.forEach(o => {
+        (o.items || []).forEach(item => {
+          const name = item.name || "Fragrance";
+          if (!itemSales[name]) itemSales[name] = { units: 0, revenue: 0, id: item.id };
+          itemSales[name].units += (item.quantity || 1);
+          itemSales[name].revenue += (item.price || 0) * (item.quantity || 1);
+        });
+      });
+
+      const list = Object.keys(itemSales)
+        .map(name => ({ name, ...itemSales[name] }))
+        .sort((a, b) => b.revenue - a.revenue);
+
+      if (list.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" class="py-8 text-center text-[#787268]">
+              No sales recorded for this timeframe yet.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = list.map((item, idx) => {
+        const prod = ALL_CATALOG_PRODUCTS.find(p => p.name === item.name || p.id === item.id);
+        const cat = prod?.category || "Perfumes";
+        const isInStock = prod ? prod.inStock !== false : true;
+
+        return `
+          <tr class="hover:bg-[#fbf9f6] transition-colors">
+            <td class="py-3 px-6 font-mono font-bold text-[#875200]">#${idx + 1}</td>
+            <td class="py-3 px-4 font-semibold text-[#121110]">${item.name}</td>
+            <td class="py-3 px-4 capitalize text-[#787268]">${cat}</td>
+            <td class="py-3 px-4 text-center font-bold text-[#121110]">${item.units}</td>
+            <td class="py-3 px-4 text-right font-serif font-bold text-[#121110]">₹${item.revenue.toLocaleString('en-IN')}</td>
+            <td class="py-3 px-6 text-right">
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold ${isInStock ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">
+                ${isInStock ? 'In Stock' : 'Out of Stock'}
+              </span>
+            </td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    // =========================================================================
+    // SECURITY & PASSCODE SETTINGS
+    // =========================================================================
+    function openSecurityModal() {
+      document.getElementById("securityModal").classList.remove("hidden");
+    }
+
+    function closeSecurityModal() {
+      document.getElementById("securityModal").classList.add("hidden");
+    }
+
+    function saveCustomPasscode() {
+      const input = document.getElementById("newPasscodeInput");
+      const newCode = input.value.trim();
+      if (!newCode || newCode.length < 4) {
+        showToast("Passcode must be at least 4 characters long", true);
+        return;
+      }
+
+      localStorage.setItem(PASSCODE_STORAGE_KEY, newCode);
+      showToast("Admin passcode updated successfully!");
+      input.value = "";
+      closeSecurityModal();
+    }
+
+    function resetPasscodeToDefault() {
+      localStorage.removeItem(PASSCODE_STORAGE_KEY);
+      showToast(`Passcode reset to default: ${DEFAULT_PASSCODE}`);
+      closeSecurityModal();
+    }
+
+    // =========================================================================
+    // AUTO INITIALIZATION
+    // =========================================================================
+    function initDashboard() {
+      fetchOrders();
+      fetchCatalog();
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      // Check URL param ?key=... to allow auto-login for store owner bookmark
+      const params = new URLSearchParams(window.location.search);
+      const urlKey = params.get("key");
+      const validPasscode = getAdminPasscode();
+
+      if (urlKey && (urlKey === validPasscode || urlKey === DEFAULT_PASSCODE)) {
+        CURRENT_ADMIN_KEY = urlKey;
+        sessionStorage.setItem(ADMIN_SESSION_KEY, urlKey);
+      }
+
+      if (CURRENT_ADMIN_KEY && (CURRENT_ADMIN_KEY === validPasscode || CURRENT_ADMIN_KEY === DEFAULT_PASSCODE)) {
         document.getElementById("authOverlay").classList.add("hidden");
-        fetchOrders();
+        initDashboard();
       } else {
         document.getElementById("authOverlay").classList.remove("hidden");
       }

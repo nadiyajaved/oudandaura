@@ -326,29 +326,257 @@ const PRODUCTS = [
   }
 ];
 
-// Helper functions for easy querying
+// LocalStorage Keys for Catalog Synchronization
+const CUSTOM_PRODUCTS_STORAGE_KEY = "oud_aura_custom_products";
+const DELETED_PRODUCTS_STORAGE_KEY = "oud_aura_deleted_product_ids";
+
+/**
+ * Safely retrieve custom / modified products from localStorage
+ */
+function getCustomProducts() {
+  if (typeof window === "undefined" || !window.localStorage) return [];
+  try {
+    const raw = localStorage.getItem(CUSTOM_PRODUCTS_STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch (e) {
+    console.warn("Error reading custom products from localStorage:", e);
+    return [];
+  }
+}
+
+/**
+ * Safely save custom / modified products to localStorage
+ */
+function saveCustomProducts(products) {
+  if (typeof window === "undefined" || !window.localStorage) return;
+  try {
+    localStorage.setItem(CUSTOM_PRODUCTS_STORAGE_KEY, JSON.stringify(products));
+  } catch (e) {
+    console.error("Error saving custom products to localStorage:", e);
+  }
+}
+
+/**
+ * Safely retrieve deleted product IDs from localStorage
+ */
+function getDeletedProductIds() {
+  if (typeof window === "undefined" || !window.localStorage) return [];
+  try {
+    const raw = localStorage.getItem(DELETED_PRODUCTS_STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch (e) {
+    console.warn("Error reading deleted product IDs from localStorage:", e);
+    return [];
+  }
+}
+
+/**
+ * Safely save deleted product IDs to localStorage
+ */
+function saveDeletedProductIds(ids) {
+  if (typeof window === "undefined" || !window.localStorage) return;
+  try {
+    localStorage.setItem(DELETED_PRODUCTS_STORAGE_KEY, JSON.stringify(ids));
+  } catch (e) {
+    console.error("Error saving deleted product IDs to localStorage:", e);
+  }
+}
+
+/**
+ * Reset browser catalog back to default master products.js catalog
+ */
+function resetToDefaultCatalog() {
+  if (typeof window === "undefined" || !window.localStorage) return;
+  try {
+    localStorage.removeItem(CUSTOM_PRODUCTS_STORAGE_KEY);
+    localStorage.removeItem(DELETED_PRODUCTS_STORAGE_KEY);
+  } catch (e) {
+    console.error("Error resetting catalog:", e);
+  }
+}
+
+/**
+ * Get unified product list merging base PRODUCTS with custom/edited products
+ * and excluding any deleted product IDs.
+ */
 function getAllProducts() {
-  return PRODUCTS;
+  const deletedIds = new Set(getDeletedProductIds());
+  const customList = getCustomProducts();
+
+  // Create a map starting from base hardcoded products (cloned)
+  const productMap = new Map();
+  for (const p of PRODUCTS) {
+    if (!deletedIds.has(p.id)) {
+      productMap.set(p.id, { ...p });
+    }
+  }
+
+  // Merge custom / modified products (overrides existing or adds new)
+  for (const cp of customList) {
+    if (!cp || !cp.id || deletedIds.has(cp.id)) continue;
+    
+    // Normalize sizes and ensure default variant pricing
+    if (Array.isArray(cp.sizes) && cp.sizes.length > 0) {
+      const defVariant = cp.sizes.find(s => s.isDefault) || cp.sizes[0];
+      if (defVariant) {
+        if (!cp.price && defVariant.price) cp.price = defVariant.price;
+        if (!cp.size && defVariant.size) cp.size = defVariant.size;
+        if (!cp.originalPrice && defVariant.originalPrice) cp.originalPrice = defVariant.originalPrice;
+      }
+    }
+    productMap.set(cp.id, { ...cp });
+  }
+
+  return Array.from(productMap.values());
+}
+
+/**
+ * Find product by ID or URL slug
+ */
+function getProductById(id) {
+  if (!id) return null;
+  const all = getAllProducts();
+  const exact = all.find(p => p.id === id);
+  if (exact) return exact;
+  const cleanId = id.toLowerCase().replace(/['"_-]/g, "");
+  if (cleanId === "oudauragiftset") {
+    return all.find(p => p.id === "unisex_giftset") || null;
+  }
+  return all.find(p => p.id.toLowerCase().replace(/['"_-]/g, "") === cleanId) || null;
+}
+
+/**
+ * Get all Best Seller fragrances
+ */
+function getBestSellers() {
+  return getAllProducts().filter(p => p.isBestSeller);
+}
+
+/**
+ * Get products filtered by category ('perfumes' | 'attars' | 'gifts' | 'all')
+ */
+function getProductsByCategory(category) {
+  const all = getAllProducts();
+  if (!category || category === "all") return all;
+  return all.filter(p => p.category === category);
+}
+
+/**
+ * Generate a complete, valid JavaScript file content string for data/products.js
+ * containing all current merged products.
+ */
+function generateProductsJsFileContent(overrideProducts = null) {
+  const prods = overrideProducts || getAllProducts();
+  const jsonContent = JSON.stringify(prods, null, 2);
+  
+  return `/**
+ * Oud & Aura - Product Catalog Data
+ * Exported from Oud & Aura Admin Dashboard
+ * Generated on: ${new Date().toISOString()}
+ * 
+ * Instructions to make visible to all visitors on GitHub Pages:
+ * 1. Replace the contents of 'data/products.js' with this file.
+ * 2. Commit and push to GitHub:
+ *    git add data/products.js
+ *    git commit -m "Update product catalog"
+ *    git push origin main
+ */
+
+const PRODUCTS = ${jsonContent};
+
+// Helper functions for easy querying
+const CUSTOM_PRODUCTS_STORAGE_KEY = "oud_aura_custom_products";
+const DELETED_PRODUCTS_STORAGE_KEY = "oud_aura_deleted_product_ids";
+
+function getCustomProducts() {
+  if (typeof window === "undefined" || !window.localStorage) return [];
+  try {
+    const raw = localStorage.getItem(CUSTOM_PRODUCTS_STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+function saveCustomProducts(products) {
+  if (typeof window === "undefined" || !window.localStorage) return;
+  try {
+    localStorage.setItem(CUSTOM_PRODUCTS_STORAGE_KEY, JSON.stringify(products));
+  } catch (e) {}
+}
+
+function getDeletedProductIds() {
+  if (typeof window === "undefined" || !window.localStorage) return [];
+  try {
+    const raw = localStorage.getItem(DELETED_PRODUCTS_STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+function saveDeletedProductIds(ids) {
+  if (typeof window === "undefined" || !window.localStorage) return;
+  try {
+    localStorage.setItem(DELETED_PRODUCTS_STORAGE_KEY, JSON.stringify(ids));
+  } catch (e) {}
+}
+
+function resetToDefaultCatalog() {
+  if (typeof window === "undefined" || !window.localStorage) return;
+  try {
+    localStorage.removeItem(CUSTOM_PRODUCTS_STORAGE_KEY);
+    localStorage.removeItem(DELETED_PRODUCTS_STORAGE_KEY);
+  } catch (e) {}
+}
+
+function getAllProducts() {
+  const deletedIds = new Set(getDeletedProductIds());
+  const customList = getCustomProducts();
+
+  const productMap = new Map();
+  for (const p of PRODUCTS) {
+    if (!deletedIds.has(p.id)) {
+      productMap.set(p.id, { ...p });
+    }
+  }
+
+  for (const cp of customList) {
+    if (!cp || !cp.id || deletedIds.has(cp.id)) continue;
+    if (Array.isArray(cp.sizes) && cp.sizes.length > 0) {
+      const defVariant = cp.sizes.find(s => s.isDefault) || cp.sizes[0];
+      if (defVariant) {
+        if (!cp.price && defVariant.price) cp.price = defVariant.price;
+        if (!cp.size && defVariant.size) cp.size = defVariant.size;
+        if (!cp.originalPrice && defVariant.originalPrice) cp.originalPrice = defVariant.originalPrice;
+      }
+    }
+    productMap.set(cp.id, { ...cp });
+  }
+
+  return Array.from(productMap.values());
 }
 
 function getProductById(id) {
   if (!id) return null;
-  const exact = PRODUCTS.find(p => p.id === id);
+  const all = getAllProducts();
+  const exact = all.find(p => p.id === id);
   if (exact) return exact;
   const cleanId = id.toLowerCase().replace(/['"_-]/g, "");
   if (cleanId === "oudauragiftset") {
-    return PRODUCTS.find(p => p.id === "unisex_giftset") || null;
+    return all.find(p => p.id === "unisex_giftset") || null;
   }
-  return PRODUCTS.find(p => p.id.toLowerCase().replace(/['"_-]/g, "") === cleanId) || null;
+  return all.find(p => p.id.toLowerCase().replace(/['"_-]/g, "") === cleanId) || null;
 }
 
 function getBestSellers() {
-  return PRODUCTS.filter(p => p.isBestSeller);
+  return getAllProducts().filter(p => p.isBestSeller);
 }
 
 function getProductsByCategory(category) {
-  if (!category || category === "all") return PRODUCTS;
-  return PRODUCTS.filter(p => p.category === category);
+  const all = getAllProducts();
+  if (!category || category === "all") return all;
+  return all.filter(p => p.category === category);
 }
 
 if (typeof module !== 'undefined' && module.exports) {
@@ -357,6 +585,30 @@ if (typeof module !== 'undefined' && module.exports) {
     getAllProducts,
     getProductById,
     getBestSellers,
-    getProductsByCategory
+    getProductsByCategory,
+    getCustomProducts,
+    saveCustomProducts,
+    getDeletedProductIds,
+    saveDeletedProductIds,
+    resetToDefaultCatalog,
+    generateProductsJsFileContent
+  };
+}
+`;
+}
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    PRODUCTS,
+    getAllProducts,
+    getProductById,
+    getBestSellers,
+    getProductsByCategory,
+    getCustomProducts,
+    saveCustomProducts,
+    getDeletedProductIds,
+    saveDeletedProductIds,
+    resetToDefaultCatalog,
+    generateProductsJsFileContent
   };
 }

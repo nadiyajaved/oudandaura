@@ -1,893 +1,900 @@
-<!DOCTYPE html>
-<html class="light" lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport">
-  <title>Product Details | Oud &amp; Aura</title>
-  <link href="https://fonts.googleapis.com" rel="preconnect">
-  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&amp;family=Plus+Jakarta+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script id="tailwind-config">
-    tailwind.config = {
-      darkMode: "class",
-      theme: {
-        extend: {
-          colors: {
-            "tertiary-fixed": "#ede0d7", "on-primary": "#ffffff", "inverse-primary": "#cac6c3", "primary-fixed-dim": "#cac6c3",
-            secondary: "#875200", background: "#fbf9f6", "error-container": "#ffdad6", "outline-variant": "#cdc5bd",
-            "on-background": "#1b1c1a", "surface-container-lowest": "#ffffff", "on-error-container": "#93000a",
-            "surface-container-low": "#f5f3f0", "inverse-surface": "#30312f", "tertiary-fixed-dim": "#d0c4bb",
-            "primary-container": "#1d1b1a", "on-tertiary-fixed": "#201a15", "on-tertiary-container": "#8c827a",
-            "on-tertiary-fixed-variant": "#4d453f", "primary-fixed": "#e6e1df", "inverse-on-surface": "#f2f0ed",
-            "secondary-fixed": "#ffddba", primary: "#000000", "on-secondary-container": "#724500",
-            "surface-container-highest": "#e4e2df", error: "#ba1a1a", "on-surface": "#1b1c1a",
-            "on-primary-container": "#868381", "on-secondary": "#ffffff", "on-surface-variant": "#4b4640",
-            "on-secondary-fixed": "#2b1700", "surface-container": "#efeeeb", "surface-dim": "#dbdad7",
-            "tertiary-container": "#201a15", "surface-tint": "#605e5c", "secondary-fixed-dim": "#ffb865",
-            "surface-variant": "#e4e2df", "secondary-container": "#feb154", "on-tertiary": "#ffffff",
-            "on-primary-fixed": "#1d1b1a", "surface-container-high": "#eae8e5", "surface-bright": "#fbf9f6",
-            "on-primary-fixed-variant": "#484645", surface: "#fbf9f6", tertiary: "#000000", "on-error": "#ffffff",
-            "on-secondary-fixed-variant": "#663d00", outline: "#7c766f"
-          },
-          fontFamily: {
-            "headline-sm": ["Playfair Display"], "display-hero": ["Playfair Display"], "headline-lg": ["Playfair Display"],
-            "display-hero-mobile": ["Playfair Display"], "label-caps": ["Plus Jakarta Sans"], "headline-md": ["Playfair Display"],
-            "body-lg": ["Plus Jakarta Sans"], "body-md": ["Plus Jakarta Sans"], "body-sm": ["Plus Jakarta Sans"],
-            "headline-lg-mobile": ["Playfair Display"], "label-sm": ["Plus Jakarta Sans"], headline: ["Playfair Display"],
-            display: ["Playfair Display"], body: ["Plus Jakarta Sans"], label: ["Plus Jakarta Sans"]
-          },
-          spacing: {
-            "margin-mobile": "1.25rem", "space-xl": "3rem", margin: "3rem", "space-xs": "0.25rem",
-            "space-sm": "0.5rem", "space-md": "1rem", "gutter-mobile": "0.75rem", gutter: "1.25rem", "space-lg": "1.75rem"
-          }
-        }
-      }
-    };
-  </script>
-  <link rel="stylesheet" href="css/styles.css">
-</head>
-<body class="bg-surface text-on-surface font-body-md flex flex-col min-h-screen relative" style="background-color: rgb(250, 246, 240); color: rgb(20, 19, 18);">
-
-  <!-- HEADER -->
-  <header class="fixed top-0 inset-x-0 z-50 bg-surface/90 backdrop-blur-xl shadow-[0_1px_12px_rgba(0,0,0,0.03)] pt-safe">
-    <div class="max-w-4xl mx-auto h-16 px-margin-mobile flex items-center justify-between">
-      <button aria-label="Go back" class="w-11 h-11 flex items-center justify-center text-on-surface hover:text-secondary transition-colors -ml-2" onclick="window.history.length > 1 ? window.history.back() : window.location.href='shop.html'" type="button">
-        <span class="material-symbols-outlined text-[24px]">arrow_back</span>
-      </button>
-      <div class="flex-1 text-center px-2 truncate">
-        <h1 id="topNavTitle" class="font-headline-sm text-[17px] tracking-wide text-primary truncate">Product Details</h1>
-      </div>
-      <div class="flex items-center gap-space-xs">
-        <a aria-label="Shopping Bag" class="openCartBtn relative w-11 h-11 flex items-center justify-center text-on-surface hover:text-secondary transition-colors cursor-pointer" href="#">
-          <span class="material-symbols-outlined text-[22px]">shopping_bag</span>
-          <span class="cart-count-badge absolute top-2 right-2 min-w-[16px] h-[16px] px-1 rounded-full bg-primary text-on-primary font-label-caps text-[9px] flex items-center justify-center leading-none" style="display:none;">0</span>
-        </a>
-        <a href="contact.html" class="w-8 h-8 rounded-full bg-primary flex items-center justify-center ml-1 text-on-primary hover:bg-secondary transition-colors">
-          <span class="material-symbols-outlined text-[18px]">support_agent</span>
-        </a>
-      </div>
-    </div>
-  </header>
-
-  <!-- MAIN VIEW -->
-  <main class="flex-1 flex flex-col relative w-full pt-16 pb-24 bg-surface">
-    <div class="max-w-xl mx-auto w-full text-on-surface">
-
-      <!-- BREADCRUMB NAVIGATION -->
-      <nav aria-label="Breadcrumb" class="px-margin-mobile pt-space-sm pb-space-xs flex items-center justify-between">
-        <a class="inline-flex items-center gap-1 font-label-caps text-label-caps text-secondary uppercase transition-colors hover:text-on-surface" href="shop.html">
-          <span class="material-symbols-outlined text-[16px]">arrow_back</span>
-          <span>Back to Shop</span>
-        </a>
-        <div class="flex items-center space-x-1.5 font-label-caps text-label-caps text-on-tertiary-container truncate max-w-[60%]">
-          <span>Home</span>
-          <span class="opacity-50">/</span>
-          <span id="breadcrumbCategory">Perfumes</span>
-          <span class="opacity-50">/</span>
-          <span id="breadcrumbName" class="text-on-surface font-semibold truncate">Arabian Touch</span>
-        </div>
-      </nav>
-
-      <!-- PRODUCT VISUAL SHOWCASE STAGE -->
-      <section aria-label="Product Presentation" class="px-margin-mobile pt-space-xs pb-space-sm">
-        <div id="productGalleryStage" class="relative w-full aspect-[4/5] rounded-2xl overflow-hidden shadow-sm flex flex-col justify-between select-none touch-pan-y bg-[#f5f2eb] border border-[#E5DDCF]/80">
-          
-          <!-- Primary Product Photography (Click to open full view) -->
-          <div class="absolute inset-0 flex items-center justify-center p-2 cursor-pointer" onclick="openLightbox(event)" title="Click to view full image">
-            <img id="mainFlaconImage" class="w-full h-full object-contain object-center transition-all duration-300 drop-shadow-sm" src="" alt="Product Photograph">
-          </div>
-
-          <!-- Top Overlay Bar (Floating) -->
-          <div class="relative z-10 flex items-center justify-between w-full p-3 pointer-events-none">
-            <span id="productBadge" class="pointer-events-auto inline-flex items-center px-2.5 py-1 rounded-full font-label-caps text-label-caps shadow-sm" style="background-color: rgb(212, 175, 55); color: rgb(20, 19, 18); font-weight: 600;">
-              Best Seller
-            </span>
-            <button id="shareBtn" aria-label="Share this product" class="pointer-events-auto w-9 h-9 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface shadow-sm flex items-center justify-center transition-transform active:scale-95 hover:bg-surface-container-lowest cursor-pointer" type="button">
-              <span class="material-symbols-outlined text-[18px]">share</span>
-            </button>
-          </div>
-
-          <!-- Left / Right Nav Arrows (Floating) -->
-          <button id="prevSlideBtn" onclick="prevSlide(event)" aria-label="Previous image" class="absolute left-2.5 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface flex items-center justify-center shadow-md hover:scale-105 transition-all active:scale-90 cursor-pointer" type="button">
-            <span class="material-symbols-outlined text-[20px]">chevron_left</span>
-          </button>
-          <button id="nextSlideBtn" onclick="nextSlide(event)" aria-label="Next image" class="absolute right-2.5 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface flex items-center justify-center shadow-md hover:scale-105 transition-all active:scale-90 cursor-pointer" type="button">
-            <span class="material-symbols-outlined text-[20px]">chevron_right</span>
-          </button>
-
-          <!-- Bottom Gallery Indicators (Floating) -->
-          <div class="relative z-10 flex items-center justify-between w-full p-3 pointer-events-none">
-            <div class="flex items-center gap-1 pointer-events-auto" id="galleryDots">
-              <!-- Rendered dynamically -->
-            </div>
-            <span class="pointer-events-auto font-label-caps text-label-caps text-on-surface-variant tracking-widest bg-surface-container-lowest/90 backdrop-blur-md px-2 py-0.5 rounded-md shadow-xs" id="galleryCounter">
-              1 / 1
-            </span>
-          </div>
-        </div>
-
-        <!-- Mini Thumbnails Strip -->
-        <div id="galleryThumbnails" class="flex items-center justify-center gap-2 mt-3 overflow-x-auto py-1">
-          <!-- Rendered dynamically -->
-        </div>
-      </section>
-
-      <!-- PRODUCT HEADER & VALUATION -->
-      <section class="px-margin-mobile pt-space-xs pb-space-sm">
-        <div class="flex items-start justify-between gap-space-sm">
-          <div>
-            <span id="productTag" class="font-label-caps text-label-caps text-secondary tracking-widest uppercase">Fine Fragrance</span>
-            <h2 class="font-headline-md text-headline-md text-primary mt-0.5" id="productTitle">Arabian Touch</h2>
-            <p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5" id="productSubtitle">Parfum (50% oil concentration)</p>
-          </div>
-          <button id="wishlistBtn" aria-label="Save to Wishlist" class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface transition-transform active:scale-90" type="button">
-            <span class="material-symbols-outlined text-[20px]" id="wishlistIcon">favorite</span>
-          </button>
-        </div>
-        <div class="mt-space-sm flex items-baseline gap-2">
-          <span class="font-headline-sm text-headline-sm text-primary tracking-tight" id="displayPrice">₹299</span>
-          <span class="font-body-sm text-body-sm text-on-tertiary-container line-through" id="originalPrice">₹399</span>
-          <span id="discountBadge" class="font-label-caps text-[10px] text-secondary px-1.5 py-0.5 rounded bg-secondary-fixed/50 font-semibold" style="background-color: rgb(245, 232, 199); color: rgb(140, 109, 31); border: 1px solid rgb(212, 175, 55);">
-            SAVINGS
-          </span>
-        </div>
-        <div class="mt-space-xs flex items-center gap-1.5 text-on-surface-variant">
-          <span class="material-symbols-outlined text-[15px] text-secondary">local_shipping</span>
-          <p class="font-body-sm text-[12px] text-on-surface-variant" id="shippingNotice">
-            Inclusive of all taxes • Free shipping on orders above ₹999
-          </p>
-        </div>
-      </section>
-
-      <!-- SIZE SELECTION PILLS -->
-      <section class="px-margin-mobile py-space-sm">
-        <div class="flex items-center justify-between mb-2.5">
-          <label class="font-label-caps text-label-caps uppercase text-on-surface tracking-wider">Available Sizes</label>
-        </div>
-        <div id="sizePillsContainer" aria-label="Available Sizes" class="grid grid-cols-2 sm:grid-cols-4 gap-2.5" role="radiogroup">
-          <!-- Size pills populated dynamically -->
-        </div>
-      </section>
-
-      <!-- QUANTITY SELECTOR -->
-      <section class="px-margin-mobile py-space-xs">
-        <div class="flex items-center justify-between p-3 rounded-lg bg-surface-container-low border border-[#E5DDCF]/60">
-          <span class="font-label-caps text-label-caps uppercase text-on-surface tracking-wider font-semibold">Quantity</span>
-          <div class="inline-flex items-center border border-[#E5DDCF] bg-surface rounded-lg p-0.5 shadow-xs">
-            <button id="productQtyMinus" class="w-8 h-8 rounded flex items-center justify-center hover:bg-surface-container active:scale-95 transition-all text-primary" type="button" aria-label="Decrease quantity">
-              <span class="material-symbols-outlined text-[16px]">remove</span>
-            </button>
-            <span id="productQtyDisplay" class="w-10 text-center font-semibold text-sm text-primary">1</span>
-            <button id="productQtyPlus" class="w-8 h-8 rounded flex items-center justify-center hover:bg-surface-container active:scale-95 transition-all text-primary" type="button" aria-label="Increase quantity">
-              <span class="material-symbols-outlined text-[16px]">add</span>
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <!-- DUAL ACTION: ORDER ONLINE + ORDER ON WHATSAPP -->
-      <section class="px-margin-mobile py-space-sm">
-        <div class="rounded-xl p-space-md shadow-sm flex flex-col space-y-space-sm" style="background-color: rgb(247, 242, 235); border: 1px solid rgb(229, 221, 207);">
-          <div class="flex items-center gap-2">
-            <div class="w-7 h-7 rounded-full flex items-center justify-center" style="background-color: rgb(212, 175, 55); color: rgb(20, 19, 18);">
-              <span class="material-symbols-outlined text-[16px]">shopping_bag</span>
-            </div>
-            <span class="font-label-caps text-label-caps text-primary uppercase tracking-wider font-semibold">Order &amp; Support</span>
-          </div>
-
-          <!-- Order Online Action Button (ABOVE Order on WhatsApp) -->
-          <button id="addToBagBtn" type="button" class="w-full py-3.5 px-space-md rounded-lg text-white shadow-md active:scale-[0.99] transition-all flex items-center justify-center gap-2 font-label-caps text-label-caps uppercase tracking-widest text-center cursor-pointer hover:bg-[#875200]" style="background-color: rgb(20, 19, 18); border: 1px solid rgb(42, 39, 36);">
-            <span class="material-symbols-outlined text-[20px] text-secondary-fixed">shopping_bag</span>
-            <span>Order Online / Add to Bag</span>
-          </button>
-
-          <!-- WhatsApp Ordering Action Button (Below) -->
-          <a class="w-full py-3 px-space-md rounded-lg bg-surface text-primary shadow-xs hover:bg-surface-container transition-colors flex items-center justify-center gap-2 font-label-caps text-label-caps uppercase tracking-wider border border-[#E5DDCF] text-center" id="whatsappOrderBtn" href="#" rel="noopener" target="_blank">
-            <span class="material-symbols-outlined text-[18px] text-secondary">chat</span>
-            <span>Order on WhatsApp</span>
-          </a>
-
-          <!-- Preset Message Preview -->
-          <div class="bg-surface-container-lowest rounded-lg p-2.5 flex flex-col space-y-1 border border-[#E5DDCF]/40">
-            <span class="font-label-caps text-[10px] text-on-tertiary-container uppercase tracking-wider">Preset Message Draft</span>
-            <p class="font-body-sm text-body-sm italic text-on-surface" id="whatsappDraftPreview">
-              “Hi Oud &amp; Aura, I would like to order...”
-            </p>
-          </div>
-          <p class="font-body-sm text-[12px] text-on-surface-variant text-center leading-relaxed">
-            Order online with instant UPI or Cash on Delivery, or chat directly with our team on WhatsApp for prompt assistance.
-          </p>
-        </div>
-      </section>
-
-      <!-- FRAGRANCE PROFILE & NOTES -->
-      <section class="px-margin-mobile py-space-sm">
-        <div class="rounded-xl p-space-md flex flex-col space-y-space-md shadow-sm" style="background-color: rgb(247, 242, 235); border: 1px solid rgb(229, 221, 207);">
-          <div>
-            <span class="font-label-caps text-label-caps text-secondary uppercase tracking-widest">Fragrance Profile</span>
-            <h3 class="font-headline-sm text-headline-sm text-primary mt-0.5">Fragrance Notes</h3>
-            <p id="productDescription" class="font-body-sm text-body-sm text-on-surface-variant mt-1 leading-relaxed">
-              A balanced fragrance bringing together rich woody depth and warm, smooth sweetness.
-            </p>
-          </div>
-
-          <!-- Pyramid Tiers -->
-          <div id="notesContainer" class="flex flex-col space-y-space-sm">
-            <!-- Top Notes -->
-            <div class="rounded-lg p-space-sm shadow-xs flex flex-col" style="background-color: rgb(239, 233, 223); border-left: 3px solid rgb(212, 175, 55);">
-              <div class="flex items-center justify-between">
-                <span class="font-label-caps text-label-caps uppercase text-secondary tracking-wider">Top Notes</span>
-                <span class="font-body-sm text-[11px] text-on-tertiary-container">First 15 Minutes</span>
-              </div>
-              <p id="topNotesText" class="font-body-md text-body-md text-on-surface mt-1 font-medium">Bergamot, Saffron, Fresh Citrus</p>
-            </div>
-            <!-- Heart Notes -->
-            <div class="rounded-lg p-space-sm shadow-xs flex flex-col" style="background-color: rgb(239, 233, 223); border-left: 3px solid rgb(212, 175, 55);">
-              <div class="flex items-center justify-between">
-                <span class="font-label-caps text-label-caps uppercase text-secondary tracking-wider">Heart Notes</span>
-                <span class="font-body-sm text-[11px] text-on-tertiary-container">2 to 6 Hours</span>
-              </div>
-              <p id="heartNotesText" class="font-body-md text-body-md text-on-surface mt-1 font-medium">Rose Damascena, Spiced Cedar, Incense</p>
-            </div>
-            <!-- Base Notes -->
-            <div class="rounded-lg p-space-sm shadow-xs flex flex-col" style="background-color: rgb(239, 233, 223); border-left: 3px solid rgb(212, 175, 55);">
-              <div class="flex items-center justify-between">
-                <span class="font-label-caps text-label-caps uppercase text-secondary tracking-wider">Base Notes</span>
-                <span class="font-body-sm text-[11px] text-on-tertiary-container">Base Layer</span>
-              </div>
-              <p id="baseNotesText" class="font-body-md text-body-md text-on-surface mt-1 font-medium">Agarwood (Oud), Ambergris, Rich Vanilla</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- SPECIFICATIONS & RITUAL ACCORDION -->
-      <section class="px-margin-mobile py-space-sm">
-        <h3 class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest mb-space-xs">
-          Product Details &amp; Care
-        </h3>
-        <div class="flex flex-col space-y-2" id="specAccordion">
-          <!-- Item 1 -->
-          <div class="rounded-lg overflow-hidden transition-all shadow-xs" style="background-color: rgb(239, 233, 223); border: 1px solid rgb(229, 221, 207);">
-            <button class="accordion-toggle w-full px-space-md py-3.5 flex items-center justify-between text-left font-label-caps text-label-caps uppercase tracking-wider text-on-surface" data-target="content-acc1" type="button">
-              <span>How to Apply</span>
-              <span class="material-symbols-outlined text-[18px] transition-transform duration-200">expand_more</span>
-            </button>
-            <div class="hidden px-space-md pb-space-md pt-0 text-on-surface-variant font-body-sm text-body-sm leading-relaxed" id="content-acc1">
-              Spray at pulse points—such as your wrists and neck—from a few inches away. Allow the fragrance to settle naturally without rubbing.
-            </div>
-          </div>
-          <!-- Item 2 -->
-          <div class="rounded-lg overflow-hidden transition-all shadow-xs" style="background-color: rgb(239, 233, 223); border: 1px solid rgb(229, 221, 207);">
-            <button class="accordion-toggle w-full px-space-md py-3.5 flex items-center justify-between text-left font-label-caps text-label-caps uppercase tracking-wider text-on-surface" data-target="content-acc2" type="button">
-              <span>Bottle &amp; Packaging</span>
-              <span class="material-symbols-outlined text-[18px] transition-transform duration-200">expand_more</span>
-            </button>
-            <div class="hidden px-space-md pb-space-md pt-0 text-on-surface-variant font-body-sm text-body-sm leading-relaxed" id="content-acc2">
-              Presented in a glass bottle with an elegant metallic gold cap, packaged in our signature box for a premium presentation.
-            </div>
-          </div>
-          <!-- Item 3 -->
-          <div class="rounded-lg overflow-hidden transition-all shadow-xs" style="background-color: rgb(239, 233, 223); border: 1px solid rgb(229, 221, 207);">
-            <button class="accordion-toggle w-full px-space-md py-3.5 flex items-center justify-between text-left font-label-caps text-label-caps uppercase tracking-wider text-on-surface" data-target="content-acc3" type="button">
-              <span>Shipping &amp; Care</span>
-              <span class="material-symbols-outlined text-[18px] transition-transform duration-200">expand_more</span>
-            </button>
-            <div class="hidden px-space-md pb-space-md pt-0 text-on-surface-variant font-body-sm text-body-sm leading-relaxed" id="content-acc3">
-              Dispatched within 24 to 48 hours in secure protective packaging. Keep the bottle in a cool, dry place away from direct sunlight to preserve the fragrance.
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- RELATED FRAGRANCES SECTION -->
-      <section class="px-margin-mobile pt-space-md pb-space-lg">
-        <div class="flex items-center justify-between mb-space-sm">
-          <div>
-            <span class="font-label-caps text-label-caps text-secondary uppercase tracking-widest">Explore More</span>
-            <h3 class="font-headline-sm text-headline-sm text-primary">You May Also Like</h3>
-          </div>
-          <a class="font-label-caps text-label-caps text-secondary uppercase hover:underline" href="shop.html">Explore All</a>
-        </div>
-        <div class="grid grid-cols-2 gap-3" id="relatedFragrancesContainer">
-          <!-- Populated dynamically -->
-        </div>
-      </section>
-
-    </div>
-  </main>
-
-  <!-- FOOTER -->
-  <footer class="mt-auto bg-primary-container text-surface-container-low px-margin-mobile pt-12 pb-24" style="background-color: rgb(13, 12, 11);">
-    <div class="max-w-4xl mx-auto flex flex-col items-center text-center space-y-3">
-      <span class="font-headline-sm text-headline-sm tracking-[0.2em] text-surface-container-lowest uppercase">OUD &amp; AURA</span>
-      <p class="font-headline-sm text-body-sm italic text-secondary-fixed-dim">The essence of elegance.</p>
-      <div class="w-12 h-[1px] bg-secondary/40 my-2"></div>
-      <div class="mt-6 grid grid-cols-2 sm:grid-cols-3 gap-y-3 gap-x-8 text-center">
-        <a class="font-label-caps text-label-caps uppercase text-secondary-fixed-dim hover:text-surface-container-lowest transition-colors" href="shop.html">Shop All</a>
-        <a class="font-label-caps text-label-caps uppercase text-secondary-fixed-dim hover:text-surface-container-lowest transition-colors" href="shop.html">Best Sellers</a>
-        <a class="font-label-caps text-label-caps uppercase text-secondary-fixed-dim hover:text-surface-container-lowest transition-colors" href="shop.html?category=attars">Attars</a>
-        <a class="font-label-caps text-label-caps uppercase text-secondary-fixed-dim hover:text-surface-container-lowest transition-colors" href="shop.html?category=gifts">Gift Sets</a>
-        <a class="font-label-caps text-label-caps uppercase text-secondary-fixed-dim hover:text-surface-container-lowest transition-colors" href="about.html">About Us</a>
-        <a class="font-label-caps text-label-caps uppercase text-secondary-fixed-dim hover:text-surface-container-lowest transition-colors" href="contact.html">Order &amp; Support</a>
-      </div>
-      <div class="mt-8 pt-6 flex flex-col items-center space-y-2 border-t border-white/10 w-full">
-        <a class="font-label-caps text-[10px] tracking-[0.16em] text-on-tertiary-container hover:text-surface-container-lowest transition-colors" data-config="instagram-link" href="#" target="_blank" rel="noopener">
-          <span data-config="instagram-handle">@oudandaura</span> • Instagram
-        </a>
-        <a class="font-label-caps text-[10px] tracking-[0.16em] text-secondary hover:text-secondary-fixed transition-colors" data-config="whatsapp-link" href="#" target="_blank" rel="noopener">
-          <span data-config="whatsapp-number">+91 98765 43210</span> • Quick Orders
-        </a>
-      </div>
-      <p class="mt-6 text-center font-label-caps text-[9px] tracking-[0.15em] text-on-tertiary-container/70">© 2025 Oud &amp; Aura. All rights reserved.</p>
-    </div>
-  </footer>
-
-  <!-- CART DRAWER -->
-  <div id="cartBackdrop" class="drawer-backdrop fixed inset-0 z-50 bg-black/50 backdrop-blur-sm"></div>
-  <aside id="cartDrawer" class="drawer-panel fixed top-0 bottom-0 right-0 w-full sm:w-96 z-50 bg-surface p-6 flex flex-col justify-between shadow-2xl border-l border-[#E5DDCF]">
-    <div>
-      <div class="flex items-center justify-between pb-4 border-b border-[#E5DDCF]">
-        <div class="flex items-center gap-2">
-          <span class="material-symbols-outlined text-secondary text-[22px]">shopping_bag</span>
-          <h3 class="font-headline-sm text-lg text-primary">Your Shopping Bag</h3>
-        </div>
-        <button id="closeCartBtn" class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-surface-container text-on-surface">
-          <span class="material-symbols-outlined text-[20px]">close</span>
-        </button>
-      </div>
-      <div id="cartItemsList" class="mt-4 flex flex-col gap-3 max-h-[60vh] overflow-y-auto no-scrollbar"></div>
-    </div>
-    <div class="pt-4 border-t border-[#E5DDCF] flex flex-col space-y-3">
-      <div class="flex items-baseline justify-between text-on-surface">
-        <span class="font-label-caps text-xs uppercase tracking-wider text-on-surface-variant">Estimated Total</span>
-        <span id="cartSubtotal" class="font-headline-sm text-xl font-semibold text-primary">₹0</span>
-      </div>
-      <p class="font-body-sm text-[11px] text-on-surface-variant">Taxes included. Complete your order directly online or via WhatsApp.</p>
-      <!-- Primary Online Checkout -->
-      <a id="cartOnlineCheckoutBtn" href="checkout.html" class="w-full py-3.5 px-4 rounded-lg bg-primary text-on-primary font-label-caps text-xs uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-[#875200] transition-colors shadow-sm">
-        <span class="material-symbols-outlined text-[18px] text-secondary-fixed">lock</span>
-        <span>Proceed to Checkout</span>
-      </a>
-      <!-- WhatsApp Order Alternative -->
-      <a id="cartWhatsAppCheckout" href="#" target="_blank" rel="noopener" class="w-full py-3 px-4 rounded-lg bg-surface text-primary border border-[#E5DDCF] font-label-caps text-xs uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-surface-container transition-colors">
-        <span class="material-symbols-outlined text-[18px] text-secondary">chat</span>
-        <span>Order Bag on WhatsApp</span>
-      </a>
-    </div>
-  </aside>
-
-  <!-- SEARCH MODAL -->
-  <div id="searchModal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-start justify-center pt-20 px-4">
-    <div class="bg-surface rounded-2xl w-full max-w-lg p-6 shadow-2xl border border-[#E5DDCF]">
-      <div class="flex items-center justify-between pb-4 border-b border-[#E5DDCF]">
-        <div class="flex items-center gap-2 flex-1 mr-4">
-          <span class="material-symbols-outlined text-secondary text-[22px]">search</span>
-          <input id="globalSearchInput" type="text" placeholder="Search fragrances by name or note..." class="w-full bg-transparent font-body-md text-on-surface focus:outline-none placeholder:text-on-surface-variant/70 text-sm">
-        </div>
-        <button id="closeSearchBtn" class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-surface-container text-on-surface">
-          <span class="material-symbols-outlined text-[20px]">close</span>
-        </button>
-      </div>
-      <div id="searchResults" class="mt-4 max-h-80 overflow-y-auto no-scrollbar"></div>
-    </div>
-  </div>
-
-  <!-- FULLSCREEN IMAGE LIGHTBOX MODAL -->
-  <div id="imageLightboxModal" class="fixed inset-0 z-[100] bg-[#0D0C0B]/95 backdrop-blur-md hidden flex flex-col justify-between p-4 touch-pan-y" style="display: none;" onclick="closeLightbox(event)">
-    <div class="flex items-center justify-between w-full max-w-2xl mx-auto z-10 text-[#FAF6F0] pt-2">
-      <span id="lightboxCounter" class="font-label-caps text-xs tracking-widest text-[#FAF6F0]/80">1 / 1</span>
-      <button onclick="closeLightbox(event)" type="button" aria-label="Close image viewer" class="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-[#FAF6F0] flex items-center justify-center transition-colors cursor-pointer">
-        <span class="material-symbols-outlined text-[24px]">close</span>
-      </button>
-    </div>
-    
-    <div class="relative flex-1 flex items-center justify-center max-w-3xl mx-auto w-full my-auto overflow-hidden" onclick="event.stopPropagation()">
-      <button id="lightboxPrevBtn" onclick="prevSlide(event); updateLightbox();" aria-label="Previous image" class="absolute left-2 z-20 w-11 h-11 rounded-full bg-black/60 hover:bg-black/90 text-white flex items-center justify-center shadow-lg transition-transform active:scale-90 cursor-pointer">
-        <span class="material-symbols-outlined text-[28px]">chevron_left</span>
-      </button>
-      
-      <img id="lightboxImage" src="" alt="Full view" class="max-h-[75vh] max-w-full object-contain rounded-lg shadow-2xl transition-opacity duration-200 select-none">
-      
-      <button id="lightboxNextBtn" onclick="nextSlide(event); updateLightbox();" aria-label="Next image" class="absolute right-2 z-20 w-11 h-11 rounded-full bg-black/60 hover:bg-black/90 text-white flex items-center justify-center shadow-lg transition-transform active:scale-90 cursor-pointer">
-        <span class="material-symbols-outlined text-[28px]">chevron_right</span>
-      </button>
-    </div>
-
-    <div class="flex items-center justify-center gap-2 py-3 z-10" id="lightboxDots" onclick="event.stopPropagation()">
-      <!-- dots rendered dynamically -->
-    </div>
-  </div>
-
-  <!-- SCRIPTS -->
-  <script src="data/config.js"></script>
-  <script src="data/products.js?v=5"></script>
-  <script src="js/main.js"></script>
-  <script>
-    // Product Detail Logic
-    let currentProduct = null;
-    let selectedSize = null;
-    let selectedPrice = null;
-    let currentQuantity = 1;
-    let currentSlide = 0;
-
-    function initProductDetails() {
-      const urlParams = new URLSearchParams(window.location.search);
-      const prodId = urlParams.get("id") || (PRODUCTS[0] && PRODUCTS[0].id) || "arabian_touch";
-      currentProduct = getProductById(prodId) || PRODUCTS[0];
-
-      // Page Title & Header
-      document.title = `${currentProduct.name} | Oud & Aura`;
-      document.getElementById("topNavTitle").textContent = currentProduct.name;
-      document.getElementById("breadcrumbName").textContent = currentProduct.name;
-      document.getElementById("breadcrumbCategory").textContent = currentProduct.category.toUpperCase();
-
-      // Badge & Tags
-      const badgeEl = document.getElementById("productBadge");
-      if (currentProduct.badge) {
-        badgeEl.textContent = currentProduct.badge;
-        badgeEl.style.display = "inline-flex";
-      } else {
-        badgeEl.style.display = "none";
-      }
-      document.getElementById("productTag").textContent = currentProduct.tag || currentProduct.concentration;
-
-      // Titles & Descriptions
-      document.getElementById("productTitle").textContent = currentProduct.name;
-      if (currentProduct.category === "attars") {
-        document.getElementById("productSubtitle").textContent = currentProduct.concentration || "Pure Perfume Oil";
-      } else if (currentProduct.category === "gifts") {
-        document.getElementById("productSubtitle").textContent = currentProduct.concentration || "Luxury Discovery Set";
-      } else {
-        document.getElementById("productSubtitle").textContent = "Parfum (50% oil concentration)";
-      }
-      document.getElementById("productDescription").textContent = currentProduct.fullDescription;
-
-      // Notes
-      const notesContainer = document.getElementById("notesContainer");
-      if (currentProduct.notes && notesContainer) {
-        if (currentProduct.notes.top !== undefined || currentProduct.notes.heart !== undefined) {
-          notesContainer.innerHTML = `
-            <div class="rounded-lg p-space-sm shadow-xs flex flex-col" style="background-color: rgb(239, 233, 223); border-left: 3px solid rgb(212, 175, 55);">
-              <div class="flex items-center justify-between">
-                <span class="font-label-caps text-label-caps uppercase text-secondary tracking-wider font-semibold">Top Notes</span>
-                <span class="font-body-sm text-[11px] text-on-tertiary-container">First 15 Minutes</span>
-              </div>
-              <p class="font-body-md text-body-md text-on-surface mt-1 font-medium">${currentProduct.notes.top || "Fresh accords"}</p>
-            </div>
-            <div class="rounded-lg p-space-sm shadow-xs flex flex-col" style="background-color: rgb(239, 233, 223); border-left: 3px solid rgb(212, 175, 55);">
-              <div class="flex items-center justify-between">
-                <span class="font-label-caps text-label-caps uppercase text-secondary tracking-wider font-semibold">Heart Notes</span>
-                <span class="font-body-sm text-[11px] text-on-tertiary-container">2 to 6 Hours</span>
-              </div>
-              <p class="font-body-md text-body-md text-on-surface mt-1 font-medium">${currentProduct.notes.heart || "Heart notes"}</p>
-            </div>
-            <div class="rounded-lg p-space-sm shadow-xs flex flex-col" style="background-color: rgb(239, 233, 223); border-left: 3px solid rgb(212, 175, 55);">
-              <div class="flex items-center justify-between">
-                <span class="font-label-caps text-label-caps uppercase text-secondary tracking-wider font-semibold">Base Notes</span>
-                <span class="font-body-sm text-[11px] text-on-tertiary-container">Base Layer</span>
-              </div>
-              <p class="font-body-md text-body-md text-on-surface mt-1 font-medium">${currentProduct.notes.base || "Base accords"}</p>
-            </div>
-          `;
-        } else {
-          // Combo or Custom fragrance profile map (e.g. Unisex Gift Set)
-          notesContainer.innerHTML = Object.entries(currentProduct.notes).map(([title, desc]) => `
-            <div class="rounded-lg p-space-sm shadow-xs flex flex-col" style="background-color: rgb(239, 233, 223); border-left: 3px solid rgb(212, 175, 55);">
-              <div class="flex items-center justify-between">
-                <span class="font-label-caps text-label-caps uppercase text-secondary tracking-wider font-semibold">${title}</span>
-                <span class="font-body-sm text-[10px] uppercase tracking-wider text-on-tertiary-container font-medium">Included in Set</span>
-              </div>
-              <p class="font-body-md text-body-md text-on-surface mt-1 font-medium">${desc}</p>
-            </div>
-          `).join("");
-        }
-      }
-
-      // Images & Carousel
-      renderGallery();
-      initGalleryGestures();
-
-      // Sizes & Prices
-      selectedSize = null;
-      selectedPrice = null;
-      renderSizePills();
-
-      // Related Fragrances
-      renderRelated();
-
-      // Share button
-      document.getElementById("shareBtn").addEventListener("click", () => {
-        if (navigator.share) {
-          navigator.share({
-            title: `${currentProduct.name} - Oud & Aura`,
-            text: currentProduct.shortDescription,
-            url: window.location.href
-          }).catch(() => {});
-        } else {
-          navigator.clipboard.writeText(window.location.href).then(() => {
-            showToast("Product link copied to clipboard");
-          });
-        }
-      });
-
-      // Wishlist toggle
-      const wishlistBtn = document.getElementById("wishlistBtn");
-      const wishlistIcon = document.getElementById("wishlistIcon");
-      let isWishlisted = false;
-      wishlistBtn.addEventListener("click", () => {
-        isWishlisted = !isWishlisted;
-        wishlistIcon.style.color = isWishlisted ? "#ba1a1a" : "";
-        showToast(isWishlisted ? "Saved to your wishlist" : "Removed from wishlist");
-      });
-
-      // Quantity controls
-      const qtyDisplay = document.getElementById("productQtyDisplay");
-      const minusBtn = document.getElementById("productQtyMinus");
-      const plusBtn = document.getElementById("productQtyPlus");
-      if (minusBtn && plusBtn && qtyDisplay) {
-        minusBtn.addEventListener("click", () => {
-          if (currentQuantity > 1) {
-            currentQuantity--;
-            qtyDisplay.textContent = currentQuantity;
-            updatePriceAndWhatsApp(selectedPrice);
-          }
-        });
-        plusBtn.addEventListener("click", () => {
-          if (currentQuantity < 10) {
-            currentQuantity++;
-            qtyDisplay.textContent = currentQuantity;
-            updatePriceAndWhatsApp(selectedPrice);
-          }
-        });
-      }
-
-      // Add to Bag Button
-      const addBagBtn = document.getElementById("addToBagBtn");
-      if (currentProduct.inStock === false) {
-        addBagBtn.disabled = true;
-        addBagBtn.innerHTML = `<span class="material-symbols-outlined text-[20px]">block</span><span>Out of Stock</span>`;
-        addBagBtn.classList.remove("hover:bg-[#875200]", "cursor-pointer");
-        addBagBtn.classList.add("opacity-50", "cursor-not-allowed");
-      } else {
-        addBagBtn.addEventListener("click", () => {
-          addToCart(currentProduct.id, selectedSize, selectedPrice, currentQuantity);
-        });
-      }
-
-      // Accordion setup
-      document.querySelectorAll(".accordion-toggle").forEach(btn => {
-        btn.addEventListener("click", () => {
-          const targetId = btn.getAttribute("data-target");
-          const content = document.getElementById(targetId);
-          const icon = btn.querySelector(".material-symbols-outlined");
-          if (content.classList.contains("hidden")) {
-            content.classList.remove("hidden");
-            if (icon) icon.textContent = "expand_less";
-          } else {
-            content.classList.add("hidden");
-            if (icon) icon.textContent = "expand_more";
-          }
-        });
-      });
-    }
-
-    function renderGallery() {
-      const images = currentProduct.images && currentProduct.images.length > 0 
-        ? currentProduct.images 
-        : ["https://via.placeholder.com/600?text=Fragrance"];
-      
-      const mainImg = document.getElementById("mainFlaconImage");
-      const dotsContainer = document.getElementById("galleryDots");
-      const counter = document.getElementById("galleryCounter");
-      const thumbsContainer = document.getElementById("galleryThumbnails");
-      const prevBtn = document.getElementById("prevSlideBtn");
-      const nextBtn = document.getElementById("nextSlideBtn");
-
-      if (currentSlide >= images.length) currentSlide = 0;
-      if (currentSlide < 0) currentSlide = images.length - 1;
-
-      mainImg.src = images[currentSlide];
-      mainImg.alt = `${currentProduct.name} - Image ${currentSlide + 1}`;
-      counter.textContent = `${currentSlide + 1} / ${images.length}`;
-
-      // Navigation arrows visibility
-      if (prevBtn) prevBtn.style.display = images.length > 1 ? "flex" : "none";
-      if (nextBtn) nextBtn.style.display = images.length > 1 ? "flex" : "none";
-
-      // Dots
-      if (dotsContainer) {
-        dotsContainer.innerHTML = images.map((_, idx) => `
-          <button onclick="event.stopPropagation(); setSlide(${idx})" class="p-1.5 flex items-center justify-center cursor-pointer" type="button" aria-label="View photo ${idx + 1}">
-            <div class="h-1.5 rounded-full transition-all ${idx === currentSlide ? 'w-6 bg-primary' : 'w-2 bg-outline-variant'}"></div>
-          </button>
-        `).join("");
-      }
-
-      // Thumbnails
-      if (thumbsContainer) {
-        if (images.length > 1) {
-          thumbsContainer.style.display = "flex";
-          thumbsContainer.innerHTML = images.map((imgSrc, idx) => `
-            <button 
-              type="button" 
-              onclick="event.stopPropagation(); setSlide(${idx})" 
-              aria-label="Image ${idx + 1}"
-              class="w-12 h-12 rounded-lg overflow-hidden border-2 transition-all p-0.5 cursor-pointer ${idx === currentSlide ? 'border-[#0D0C0B] scale-105 shadow-sm' : 'border-[#E5DDCF] opacity-70 hover:opacity-100'}"
-              style="background-color: rgb(247, 242, 235);"
-            >
-              <img src="${imgSrc}" alt="${currentProduct.name} thumbnail ${idx + 1}" class="w-full h-full object-cover rounded">
-            </button>
-          `).join("");
-        } else {
-          thumbsContainer.style.display = "none";
-        }
-      }
-    }
-
-    function setSlide(index) {
-      const images = currentProduct.images && currentProduct.images.length > 0 ? currentProduct.images : [];
-      if (images.length === 0) return;
-      currentSlide = (index + images.length) % images.length;
-      
-      const mainImg = document.getElementById("mainFlaconImage");
-      mainImg.style.opacity = "0.3";
-      setTimeout(() => {
-        renderGallery();
-        mainImg.style.opacity = "1";
-      }, 100);
-      updateLightbox();
-    }
-
-    function nextSlide(e) {
-      if (e) e.stopPropagation();
-      const images = currentProduct.images && currentProduct.images.length > 0 ? currentProduct.images : [];
-      if (images.length <= 1) return;
-      setSlide(currentSlide + 1);
-    }
-
-    function prevSlide(e) {
-      if (e) e.stopPropagation();
-      const images = currentProduct.images && currentProduct.images.length > 0 ? currentProduct.images : [];
-      if (images.length <= 1) return;
-      setSlide(currentSlide - 1);
-    }
-
-    function openLightbox(e) {
-      if (e) e.stopPropagation();
-      const modal = document.getElementById("imageLightboxModal");
-      if (!modal) return;
-      modal.style.display = "flex";
-      modal.classList.remove("hidden");
-      updateLightbox();
-      document.body.style.overflow = "hidden";
-    }
-
-    function closeLightbox(e) {
-      if (e) e.stopPropagation();
-      const modal = document.getElementById("imageLightboxModal");
-      if (!modal) return;
-      modal.style.display = "none";
-      modal.classList.add("hidden");
-      document.body.style.overflow = "";
-    }
-
-    function updateLightbox() {
-      const modal = document.getElementById("imageLightboxModal");
-      if (!modal || modal.style.display === "none" || modal.classList.contains("hidden")) return;
-      
-      const images = currentProduct.images && currentProduct.images.length > 0 ? currentProduct.images : [];
-      if (images.length === 0) return;
-      
-      const lbImg = document.getElementById("lightboxImage");
-      const lbCounter = document.getElementById("lightboxCounter");
-      const lbDots = document.getElementById("lightboxDots");
-      const lbPrev = document.getElementById("lightboxPrevBtn");
-      const lbNext = document.getElementById("lightboxNextBtn");
-
-      lbImg.src = images[currentSlide];
-      lbImg.alt = `${currentProduct.name} - Full view ${currentSlide + 1}`;
-      lbCounter.textContent = `${currentSlide + 1} / ${images.length}`;
-
-      if (lbPrev) lbPrev.style.display = images.length > 1 ? "flex" : "none";
-      if (lbNext) lbNext.style.display = images.length > 1 ? "flex" : "none";
-
-      if (lbDots) {
-        lbDots.innerHTML = images.map((_, idx) => `
-          <button onclick="event.stopPropagation(); setSlide(${idx})" class="p-1.5 flex items-center justify-center cursor-pointer" type="button" aria-label="Photo ${idx + 1}">
-            <div class="h-2 rounded-full transition-all ${idx === currentSlide ? 'w-6 bg-[#CBB279]' : 'w-2 bg-white/40'}"></div>
-          </button>
-        `).join("");
-      }
-    }
-
-    function initGalleryGestures() {
-      function attachSwipe(element, onLeft, onRight) {
-        if (!element) return;
-        let startX = 0;
-        let startY = 0;
-        let isTouching = false;
-
-        element.addEventListener("touchstart", (e) => {
-          if (e.touches.length === 1) {
-            startX = e.touches[0].clientX;
-            startY = e.touches[0].clientY;
-            isTouching = true;
-          }
-        }, { passive: true });
-
-        element.addEventListener("touchend", (e) => {
-          if (!isTouching || e.changedTouches.length === 0) return;
-          isTouching = false;
-          const diffX = e.changedTouches[0].clientX - startX;
-          const diffY = e.changedTouches[0].clientY - startY;
-
-          // Horizontal swipe threshold: 35px & horizontally dominant
-          if (Math.abs(diffX) > 35 && Math.abs(diffX) > Math.abs(diffY)) {
-            if (diffX < 0) {
-              onLeft();
-            } else {
-              onRight();
-            }
-          }
-        }, { passive: true });
-      }
-
-      // Main product stage swipe
-      attachSwipe(
-        document.getElementById("productGalleryStage"),
-        () => nextSlide(),
-        () => prevSlide()
-      );
-
-      // Lightbox swipe
-      attachSwipe(
-        document.getElementById("imageLightboxModal"),
-        () => { nextSlide(); updateLightbox(); },
-        () => { prevSlide(); updateLightbox(); }
-      );
-
-      // Keyboard arrow keys & ESC support
-      window.addEventListener("keydown", (e) => {
-        const modal = document.getElementById("imageLightboxModal");
-        const isOpen = modal && !modal.classList.contains("hidden");
-        if (e.key === "ArrowRight") {
-          nextSlide();
-          if (isOpen) updateLightbox();
-        } else if (e.key === "ArrowLeft") {
-          prevSlide();
-          if (isOpen) updateLightbox();
-        } else if (e.key === "Escape" && isOpen) {
-          closeLightbox();
-        }
-      });
-    }
-
-    function renderSizePills() {
-      const container = document.getElementById("sizePillsContainer");
-      const sizes = currentProduct.sizes || [
-        { size: currentProduct.size, price: currentProduct.price, originalPrice: currentProduct.originalPrice, label: "Standard", isDefault: true }
-      ];
-
-      // Only set initial default if no size has been selected yet
-      if (!selectedSize) {
-        const defaultVariant = sizes.find(s => s.isDefault) || sizes[0];
-        selectedSize = defaultVariant.size;
-        selectedPrice = defaultVariant.price;
-      }
-
-      container.innerHTML = sizes.map(variant => {
-        const isSel = variant.size === selectedSize;
-        return `
-          <button 
-            type="button" 
-            onclick="onSelectSize('${variant.size}', ${variant.price}, ${variant.originalPrice || 0})"
-            class="size-pill group relative flex flex-col items-center justify-center p-3 rounded-lg transition-all text-center cursor-pointer"
-            style="${isSel 
-              ? 'background-color: rgb(20, 19, 18); color: rgb(255, 255, 255); border: 1px solid rgb(20, 19, 18);' 
-              : 'background-color: rgb(239, 233, 223); color: rgb(20, 19, 18); border: 1px solid rgb(229, 221, 207);'}"
-          >
-            <span class="font-label-caps text-label-caps font-semibold">${variant.size}</span>
-            <span class="font-body-sm text-[12px] mt-0.5 ${isSel ? 'opacity-90' : 'text-on-surface-variant'}">${SITE_CONFIG.currencySymbol}${variant.price}</span>
-          </button>
-        `;
-      }).join("");
-
-      const activeVariant = sizes.find(s => s.size === selectedSize) || sizes[0];
-      updatePriceAndWhatsApp(activeVariant.price, activeVariant.originalPrice);
-    }
-
-    function onSelectSize(size, price, origPrice) {
-      selectedSize = size;
-      selectedPrice = price;
-      renderSizePills();
-    }
-
-    function updatePriceAndWhatsApp(price, origPrice) {
-      if (!price) {
-        const activeVariant = (currentProduct.sizes || []).find(s => s.size === selectedSize) || currentProduct;
-        price = activeVariant.price;
-        origPrice = activeVariant.originalPrice;
-      }
-      document.getElementById("displayPrice").textContent = `${SITE_CONFIG.currencySymbol}${price}`;
-      
-      const origEl = document.getElementById("originalPrice");
-      const discBadge = document.getElementById("discountBadge");
-      if (origPrice && origPrice > price) {
-        origEl.textContent = `${SITE_CONFIG.currencySymbol}${origPrice}`;
-        origEl.style.display = "inline";
-        const pct = Math.round(((origPrice - price) / origPrice) * 100);
-        discBadge.textContent = `${pct}% OFF`;
-        discBadge.style.display = "inline-flex";
-      } else {
-        origEl.style.display = "none";
-        discBadge.style.display = "none";
-      }
-
-      // Update WhatsApp link and draft preview
-      const whatsappBtn = document.getElementById("whatsappOrderBtn");
-      const draftPreview = document.getElementById("whatsappDraftPreview");
-      const qty = currentQuantity || 1;
-      const total = price * qty;
-      const message = `Hi Oud & Aura, I would like to order ${currentProduct.name}, ${selectedSize} (Qty: ${qty}) — Total: ${SITE_CONFIG.currencySymbol}${total}.`;
-      
-      whatsappBtn.href = SITE_CONFIG.getWhatsAppUrl(message);
-      draftPreview.textContent = `“${message}”`;
-    }
-
-    function renderRelated() {
-      const container = document.getElementById("relatedFragrancesContainer");
-      const allProds = typeof getAllProducts === 'function' ? getAllProducts() : PRODUCTS; const related = allProds.filter(p => p.id !== currentProduct.id).slice(0, 2);
-      
-      container.innerHTML = related.map(p => `
-        <div onclick="window.location.href='product.html?id=' + encodeURIComponent('${p.id}')" class="rounded-xl p-2.5 flex flex-col shadow-xs cursor-pointer hover:shadow-md transition-all" style="background-color: rgb(247, 242, 235); border: 1px solid rgb(229, 221, 207);">
-          <div class="w-full aspect-[4/5] rounded-lg overflow-hidden relative bg-surface-container mb-2">
-            <img class="w-full h-full object-cover" src="${p.images[0]}" alt="${p.name}">
-            ${p.badge ? `
-              <span class="absolute top-2 left-2 px-1.5 py-0.5 rounded bg-surface-container-lowest/80 backdrop-blur-sm font-label-caps text-[9px] text-on-surface">
-                ${p.badge}
-              </span>
-            ` : ''}
-          </div>
-          <div class="flex flex-col flex-1 justify-between">
-            <div>
-              <h4 class="font-headline-sm text-[16px] leading-tight text-primary">${p.name}</h4>
-              <p class="font-body-sm text-[11px] text-on-surface-variant mt-0.5">${p.size} • ${p.concentration}</p>
-            </div>
-            <div class="mt-2.5 pt-2 flex items-center justify-between">
-              <span class="font-label-caps text-label-caps font-semibold text-primary">${SITE_CONFIG.currencySymbol}${p.price}</span>
-              <a class="font-label-caps text-[10px] text-secondary font-semibold uppercase hover:text-primary transition-colors" href="product.html?id=${encodeURIComponent(p.id)}">
-                View
-              </a>
-            </div>
-          </div>
-        </div>
-      `).join("");
-    }
-
-    document.addEventListener("DOMContentLoaded", initProductDetails);
-  </script>
-</body>
-</html>
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport">
+  <title>Product Details | Oud &amp; Aura</title>
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&amp;family=Plus+Jakarta+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "tertiary-fixed": "#ede0d7", "on-primary": "#ffffff", "inverse-primary": "#cac6c3", "primary-fixed-dim": "#cac6c3",
+            secondary: "#875200", background: "#fbf9f6", "error-container": "#ffdad6", "outline-variant": "#cdc5bd",
+            "on-background": "#1b1c1a", "surface-container-lowest": "#ffffff", "on-error-container": "#93000a",
+            "surface-container-low": "#f5f3f0", "inverse-surface": "#30312f", "tertiary-fixed-dim": "#d0c4bb",
+            "primary-container": "#1d1b1a", "on-tertiary-fixed": "#201a15", "on-tertiary-container": "#8c827a",
+            "on-tertiary-fixed-variant": "#4d453f", "primary-fixed": "#e6e1df", "inverse-on-surface": "#f2f0ed",
+            "secondary-fixed": "#ffddba", primary: "#000000", "on-secondary-container": "#724500",
+            "surface-container-highest": "#e4e2df", error: "#ba1a1a", "on-surface": "#1b1c1a",
+            "on-primary-container": "#868381", "on-secondary": "#ffffff", "on-surface-variant": "#4b4640",
+            "on-secondary-fixed": "#2b1700", "surface-container": "#efeeeb", "surface-dim": "#dbdad7",
+            "tertiary-container": "#201a15", "surface-tint": "#605e5c", "secondary-fixed-dim": "#ffb865",
+            "surface-variant": "#e4e2df", "secondary-container": "#feb154", "on-tertiary": "#ffffff",
+            "on-primary-fixed": "#1d1b1a", "surface-container-high": "#eae8e5", "surface-bright": "#fbf9f6",
+            "on-primary-fixed-variant": "#484645", surface: "#fbf9f6", tertiary: "#000000", "on-error": "#ffffff",
+            "on-secondary-fixed-variant": "#663d00", outline: "#7c766f"
+          },
+          fontFamily: {
+            "headline-sm": ["Playfair Display"], "display-hero": ["Playfair Display"], "headline-lg": ["Playfair Display"],
+            "display-hero-mobile": ["Playfair Display"], "label-caps": ["Plus Jakarta Sans"], "headline-md": ["Playfair Display"],
+            "body-lg": ["Plus Jakarta Sans"], "body-md": ["Plus Jakarta Sans"], "body-sm": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Playfair Display"], "label-sm": ["Plus Jakarta Sans"], headline: ["Playfair Display"],
+            display: ["Playfair Display"], body: ["Plus Jakarta Sans"], label: ["Plus Jakarta Sans"]
+          },
+          spacing: {
+            "margin-mobile": "1.25rem", "space-xl": "3rem", margin: "3rem", "space-xs": "0.25rem",
+            "space-sm": "0.5rem", "space-md": "1rem", "gutter-mobile": "0.75rem", gutter: "1.25rem", "space-lg": "1.75rem"
+          }
+        }
+      }
+    };
+  </script>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-surface text-on-surface font-body-md flex flex-col min-h-screen relative" style="background-color: rgb(250, 246, 240); color: rgb(20, 19, 18);">
+
+  <!-- HEADER -->
+  <header class="fixed top-0 inset-x-0 z-50 bg-surface/90 backdrop-blur-xl shadow-[0_1px_12px_rgba(0,0,0,0.03)] pt-safe">
+    <div class="max-w-4xl mx-auto h-16 px-margin-mobile flex items-center justify-between">
+      <button aria-label="Go back" class="w-11 h-11 flex items-center justify-center text-on-surface hover:text-secondary transition-colors -ml-2" onclick="window.history.length > 1 ? window.history.back() : window.location.href='shop.html'" type="button">
+        <span class="material-symbols-outlined text-[24px]">arrow_back</span>
+      </button>
+      <div class="flex-1 text-center px-2 truncate">
+        <h1 id="topNavTitle" class="font-headline-sm text-[17px] tracking-wide text-primary truncate">Product Details</h1>
+      </div>
+      <div class="flex items-center gap-space-xs">
+        <a aria-label="Shopping Bag" class="openCartBtn relative w-11 h-11 flex items-center justify-center text-on-surface hover:text-secondary transition-colors cursor-pointer" href="#">
+          <span class="material-symbols-outlined text-[22px]">shopping_bag</span>
+          <span class="cart-count-badge absolute top-2 right-2 min-w-[16px] h-[16px] px-1 rounded-full bg-primary text-on-primary font-label-caps text-[9px] flex items-center justify-center leading-none" style="display:none;">0</span>
+        </a>
+        <a href="contact.html" class="w-8 h-8 rounded-full bg-primary flex items-center justify-center ml-1 text-on-primary hover:bg-secondary transition-colors">
+          <span class="material-symbols-outlined text-[18px]">support_agent</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN VIEW -->
+  <main class="flex-1 flex flex-col relative w-full pt-16 pb-24 bg-surface">
+    <div class="max-w-xl mx-auto w-full text-on-surface">
+
+      <!-- BREADCRUMB NAVIGATION -->
+      <nav aria-label="Breadcrumb" class="px-margin-mobile pt-space-sm pb-space-xs flex items-center justify-between">
+        <a class="inline-flex items-center gap-1 font-label-caps text-label-caps text-secondary uppercase transition-colors hover:text-on-surface" href="shop.html">
+          <span class="material-symbols-outlined text-[16px]">arrow_back</span>
+          <span>Back to Shop</span>
+        </a>
+        <div class="flex items-center space-x-1.5 font-label-caps text-label-caps text-on-tertiary-container truncate max-w-[60%]">
+          <span>Home</span>
+          <span class="opacity-50">/</span>
+          <span id="breadcrumbCategory">Perfumes</span>
+          <span class="opacity-50">/</span>
+          <span id="breadcrumbName" class="text-on-surface font-semibold truncate">Arabian Touch</span>
+        </div>
+      </nav>
+
+      <!-- PRODUCT VISUAL SHOWCASE STAGE -->
+      <section aria-label="Product Presentation" class="px-margin-mobile pt-space-xs pb-space-sm">
+        <div id="productGalleryStage" class="relative w-full aspect-[4/5] rounded-2xl overflow-hidden shadow-sm flex flex-col justify-between select-none touch-pan-y bg-[#f5f2eb] border border-[#E5DDCF]/80">
+          
+          <!-- Primary Product Photography (Click to open full view) -->
+          <div class="absolute inset-0 flex items-center justify-center p-2 cursor-pointer" onclick="openLightbox(event)" title="Click to view full image">
+            <img id="mainFlaconImage" class="w-full h-full object-contain object-center transition-all duration-300 drop-shadow-sm" src="" alt="Product Photograph">
+          </div>
+
+          <!-- Top Overlay Bar (Floating) -->
+          <div class="relative z-10 flex items-center justify-between w-full p-3 pointer-events-none">
+            <span id="productBadge" class="pointer-events-auto inline-flex items-center px-2.5 py-1 rounded-full font-label-caps text-label-caps shadow-sm" style="background-color: rgb(212, 175, 55); color: rgb(20, 19, 18); font-weight: 600;">
+              Best Seller
+            </span>
+            <button id="shareBtn" aria-label="Share this product" class="pointer-events-auto w-9 h-9 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface shadow-sm flex items-center justify-center transition-transform active:scale-95 hover:bg-surface-container-lowest cursor-pointer" type="button">
+              <span class="material-symbols-outlined text-[18px]">share</span>
+            </button>
+          </div>
+
+          <!-- Left / Right Nav Arrows (Floating) -->
+          <button id="prevSlideBtn" onclick="prevSlide(event)" aria-label="Previous image" class="absolute left-2.5 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface flex items-center justify-center shadow-md hover:scale-105 transition-all active:scale-90 cursor-pointer" type="button">
+            <span class="material-symbols-outlined text-[20px]">chevron_left</span>
+          </button>
+          <button id="nextSlideBtn" onclick="nextSlide(event)" aria-label="Next image" class="absolute right-2.5 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface flex items-center justify-center shadow-md hover:scale-105 transition-all active:scale-90 cursor-pointer" type="button">
+            <span class="material-symbols-outlined text-[20px]">chevron_right</span>
+          </button>
+
+          <!-- Bottom Gallery Indicators (Floating) -->
+          <div class="relative z-10 flex items-center justify-between w-full p-3 pointer-events-none">
+            <div class="flex items-center gap-1 pointer-events-auto" id="galleryDots">
+              <!-- Rendered dynamically -->
+            </div>
+            <span class="pointer-events-auto font-label-caps text-label-caps text-on-surface-variant tracking-widest bg-surface-container-lowest/90 backdrop-blur-md px-2 py-0.5 rounded-md shadow-xs" id="galleryCounter">
+              1 / 1
+            </span>
+          </div>
+        </div>
+
+        <!-- Mini Thumbnails Strip -->
+        <div id="galleryThumbnails" class="flex items-center justify-center gap-2 mt-3 overflow-x-auto py-1">
+          <!-- Rendered dynamically -->
+        </div>
+      </section>
+
+      <!-- PRODUCT HEADER & VALUATION -->
+      <section class="px-margin-mobile pt-space-xs pb-space-sm">
+        <div class="flex items-start justify-between gap-space-sm">
+          <div>
+            <span id="productTag" class="font-label-caps text-label-caps text-secondary tracking-widest uppercase">Fine Fragrance</span>
+            <h2 class="font-headline-md text-headline-md text-primary mt-0.5" id="productTitle">Arabian Touch</h2>
+            <p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5" id="productSubtitle">Parfum (50% oil concentration)</p>
+          </div>
+          <button id="wishlistBtn" aria-label="Save to Wishlist" class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface transition-transform active:scale-90" type="button">
+            <span class="material-symbols-outlined text-[20px]" id="wishlistIcon">favorite</span>
+          </button>
+        </div>
+        <div class="mt-space-sm flex items-baseline gap-2">
+          <span class="font-headline-sm text-headline-sm text-primary tracking-tight" id="displayPrice">₹299</span>
+          <span class="font-body-sm text-body-sm text-on-tertiary-container line-through" id="originalPrice">₹399</span>
+          <span id="discountBadge" class="font-label-caps text-[10px] text-secondary px-1.5 py-0.5 rounded bg-secondary-fixed/50 font-semibold" style="background-color: rgb(245, 232, 199); color: rgb(140, 109, 31); border: 1px solid rgb(212, 175, 55);">
+            SAVINGS
+          </span>
+        </div>
+        <div class="mt-space-xs flex items-center gap-1.5 text-on-surface-variant">
+          <span class="material-symbols-outlined text-[15px] text-secondary">local_shipping</span>
+          <p class="font-body-sm text-[12px] text-on-surface-variant" id="shippingNotice">
+            Inclusive of all taxes • Free shipping on orders above ₹999
+          </p>
+        </div>
+      </section>
+
+      <!-- SIZE SELECTION PILLS -->
+      <section class="px-margin-mobile py-space-sm">
+        <div class="flex items-center justify-between mb-2.5">
+          <label class="font-label-caps text-label-caps uppercase text-on-surface tracking-wider">Available Sizes</label>
+        </div>
+        <div id="sizePillsContainer" aria-label="Available Sizes" class="grid grid-cols-2 sm:grid-cols-4 gap-2.5" role="radiogroup">
+          <!-- Size pills populated dynamically -->
+        </div>
+      </section>
+
+      <!-- QUANTITY SELECTOR -->
+      <section class="px-margin-mobile py-space-xs">
+        <div class="flex items-center justify-between p-3 rounded-lg bg-surface-container-low border border-[#E5DDCF]/60">
+          <span class="font-label-caps text-label-caps uppercase text-on-surface tracking-wider font-semibold">Quantity</span>
+          <div class="inline-flex items-center border border-[#E5DDCF] bg-surface rounded-lg p-0.5 shadow-xs">
+            <button id="productQtyMinus" class="w-8 h-8 rounded flex items-center justify-center hover:bg-surface-container active:scale-95 transition-all text-primary" type="button" aria-label="Decrease quantity">
+              <span class="material-symbols-outlined text-[16px]">remove</span>
+            </button>
+            <span id="productQtyDisplay" class="w-10 text-center font-semibold text-sm text-primary">1</span>
+            <button id="productQtyPlus" class="w-8 h-8 rounded flex items-center justify-center hover:bg-surface-container active:scale-95 transition-all text-primary" type="button" aria-label="Increase quantity">
+              <span class="material-symbols-outlined text-[16px]">add</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- DUAL ACTION: ORDER ONLINE + ORDER ON WHATSAPP -->
+      <section class="px-margin-mobile py-space-sm">
+        <div class="rounded-xl p-space-md shadow-sm flex flex-col space-y-space-sm" style="background-color: rgb(247, 242, 235); border: 1px solid rgb(229, 221, 207);">
+          <div class="flex items-center gap-2">
+            <div class="w-7 h-7 rounded-full flex items-center justify-center" style="background-color: rgb(212, 175, 55); color: rgb(20, 19, 18);">
+              <span class="material-symbols-outlined text-[16px]">shopping_bag</span>
+            </div>
+            <span class="font-label-caps text-label-caps text-primary uppercase tracking-wider font-semibold">Order &amp; Support</span>
+          </div>
+
+          <!-- Order Online Action Button (ABOVE Order on WhatsApp) -->
+          <button id="addToBagBtn" type="button" class="w-full py-3.5 px-space-md rounded-lg text-white shadow-md active:scale-[0.99] transition-all flex items-center justify-center gap-2 font-label-caps text-label-caps uppercase tracking-widest text-center cursor-pointer hover:bg-[#875200]" style="background-color: rgb(20, 19, 18); border: 1px solid rgb(42, 39, 36);">
+            <span class="material-symbols-outlined text-[20px] text-secondary-fixed">shopping_bag</span>
+            <span>Order Online / Add to Bag</span>
+          </button>
+
+          <!-- WhatsApp Ordering Action Button (Below) -->
+          <a class="w-full py-3 px-space-md rounded-lg bg-surface text-primary shadow-xs hover:bg-surface-container transition-colors flex items-center justify-center gap-2 font-label-caps text-label-caps uppercase tracking-wider border border-[#E5DDCF] text-center" id="whatsappOrderBtn" href="#" rel="noopener" target="_blank">
+            <span class="material-symbols-outlined text-[18px] text-secondary">chat</span>
+            <span>Order on WhatsApp</span>
+          </a>
+
+          <!-- Preset Message Preview -->
+          <div class="bg-surface-container-lowest rounded-lg p-2.5 flex flex-col space-y-1 border border-[#E5DDCF]/40">
+            <span class="font-label-caps text-[10px] text-on-tertiary-container uppercase tracking-wider">Preset Message Draft</span>
+            <p class="font-body-sm text-body-sm italic text-on-surface" id="whatsappDraftPreview">
+              “Hi Oud &amp; Aura, I would like to order...”
+            </p>
+          </div>
+          <p class="font-body-sm text-[12px] text-on-surface-variant text-center leading-relaxed">
+            Order online with instant UPI or Cash on Delivery, or chat directly with our team on WhatsApp for prompt assistance.
+          </p>
+        </div>
+      </section>
+
+      <!-- FRAGRANCE PROFILE & NOTES -->
+      <section class="px-margin-mobile py-space-sm">
+        <div class="rounded-xl p-space-md flex flex-col space-y-space-md shadow-sm" style="background-color: rgb(247, 242, 235); border: 1px solid rgb(229, 221, 207);">
+          <div>
+            <span class="font-label-caps text-label-caps text-secondary uppercase tracking-widest">Fragrance Profile</span>
+            <h3 class="font-headline-sm text-headline-sm text-primary mt-0.5">Fragrance Notes</h3>
+            <p id="productDescription" class="font-body-sm text-body-sm text-on-surface-variant mt-1 leading-relaxed">
+              A balanced fragrance bringing together rich woody depth and warm, smooth sweetness.
+            </p>
+          </div>
+
+          <!-- Pyramid Tiers -->
+          <div id="notesContainer" class="flex flex-col space-y-space-sm">
+            <!-- Top Notes -->
+            <div class="rounded-lg p-space-sm shadow-xs flex flex-col" style="background-color: rgb(239, 233, 223); border-left: 3px solid rgb(212, 175, 55);">
+              <div class="flex items-center justify-between">
+                <span class="font-label-caps text-label-caps uppercase text-secondary tracking-wider">Top Notes</span>
+                <span class="font-body-sm text-[11px] text-on-tertiary-container">First 15 Minutes</span>
+              </div>
+              <p id="topNotesText" class="font-body-md text-body-md text-on-surface mt-1 font-medium">Bergamot, Saffron, Fresh Citrus</p>
+            </div>
+            <!-- Heart Notes -->
+            <div class="rounded-lg p-space-sm shadow-xs flex flex-col" style="background-color: rgb(239, 233, 223); border-left: 3px solid rgb(212, 175, 55);">
+              <div class="flex items-center justify-between">
+                <span class="font-label-caps text-label-caps uppercase text-secondary tracking-wider">Heart Notes</span>
+                <span class="font-body-sm text-[11px] text-on-tertiary-container">2 to 6 Hours</span>
+              </div>
+              <p id="heartNotesText" class="font-body-md text-body-md text-on-surface mt-1 font-medium">Rose Damascena, Spiced Cedar, Incense</p>
+            </div>
+            <!-- Base Notes -->
+            <div class="rounded-lg p-space-sm shadow-xs flex flex-col" style="background-color: rgb(239, 233, 223); border-left: 3px solid rgb(212, 175, 55);">
+              <div class="flex items-center justify-between">
+                <span class="font-label-caps text-label-caps uppercase text-secondary tracking-wider">Base Notes</span>
+                <span class="font-body-sm text-[11px] text-on-tertiary-container">Base Layer</span>
+              </div>
+              <p id="baseNotesText" class="font-body-md text-body-md text-on-surface mt-1 font-medium">Agarwood (Oud), Ambergris, Rich Vanilla</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SPECIFICATIONS & RITUAL ACCORDION -->
+      <section class="px-margin-mobile py-space-sm">
+        <h3 class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest mb-space-xs">
+          Product Details &amp; Care
+        </h3>
+        <div class="flex flex-col space-y-2" id="specAccordion">
+          <!-- Item 1 -->
+          <div class="rounded-lg overflow-hidden transition-all shadow-xs" style="background-color: rgb(239, 233, 223); border: 1px solid rgb(229, 221, 207);">
+            <button class="accordion-toggle w-full px-space-md py-3.5 flex items-center justify-between text-left font-label-caps text-label-caps uppercase tracking-wider text-on-surface" data-target="content-acc1" type="button">
+              <span>How to Apply</span>
+              <span class="material-symbols-outlined text-[18px] transition-transform duration-200">expand_more</span>
+            </button>
+            <div class="hidden px-space-md pb-space-md pt-0 text-on-surface-variant font-body-sm text-body-sm leading-relaxed" id="content-acc1">
+              Spray at pulse points—such as your wrists and neck—from a few inches away. Allow the fragrance to settle naturally without rubbing.
+            </div>
+          </div>
+          <!-- Item 2 -->
+          <div class="rounded-lg overflow-hidden transition-all shadow-xs" style="background-color: rgb(239, 233, 223); border: 1px solid rgb(229, 221, 207);">
+            <button class="accordion-toggle w-full px-space-md py-3.5 flex items-center justify-between text-left font-label-caps text-label-caps uppercase tracking-wider text-on-surface" data-target="content-acc2" type="button">
+              <span>Bottle &amp; Packaging</span>
+              <span class="material-symbols-outlined text-[18px] transition-transform duration-200">expand_more</span>
+            </button>
+            <div class="hidden px-space-md pb-space-md pt-0 text-on-surface-variant font-body-sm text-body-sm leading-relaxed" id="content-acc2">
+              Presented in a glass bottle with an elegant metallic gold cap, packaged in our signature box for a premium presentation.
+            </div>
+          </div>
+          <!-- Item 3 -->
+          <div class="rounded-lg overflow-hidden transition-all shadow-xs" style="background-color: rgb(239, 233, 223); border: 1px solid rgb(229, 221, 207);">
+            <button class="accordion-toggle w-full px-space-md py-3.5 flex items-center justify-between text-left font-label-caps text-label-caps uppercase tracking-wider text-on-surface" data-target="content-acc3" type="button">
+              <span>Shipping &amp; Care</span>
+              <span class="material-symbols-outlined text-[18px] transition-transform duration-200">expand_more</span>
+            </button>
+            <div class="hidden px-space-md pb-space-md pt-0 text-on-surface-variant font-body-sm text-body-sm leading-relaxed" id="content-acc3">
+              Dispatched within 24 to 48 hours in secure protective packaging. Keep the bottle in a cool, dry place away from direct sunlight to preserve the fragrance.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RELATED FRAGRANCES SECTION -->
+      <section class="px-margin-mobile pt-space-md pb-space-lg">
+        <div class="flex items-center justify-between mb-space-sm">
+          <div>
+            <span class="font-label-caps text-label-caps text-secondary uppercase tracking-widest">Explore More</span>
+            <h3 class="font-headline-sm text-headline-sm text-primary">You May Also Like</h3>
+          </div>
+          <a class="font-label-caps text-label-caps text-secondary uppercase hover:underline" href="shop.html">Explore All</a>
+        </div>
+        <div class="grid grid-cols-2 gap-3" id="relatedFragrancesContainer">
+          <!-- Populated dynamically -->
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="mt-auto bg-primary-container text-surface-container-low px-margin-mobile pt-12 pb-24" style="background-color: rgb(13, 12, 11);">
+    <div class="max-w-4xl mx-auto flex flex-col items-center text-center space-y-3">
+      <span class="font-headline-sm text-headline-sm tracking-[0.2em] text-surface-container-lowest uppercase">OUD &amp; AURA</span>
+      <p class="font-headline-sm text-body-sm italic text-secondary-fixed-dim">The essence of elegance.</p>
+      <div class="w-12 h-[1px] bg-secondary/40 my-2"></div>
+      <div class="mt-6 grid grid-cols-2 sm:grid-cols-3 gap-y-3 gap-x-8 text-center">
+        <a class="font-label-caps text-label-caps uppercase text-secondary-fixed-dim hover:text-surface-container-lowest transition-colors" href="shop.html">Shop All</a>
+        <a class="font-label-caps text-label-caps uppercase text-secondary-fixed-dim hover:text-surface-container-lowest transition-colors" href="shop.html">Best Sellers</a>
+        <a class="font-label-caps text-label-caps uppercase text-secondary-fixed-dim hover:text-surface-container-lowest transition-colors" href="shop.html?category=attars">Attars</a>
+        <a class="font-label-caps text-label-caps uppercase text-secondary-fixed-dim hover:text-surface-container-lowest transition-colors" href="shop.html?category=gifts">Gift Sets</a>
+        <a class="font-label-caps text-label-caps uppercase text-secondary-fixed-dim hover:text-surface-container-lowest transition-colors" href="about.html">About Us</a>
+        <a class="font-label-caps text-label-caps uppercase text-secondary-fixed-dim hover:text-surface-container-lowest transition-colors" href="contact.html">Order &amp; Support</a>
+      </div>
+      <div class="mt-8 pt-6 flex flex-col items-center space-y-2 border-t border-white/10 w-full">
+        <a class="font-label-caps text-[10px] tracking-[0.16em] text-on-tertiary-container hover:text-surface-container-lowest transition-colors" data-config="instagram-link" href="#" target="_blank" rel="noopener">
+          <span data-config="instagram-handle">@oudandaura</span> • Instagram
+        </a>
+        <a class="font-label-caps text-[10px] tracking-[0.16em] text-secondary hover:text-secondary-fixed transition-colors" data-config="whatsapp-link" href="#" target="_blank" rel="noopener">
+          <span data-config="whatsapp-number">+91 98765 43210</span> • Quick Orders
+        </a>
+      </div>
+      <p class="mt-6 text-center font-label-caps text-[9px] tracking-[0.15em] text-on-tertiary-container/70">© 2025 Oud &amp; Aura. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- CART DRAWER -->
+  <div id="cartBackdrop" class="drawer-backdrop fixed inset-0 z-50 bg-black/50 backdrop-blur-sm"></div>
+  <aside id="cartDrawer" class="drawer-panel fixed top-0 bottom-0 right-0 w-full sm:w-96 z-50 bg-surface p-6 flex flex-col justify-between shadow-2xl border-l border-[#E5DDCF]">
+    <div>
+      <div class="flex items-center justify-between pb-4 border-b border-[#E5DDCF]">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-secondary text-[22px]">shopping_bag</span>
+          <h3 class="font-headline-sm text-lg text-primary">Your Shopping Bag</h3>
+        </div>
+        <button id="closeCartBtn" class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-surface-container text-on-surface">
+          <span class="material-symbols-outlined text-[20px]">close</span>
+        </button>
+      </div>
+      <div id="cartItemsList" class="mt-4 flex flex-col gap-3 max-h-[60vh] overflow-y-auto no-scrollbar"></div>
+    </div>
+    <div class="pt-4 border-t border-[#E5DDCF] flex flex-col space-y-3">
+      <div class="flex items-baseline justify-between text-on-surface">
+        <span class="font-label-caps text-xs uppercase tracking-wider text-on-surface-variant">Estimated Total</span>
+        <span id="cartSubtotal" class="font-headline-sm text-xl font-semibold text-primary">₹0</span>
+      </div>
+      <p class="font-body-sm text-[11px] text-on-surface-variant">Taxes included. Complete your order directly online or via WhatsApp.</p>
+      <!-- Primary Online Checkout -->
+      <a id="cartOnlineCheckoutBtn" href="checkout.html" class="w-full py-3.5 px-4 rounded-lg bg-primary text-on-primary font-label-caps text-xs uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-[#875200] transition-colors shadow-sm">
+        <span class="material-symbols-outlined text-[18px] text-secondary-fixed">lock</span>
+        <span>Proceed to Checkout</span>
+      </a>
+      <!-- WhatsApp Order Alternative -->
+      <a id="cartWhatsAppCheckout" href="#" target="_blank" rel="noopener" class="w-full py-3 px-4 rounded-lg bg-surface text-primary border border-[#E5DDCF] font-label-caps text-xs uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-surface-container transition-colors">
+        <span class="material-symbols-outlined text-[18px] text-secondary">chat</span>
+        <span>Order Bag on WhatsApp</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- SEARCH MODAL -->
+  <div id="searchModal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-start justify-center pt-20 px-4">
+    <div class="bg-surface rounded-2xl w-full max-w-lg p-6 shadow-2xl border border-[#E5DDCF]">
+      <div class="flex items-center justify-between pb-4 border-b border-[#E5DDCF]">
+        <div class="flex items-center gap-2 flex-1 mr-4">
+          <span class="material-symbols-outlined text-secondary text-[22px]">search</span>
+          <input id="globalSearchInput" type="text" placeholder="Search fragrances by name or note..." class="w-full bg-transparent font-body-md text-on-surface focus:outline-none placeholder:text-on-surface-variant/70 text-sm">
+        </div>
+        <button id="closeSearchBtn" class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-surface-container text-on-surface">
+          <span class="material-symbols-outlined text-[20px]">close</span>
+        </button>
+      </div>
+      <div id="searchResults" class="mt-4 max-h-80 overflow-y-auto no-scrollbar"></div>
+    </div>
+  </div>
+
+  <!-- FULLSCREEN IMAGE LIGHTBOX MODAL -->
+  <div id="imageLightboxModal" class="fixed inset-0 z-[100] bg-[#0D0C0B]/95 backdrop-blur-md hidden flex flex-col justify-between p-4 touch-pan-y" style="display: none;" onclick="closeLightbox(event)">
+    <div class="flex items-center justify-between w-full max-w-2xl mx-auto z-10 text-[#FAF6F0] pt-2">
+      <span id="lightboxCounter" class="font-label-caps text-xs tracking-widest text-[#FAF6F0]/80">1 / 1</span>
+      <button onclick="closeLightbox(event)" type="button" aria-label="Close image viewer" class="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-[#FAF6F0] flex items-center justify-center transition-colors cursor-pointer">
+        <span class="material-symbols-outlined text-[24px]">close</span>
+      </button>
+    </div>
+    
+    <div class="relative flex-1 flex items-center justify-center max-w-3xl mx-auto w-full my-auto overflow-hidden" onclick="event.stopPropagation()">
+      <button id="lightboxPrevBtn" onclick="prevSlide(event); updateLightbox();" aria-label="Previous image" class="absolute left-2 z-20 w-11 h-11 rounded-full bg-black/60 hover:bg-black/90 text-white flex items-center justify-center shadow-lg transition-transform active:scale-90 cursor-pointer">
+        <span class="material-symbols-outlined text-[28px]">chevron_left</span>
+      </button>
+      
+      <img id="lightboxImage" src="" alt="Full view" class="max-h-[75vh] max-w-full object-contain rounded-lg shadow-2xl transition-opacity duration-200 select-none">
+      
+      <button id="lightboxNextBtn" onclick="nextSlide(event); updateLightbox();" aria-label="Next image" class="absolute right-2 z-20 w-11 h-11 rounded-full bg-black/60 hover:bg-black/90 text-white flex items-center justify-center shadow-lg transition-transform active:scale-90 cursor-pointer">
+        <span class="material-symbols-outlined text-[28px]">chevron_right</span>
+      </button>
+    </div>
+
+    <div class="flex items-center justify-center gap-2 py-3 z-10" id="lightboxDots" onclick="event.stopPropagation()">
+      <!-- dots rendered dynamically -->
+    </div>
+  </div>
+
+  <!-- SCRIPTS -->
+  <script src="data/config.js"></script>
+  <script src="data/products.js?v=5"></script>
+  <script src="js/main.js"></script>
+  <script>
+    // Product Detail Logic
+    let currentProduct = null;
+    let selectedSize = null;
+    let selectedPrice = null;
+    let currentQuantity = 1;
+    let currentSlide = 0;
+
+    function initProductDetails() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const prodId = urlParams.get("id") || (PRODUCTS[0] && PRODUCTS[0].id) || "arabian_touch";
+      currentProduct = getProductById(prodId) || PRODUCTS[0];
+
+      // Page Title & Header
+      document.title = `${currentProduct.name} | Oud & Aura`;
+      document.getElementById("topNavTitle").textContent = currentProduct.name;
+      document.getElementById("breadcrumbName").textContent = currentProduct.name;
+      document.getElementById("breadcrumbCategory").textContent = currentProduct.category.toUpperCase();
+
+      // Badge & Tags
+      const badgeEl = document.getElementById("productBadge");
+      if (currentProduct.inStock === false) {
+        badgeEl.textContent = "Out of Stock";
+        badgeEl.style.display = "inline-flex";
+        badgeEl.style.backgroundColor = "rgb(20, 19, 18)";
+        badgeEl.style.color = "rgb(229, 221, 207)";
+      } else if (currentProduct.badge) {
+        badgeEl.textContent = currentProduct.badge;
+        badgeEl.style.display = "inline-flex";
+        badgeEl.style.backgroundColor = "rgb(212, 175, 55)";
+        badgeEl.style.color = "rgb(20, 19, 18)";
+      } else {
+        badgeEl.style.display = "none";
+      }
+      document.getElementById("productTag").textContent = currentProduct.tag || currentProduct.concentration;
+
+      // Titles & Descriptions
+      document.getElementById("productTitle").textContent = currentProduct.name;
+      if (currentProduct.category === "attars") {
+        document.getElementById("productSubtitle").textContent = currentProduct.concentration || "Pure Perfume Oil";
+      } else if (currentProduct.category === "gifts") {
+        document.getElementById("productSubtitle").textContent = currentProduct.concentration || "Luxury Discovery Set";
+      } else {
+        document.getElementById("productSubtitle").textContent = "Parfum (50% oil concentration)";
+      }
+      document.getElementById("productDescription").textContent = currentProduct.fullDescription;
+
+      // Notes
+      const notesContainer = document.getElementById("notesContainer");
+      if (currentProduct.notes && notesContainer) {
+        if (currentProduct.notes.top !== undefined || currentProduct.notes.heart !== undefined) {
+          notesContainer.innerHTML = `
+            <div class="rounded-lg p-space-sm shadow-xs flex flex-col" style="background-color: rgb(239, 233, 223); border-left: 3px solid rgb(212, 175, 55);">
+              <div class="flex items-center justify-between">
+                <span class="font-label-caps text-label-caps uppercase text-secondary tracking-wider font-semibold">Top Notes</span>
+                <span class="font-body-sm text-[11px] text-on-tertiary-container">First 15 Minutes</span>
+              </div>
+              <p class="font-body-md text-body-md text-on-surface mt-1 font-medium">${currentProduct.notes.top || "Fresh accords"}</p>
+            </div>
+            <div class="rounded-lg p-space-sm shadow-xs flex flex-col" style="background-color: rgb(239, 233, 223); border-left: 3px solid rgb(212, 175, 55);">
+              <div class="flex items-center justify-between">
+                <span class="font-label-caps text-label-caps uppercase text-secondary tracking-wider font-semibold">Heart Notes</span>
+                <span class="font-body-sm text-[11px] text-on-tertiary-container">2 to 6 Hours</span>
+              </div>
+              <p class="font-body-md text-body-md text-on-surface mt-1 font-medium">${currentProduct.notes.heart || "Heart notes"}</p>
+            </div>
+            <div class="rounded-lg p-space-sm shadow-xs flex flex-col" style="background-color: rgb(239, 233, 223); border-left: 3px solid rgb(212, 175, 55);">
+              <div class="flex items-center justify-between">
+                <span class="font-label-caps text-label-caps uppercase text-secondary tracking-wider font-semibold">Base Notes</span>
+                <span class="font-body-sm text-[11px] text-on-tertiary-container">Base Layer</span>
+              </div>
+              <p class="font-body-md text-body-md text-on-surface mt-1 font-medium">${currentProduct.notes.base || "Base accords"}</p>
+            </div>
+          `;
+        } else {
+          // Combo or Custom fragrance profile map (e.g. Unisex Gift Set)
+          notesContainer.innerHTML = Object.entries(currentProduct.notes).map(([title, desc]) => `
+            <div class="rounded-lg p-space-sm shadow-xs flex flex-col" style="background-color: rgb(239, 233, 223); border-left: 3px solid rgb(212, 175, 55);">
+              <div class="flex items-center justify-between">
+                <span class="font-label-caps text-label-caps uppercase text-secondary tracking-wider font-semibold">${title}</span>
+                <span class="font-body-sm text-[10px] uppercase tracking-wider text-on-tertiary-container font-medium">Included in Set</span>
+              </div>
+              <p class="font-body-md text-body-md text-on-surface mt-1 font-medium">${desc}</p>
+            </div>
+          `).join("");
+        }
+      }
+
+      // Images & Carousel
+      renderGallery();
+      initGalleryGestures();
+
+      // Sizes & Prices
+      selectedSize = null;
+      selectedPrice = null;
+      renderSizePills();
+
+      // Related Fragrances
+      renderRelated();
+
+      // Share button
+      document.getElementById("shareBtn").addEventListener("click", () => {
+        if (navigator.share) {
+          navigator.share({
+            title: `${currentProduct.name} - Oud & Aura`,
+            text: currentProduct.shortDescription,
+            url: window.location.href
+          }).catch(() => {});
+        } else {
+          navigator.clipboard.writeText(window.location.href).then(() => {
+            showToast("Product link copied to clipboard");
+          });
+        }
+      });
+
+      // Wishlist toggle
+      const wishlistBtn = document.getElementById("wishlistBtn");
+      const wishlistIcon = document.getElementById("wishlistIcon");
+      let isWishlisted = false;
+      wishlistBtn.addEventListener("click", () => {
+        isWishlisted = !isWishlisted;
+        wishlistIcon.style.color = isWishlisted ? "#ba1a1a" : "";
+        showToast(isWishlisted ? "Saved to your wishlist" : "Removed from wishlist");
+      });
+
+      // Quantity controls
+      const qtyDisplay = document.getElementById("productQtyDisplay");
+      const minusBtn = document.getElementById("productQtyMinus");
+      const plusBtn = document.getElementById("productQtyPlus");
+      if (minusBtn && plusBtn && qtyDisplay) {
+        minusBtn.addEventListener("click", () => {
+          if (currentQuantity > 1) {
+            currentQuantity--;
+            qtyDisplay.textContent = currentQuantity;
+            updatePriceAndWhatsApp(selectedPrice);
+          }
+        });
+        plusBtn.addEventListener("click", () => {
+          if (currentQuantity < 10) {
+            currentQuantity++;
+            qtyDisplay.textContent = currentQuantity;
+            updatePriceAndWhatsApp(selectedPrice);
+          }
+        });
+      }
+
+      // Add to Bag Button
+      const addBagBtn = document.getElementById("addToBagBtn");
+      if (currentProduct.inStock === false) {
+        addBagBtn.disabled = true;
+        addBagBtn.innerHTML = `<span class="material-symbols-outlined text-[20px]">block</span><span>Out of Stock</span>`;
+        addBagBtn.classList.remove("hover:bg-[#875200]", "cursor-pointer");
+        addBagBtn.classList.add("opacity-50", "cursor-not-allowed");
+      } else {
+        addBagBtn.addEventListener("click", () => {
+          addToCart(currentProduct.id, selectedSize, selectedPrice, currentQuantity);
+        });
+      }
+
+      // Accordion setup
+      document.querySelectorAll(".accordion-toggle").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const targetId = btn.getAttribute("data-target");
+          const content = document.getElementById(targetId);
+          const icon = btn.querySelector(".material-symbols-outlined");
+          if (content.classList.contains("hidden")) {
+            content.classList.remove("hidden");
+            if (icon) icon.textContent = "expand_less";
+          } else {
+            content.classList.add("hidden");
+            if (icon) icon.textContent = "expand_more";
+          }
+        });
+      });
+    }
+
+    function renderGallery() {
+      const images = currentProduct.images && currentProduct.images.length > 0 
+        ? currentProduct.images 
+        : ["https://via.placeholder.com/600?text=Fragrance"];
+      
+      const mainImg = document.getElementById("mainFlaconImage");
+      const dotsContainer = document.getElementById("galleryDots");
+      const counter = document.getElementById("galleryCounter");
+      const thumbsContainer = document.getElementById("galleryThumbnails");
+      const prevBtn = document.getElementById("prevSlideBtn");
+      const nextBtn = document.getElementById("nextSlideBtn");
+
+      if (currentSlide >= images.length) currentSlide = 0;
+      if (currentSlide < 0) currentSlide = images.length - 1;
+
+      mainImg.src = images[currentSlide];
+      mainImg.alt = `${currentProduct.name} - Image ${currentSlide + 1}`;
+      counter.textContent = `${currentSlide + 1} / ${images.length}`;
+
+      // Navigation arrows visibility
+      if (prevBtn) prevBtn.style.display = images.length > 1 ? "flex" : "none";
+      if (nextBtn) nextBtn.style.display = images.length > 1 ? "flex" : "none";
+
+      // Dots
+      if (dotsContainer) {
+        dotsContainer.innerHTML = images.map((_, idx) => `
+          <button onclick="event.stopPropagation(); setSlide(${idx})" class="p-1.5 flex items-center justify-center cursor-pointer" type="button" aria-label="View photo ${idx + 1}">
+            <div class="h-1.5 rounded-full transition-all ${idx === currentSlide ? 'w-6 bg-primary' : 'w-2 bg-outline-variant'}"></div>
+          </button>
+        `).join("");
+      }
+
+      // Thumbnails
+      if (thumbsContainer) {
+        if (images.length > 1) {
+          thumbsContainer.style.display = "flex";
+          thumbsContainer.innerHTML = images.map((imgSrc, idx) => `
+            <button 
+              type="button" 
+              onclick="event.stopPropagation(); setSlide(${idx})" 
+              aria-label="Image ${idx + 1}"
+              class="w-12 h-12 rounded-lg overflow-hidden border-2 transition-all p-0.5 cursor-pointer ${idx === currentSlide ? 'border-[#0D0C0B] scale-105 shadow-sm' : 'border-[#E5DDCF] opacity-70 hover:opacity-100'}"
+              style="background-color: rgb(247, 242, 235);"
+            >
+              <img src="${imgSrc}" alt="${currentProduct.name} thumbnail ${idx + 1}" class="w-full h-full object-cover rounded">
+            </button>
+          `).join("");
+        } else {
+          thumbsContainer.style.display = "none";
+        }
+      }
+    }
+
+    function setSlide(index) {
+      const images = currentProduct.images && currentProduct.images.length > 0 ? currentProduct.images : [];
+      if (images.length === 0) return;
+      currentSlide = (index + images.length) % images.length;
+      
+      const mainImg = document.getElementById("mainFlaconImage");
+      mainImg.style.opacity = "0.3";
+      setTimeout(() => {
+        renderGallery();
+        mainImg.style.opacity = "1";
+      }, 100);
+      updateLightbox();
+    }
+
+    function nextSlide(e) {
+      if (e) e.stopPropagation();
+      const images = currentProduct.images && currentProduct.images.length > 0 ? currentProduct.images : [];
+      if (images.length <= 1) return;
+      setSlide(currentSlide + 1);
+    }
+
+    function prevSlide(e) {
+      if (e) e.stopPropagation();
+      const images = currentProduct.images && currentProduct.images.length > 0 ? currentProduct.images : [];
+      if (images.length <= 1) return;
+      setSlide(currentSlide - 1);
+    }
+
+    function openLightbox(e) {
+      if (e) e.stopPropagation();
+      const modal = document.getElementById("imageLightboxModal");
+      if (!modal) return;
+      modal.style.display = "flex";
+      modal.classList.remove("hidden");
+      updateLightbox();
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeLightbox(e) {
+      if (e) e.stopPropagation();
+      const modal = document.getElementById("imageLightboxModal");
+      if (!modal) return;
+      modal.style.display = "none";
+      modal.classList.add("hidden");
+      document.body.style.overflow = "";
+    }
+
+    function updateLightbox() {
+      const modal = document.getElementById("imageLightboxModal");
+      if (!modal || modal.style.display === "none" || modal.classList.contains("hidden")) return;
+      
+      const images = currentProduct.images && currentProduct.images.length > 0 ? currentProduct.images : [];
+      if (images.length === 0) return;
+      
+      const lbImg = document.getElementById("lightboxImage");
+      const lbCounter = document.getElementById("lightboxCounter");
+      const lbDots = document.getElementById("lightboxDots");
+      const lbPrev = document.getElementById("lightboxPrevBtn");
+      const lbNext = document.getElementById("lightboxNextBtn");
+
+      lbImg.src = images[currentSlide];
+      lbImg.alt = `${currentProduct.name} - Full view ${currentSlide + 1}`;
+      lbCounter.textContent = `${currentSlide + 1} / ${images.length}`;
+
+      if (lbPrev) lbPrev.style.display = images.length > 1 ? "flex" : "none";
+      if (lbNext) lbNext.style.display = images.length > 1 ? "flex" : "none";
+
+      if (lbDots) {
+        lbDots.innerHTML = images.map((_, idx) => `
+          <button onclick="event.stopPropagation(); setSlide(${idx})" class="p-1.5 flex items-center justify-center cursor-pointer" type="button" aria-label="Photo ${idx + 1}">
+            <div class="h-2 rounded-full transition-all ${idx === currentSlide ? 'w-6 bg-[#CBB279]' : 'w-2 bg-white/40'}"></div>
+          </button>
+        `).join("");
+      }
+    }
+
+    function initGalleryGestures() {
+      function attachSwipe(element, onLeft, onRight) {
+        if (!element) return;
+        let startX = 0;
+        let startY = 0;
+        let isTouching = false;
+
+        element.addEventListener("touchstart", (e) => {
+          if (e.touches.length === 1) {
+            startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
+            isTouching = true;
+          }
+        }, { passive: true });
+
+        element.addEventListener("touchend", (e) => {
+          if (!isTouching || e.changedTouches.length === 0) return;
+          isTouching = false;
+          const diffX = e.changedTouches[0].clientX - startX;
+          const diffY = e.changedTouches[0].clientY - startY;
+
+          // Horizontal swipe threshold: 35px & horizontally dominant
+          if (Math.abs(diffX) > 35 && Math.abs(diffX) > Math.abs(diffY)) {
+            if (diffX < 0) {
+              onLeft();
+            } else {
+              onRight();
+            }
+          }
+        }, { passive: true });
+      }
+
+      // Main product stage swipe
+      attachSwipe(
+        document.getElementById("productGalleryStage"),
+        () => nextSlide(),
+        () => prevSlide()
+      );
+
+      // Lightbox swipe
+      attachSwipe(
+        document.getElementById("imageLightboxModal"),
+        () => { nextSlide(); updateLightbox(); },
+        () => { prevSlide(); updateLightbox(); }
+      );
+
+      // Keyboard arrow keys & ESC support
+      window.addEventListener("keydown", (e) => {
+        const modal = document.getElementById("imageLightboxModal");
+        const isOpen = modal && !modal.classList.contains("hidden");
+        if (e.key === "ArrowRight") {
+          nextSlide();
+          if (isOpen) updateLightbox();
+        } else if (e.key === "ArrowLeft") {
+          prevSlide();
+          if (isOpen) updateLightbox();
+        } else if (e.key === "Escape" && isOpen) {
+          closeLightbox();
+        }
+      });
+    }
+
+    function renderSizePills() {
+      const container = document.getElementById("sizePillsContainer");
+      const sizes = currentProduct.sizes || [
+        { size: currentProduct.size, price: currentProduct.price, originalPrice: currentProduct.originalPrice, label: "Standard", isDefault: true }
+      ];
+
+      // Only set initial default if no size has been selected yet
+      if (!selectedSize) {
+        const defaultVariant = sizes.find(s => s.isDefault) || sizes[0];
+        selectedSize = defaultVariant.size;
+        selectedPrice = defaultVariant.price;
+      }
+
+      container.innerHTML = sizes.map(variant => {
+        const isSel = variant.size === selectedSize;
+        return `
+          <button 
+            type="button" 
+            onclick="onSelectSize('${variant.size}', ${variant.price}, ${variant.originalPrice || 0})"
+            class="size-pill group relative flex flex-col items-center justify-center p-3 rounded-lg transition-all text-center cursor-pointer"
+            style="${isSel 
+              ? 'background-color: rgb(20, 19, 18); color: rgb(255, 255, 255); border: 1px solid rgb(20, 19, 18);' 
+              : 'background-color: rgb(239, 233, 223); color: rgb(20, 19, 18); border: 1px solid rgb(229, 221, 207);'}"
+          >
+            <span class="font-label-caps text-label-caps font-semibold">${variant.size}</span>
+            <span class="font-body-sm text-[12px] mt-0.5 ${isSel ? 'opacity-90' : 'text-on-surface-variant'}">${SITE_CONFIG.currencySymbol}${variant.price}</span>
+          </button>
+        `;
+      }).join("");
+
+      const activeVariant = sizes.find(s => s.size === selectedSize) || sizes[0];
+      updatePriceAndWhatsApp(activeVariant.price, activeVariant.originalPrice);
+    }
+
+    function onSelectSize(size, price, origPrice) {
+      selectedSize = size;
+      selectedPrice = price;
+      renderSizePills();
+    }
+
+    function updatePriceAndWhatsApp(price, origPrice) {
+      if (!price) {
+        const activeVariant = (currentProduct.sizes || []).find(s => s.size === selectedSize) || currentProduct;
+        price = activeVariant.price;
+        origPrice = activeVariant.originalPrice;
+      }
+      document.getElementById("displayPrice").textContent = `${SITE_CONFIG.currencySymbol}${price}`;
+      
+      const origEl = document.getElementById("originalPrice");
+      const discBadge = document.getElementById("discountBadge");
+      if (origPrice && origPrice > price) {
+        origEl.textContent = `${SITE_CONFIG.currencySymbol}${origPrice}`;
+        origEl.style.display = "inline";
+        const pct = Math.round(((origPrice - price) / origPrice) * 100);
+        discBadge.textContent = `${pct}% OFF`;
+        discBadge.style.display = "inline-flex";
+      } else {
+        origEl.style.display = "none";
+        discBadge.style.display = "none";
+      }
+
+      // Update WhatsApp link and draft preview
+      const whatsappBtn = document.getElementById("whatsappOrderBtn");
+      const draftPreview = document.getElementById("whatsappDraftPreview");
+      const qty = currentQuantity || 1;
+      const total = price * qty;
+      const message = `Hi Oud & Aura, I would like to order ${currentProduct.name}, ${selectedSize} (Qty: ${qty}) — Total: ${SITE_CONFIG.currencySymbol}${total}.`;
+      
+      whatsappBtn.href = SITE_CONFIG.getWhatsAppUrl(message);
+      draftPreview.textContent = `“${message}”`;
+    }
+
+    function renderRelated() {
+      const container = document.getElementById("relatedFragrancesContainer");
+      const allProds = typeof getAllProducts === 'function' ? getAllProducts() : PRODUCTS; const related = allProds.filter(p => p.id !== currentProduct.id).slice(0, 2);
+      
+      container.innerHTML = related.map(p => `
+        <div onclick="window.location.href='product.html?id=' + encodeURIComponent('${p.id}')" class="rounded-xl p-2.5 flex flex-col shadow-xs cursor-pointer hover:shadow-md transition-all" style="background-color: rgb(247, 242, 235); border: 1px solid rgb(229, 221, 207);">
+          <div class="w-full aspect-[4/5] rounded-lg overflow-hidden relative bg-surface-container mb-2">
+            <img class="w-full h-full object-cover" src="${p.images[0]}" alt="${p.name}">
+            ${p.badge ? `
+              <span class="absolute top-2 left-2 px-1.5 py-0.5 rounded bg-surface-container-lowest/80 backdrop-blur-sm font-label-caps text-[9px] text-on-surface">
+                ${p.badge}
+              </span>
+            ` : ''}
+          </div>
+          <div class="flex flex-col flex-1 justify-between">
+            <div>
+              <h4 class="font-headline-sm text-[16px] leading-tight text-primary">${p.name}</h4>
+              <p class="font-body-sm text-[11px] text-on-surface-variant mt-0.5">${p.size} • ${p.concentration}</p>
+            </div>
+            <div class="mt-2.5 pt-2 flex items-center justify-between">
+              <span class="font-label-caps text-label-caps font-semibold text-primary">${SITE_CONFIG.currencySymbol}${p.price}</span>
+              <a class="font-label-caps text-[10px] text-secondary font-semibold uppercase hover:text-primary transition-colors" href="product.html?id=${encodeURIComponent(p.id)}">
+                View
+              </a>
+            </div>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    document.addEventListener("DOMContentLoaded", initProductDetails);
+  </script>
+</body>
+</html>
