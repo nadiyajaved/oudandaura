@@ -329,6 +329,7 @@ const PRODUCTS = [
 // LocalStorage Keys for Catalog Synchronization
 const CUSTOM_PRODUCTS_STORAGE_KEY = "oud_aura_custom_products";
 const DELETED_PRODUCTS_STORAGE_KEY = "oud_aura_deleted_product_ids";
+const UNPUBLISHED_CHANGES_KEY = "oud_aura_has_unpublished";
 
 /**
  * Safely retrieve custom / modified products from localStorage
@@ -351,6 +352,7 @@ function saveCustomProducts(products) {
   if (typeof window === "undefined" || !window.localStorage) return;
   try {
     localStorage.setItem(CUSTOM_PRODUCTS_STORAGE_KEY, JSON.stringify(products));
+    localStorage.setItem(UNPUBLISHED_CHANGES_KEY, "true");
   } catch (e) {
     console.error("Error saving custom products to localStorage:", e);
   }
@@ -377,6 +379,7 @@ function saveDeletedProductIds(ids) {
   if (typeof window === "undefined" || !window.localStorage) return;
   try {
     localStorage.setItem(DELETED_PRODUCTS_STORAGE_KEY, JSON.stringify(ids));
+    localStorage.setItem(UNPUBLISHED_CHANGES_KEY, "true");
   } catch (e) {
     console.error("Error saving deleted product IDs to localStorage:", e);
   }
@@ -390,6 +393,7 @@ function resetToDefaultCatalog() {
   try {
     localStorage.removeItem(CUSTOM_PRODUCTS_STORAGE_KEY);
     localStorage.removeItem(DELETED_PRODUCTS_STORAGE_KEY);
+    localStorage.removeItem(UNPUBLISHED_CHANGES_KEY);
   } catch (e) {
     console.error("Error resetting catalog:", e);
   }
@@ -398,8 +402,10 @@ function resetToDefaultCatalog() {
 /**
  * Get unified product list merging base PRODUCTS with custom/edited products
  * and excluding any deleted product IDs.
+ * 
+ * @param {boolean} includeArchived If false (default), excludes products where isArchived is true.
  */
-function getAllProducts() {
+function getAllProducts(includeArchived = false) {
   const deletedIds = new Set(getDeletedProductIds());
   const customList = getCustomProducts();
 
@@ -407,7 +413,7 @@ function getAllProducts() {
   const productMap = new Map();
   for (const p of PRODUCTS) {
     if (!deletedIds.has(p.id)) {
-      productMap.set(p.id, { ...p });
+      productMap.set(p.id, { isArchived: false, ...p });
     }
   }
 
@@ -424,18 +430,22 @@ function getAllProducts() {
         if (!cp.originalPrice && defVariant.originalPrice) cp.originalPrice = defVariant.originalPrice;
       }
     }
-    productMap.set(cp.id, { ...cp });
+    productMap.set(cp.id, { isArchived: false, ...cp });
   }
 
-  return Array.from(productMap.values());
+  const all = Array.from(productMap.values());
+  if (includeArchived) {
+    return all;
+  }
+  return all.filter(p => !p.isArchived);
 }
 
 /**
  * Find product by ID or URL slug
  */
-function getProductById(id) {
+function getProductById(id, includeArchived = false) {
   if (!id) return null;
-  const all = getAllProducts();
+  const all = getAllProducts(includeArchived);
   const exact = all.find(p => p.id === id);
   if (exact) return exact;
   const cleanId = id.toLowerCase().replace(/['"_-]/g, "");
@@ -446,17 +456,17 @@ function getProductById(id) {
 }
 
 /**
- * Get all Best Seller fragrances
+ * Get all Best Seller fragrances (excludes archived)
  */
 function getBestSellers() {
-  return getAllProducts().filter(p => p.isBestSeller);
+  return getAllProducts(false).filter(p => p.isBestSeller);
 }
 
 /**
  * Get products filtered by category ('perfumes' | 'attars' | 'gifts' | 'all')
  */
-function getProductsByCategory(category) {
-  const all = getAllProducts();
+function getProductsByCategory(category, includeArchived = false) {
+  const all = getAllProducts(includeArchived);
   if (!category || category === "all") return all;
   return all.filter(p => p.category === category);
 }
@@ -466,7 +476,7 @@ function getProductsByCategory(category) {
  * containing all current merged products.
  */
 function generateProductsJsFileContent(overrideProducts = null) {
-  const prods = overrideProducts || getAllProducts();
+  const prods = overrideProducts || getAllProducts(true);
   const jsonContent = JSON.stringify(prods, null, 2);
   
   return `/**
@@ -474,19 +484,20 @@ function generateProductsJsFileContent(overrideProducts = null) {
  * Exported from Oud & Aura Admin Dashboard
  * Generated on: ${new Date().toISOString()}
  * 
- * Instructions to make visible to all visitors on GitHub Pages:
+ * Instructions to make visible to all visitors on GitHub Pages / Vercel:
  * 1. Replace the contents of 'data/products.js' with this file.
  * 2. Commit and push to GitHub:
  *    git add data/products.js
- *    git commit -m "Update product catalog"
+ *    git commit -m "Update product catalog via Admin"
  *    git push origin main
  */
 
 const PRODUCTS = ${jsonContent};
 
-// Helper functions for easy querying
+// LocalStorage Keys for Catalog Synchronization
 const CUSTOM_PRODUCTS_STORAGE_KEY = "oud_aura_custom_products";
 const DELETED_PRODUCTS_STORAGE_KEY = "oud_aura_deleted_product_ids";
+const UNPUBLISHED_CHANGES_KEY = "oud_aura_has_unpublished";
 
 function getCustomProducts() {
   if (typeof window === "undefined" || !window.localStorage) return [];
@@ -502,6 +513,7 @@ function saveCustomProducts(products) {
   if (typeof window === "undefined" || !window.localStorage) return;
   try {
     localStorage.setItem(CUSTOM_PRODUCTS_STORAGE_KEY, JSON.stringify(products));
+    localStorage.setItem(UNPUBLISHED_CHANGES_KEY, "true");
   } catch (e) {}
 }
 
@@ -519,6 +531,7 @@ function saveDeletedProductIds(ids) {
   if (typeof window === "undefined" || !window.localStorage) return;
   try {
     localStorage.setItem(DELETED_PRODUCTS_STORAGE_KEY, JSON.stringify(ids));
+    localStorage.setItem(UNPUBLISHED_CHANGES_KEY, "true");
   } catch (e) {}
 }
 
@@ -527,17 +540,18 @@ function resetToDefaultCatalog() {
   try {
     localStorage.removeItem(CUSTOM_PRODUCTS_STORAGE_KEY);
     localStorage.removeItem(DELETED_PRODUCTS_STORAGE_KEY);
+    localStorage.removeItem(UNPUBLISHED_CHANGES_KEY);
   } catch (e) {}
 }
 
-function getAllProducts() {
+function getAllProducts(includeArchived = false) {
   const deletedIds = new Set(getDeletedProductIds());
   const customList = getCustomProducts();
 
   const productMap = new Map();
   for (const p of PRODUCTS) {
     if (!deletedIds.has(p.id)) {
-      productMap.set(p.id, { ...p });
+      productMap.set(p.id, { isArchived: false, ...p });
     }
   }
 
@@ -551,15 +565,17 @@ function getAllProducts() {
         if (!cp.originalPrice && defVariant.originalPrice) cp.originalPrice = defVariant.originalPrice;
       }
     }
-    productMap.set(cp.id, { ...cp });
+    productMap.set(cp.id, { isArchived: false, ...cp });
   }
 
-  return Array.from(productMap.values());
+  const all = Array.from(productMap.values());
+  if (includeArchived) return all;
+  return all.filter(p => !p.isArchived);
 }
 
-function getProductById(id) {
+function getProductById(id, includeArchived = false) {
   if (!id) return null;
-  const all = getAllProducts();
+  const all = getAllProducts(includeArchived);
   const exact = all.find(p => p.id === id);
   if (exact) return exact;
   const cleanId = id.toLowerCase().replace(/['"_-]/g, "");
@@ -570,11 +586,11 @@ function getProductById(id) {
 }
 
 function getBestSellers() {
-  return getAllProducts().filter(p => p.isBestSeller);
+  return getAllProducts(false).filter(p => p.isBestSeller);
 }
 
-function getProductsByCategory(category) {
-  const all = getAllProducts();
+function getProductsByCategory(category, includeArchived = false) {
+  const all = getAllProducts(includeArchived);
   if (!category || category === "all") return all;
   return all.filter(p => p.category === category);
 }
