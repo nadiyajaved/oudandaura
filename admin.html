@@ -1652,8 +1652,15 @@
       document.getElementById("publishModal").classList.add("hidden");
     }
 
+    function utf8ToBase64(str) {
+      const bytes = new TextEncoder().encode(str);
+      const binString = Array.from(bytes, (byte) => String.fromCharCode(byte)).join("");
+      return btoa(binString);
+    }
+
     async function executeGitHubPublish() {
-      const token = localStorage.getItem(GITHUB_TOKEN_KEY);
+      const rawToken = localStorage.getItem(GITHUB_TOKEN_KEY);
+      const token = rawToken ? rawToken.trim() : "";
       const btn = document.getElementById("btnExecutePublish");
       const btnText = document.getElementById("btnExecutePublishText");
       const alertTitle = document.getElementById("publishStatusTitle");
@@ -1671,15 +1678,16 @@
       alertIcon.textContent = "progress_activity";
       alertIcon.classList.add("animate-spin");
       alertTitle.textContent = "Publishing in progress...";
-      alertMsg.textContent = "Connecting to GitHub API, uploading images and updating products.js...";
+      alertMsg.textContent = "Connecting to GitHub API, checking file SHA and preparing catalog commit...";
 
       try {
-        // Step 1: Upload any pending newly added images
+        // Step 1: Upload any pending newly added images from mobile gallery
         for (const p of ALL_PRODUCTS_LIST) {
           const pendingImgBase64 = localStorage.getItem(`oud_aura_pending_img_${p.id}`);
           if (pendingImgBase64 && p.images && p.images[0] && p.images[0].startsWith("assets/images/products/")) {
             const imgPath = p.images[0];
             try {
+              alertMsg.textContent = `Uploading image for ${p.name}...`;
               await uploadFileToGitHub(token, imgPath, pendingImgBase64, `Upload fragrance photo: ${p.name}`);
               localStorage.removeItem(`oud_aura_pending_img_${p.id}`);
             } catch (imgErr) {
@@ -1689,6 +1697,7 @@
         }
 
         // Step 2: Generate products.js file content
+        alertMsg.textContent = "Compiling catalog into data/products.js...";
         let newContent = "";
         if (typeof generateProductsJsFileContent === "function") {
           newContent = generateProductsJsFileContent(ALL_PRODUCTS_LIST);
@@ -1696,10 +1705,11 @@
           newContent = `const PRODUCTS = ${JSON.stringify(ALL_PRODUCTS_LIST, null, 2)};\n`;
         }
 
-        // Base64 encode UTF-8 string safely for GitHub API
-        const base64Js = btoa(unescape(encodeURIComponent(newContent)));
+        // RFC-compliant UTF-8 base64 encoding (supports ₹, emojis, accents)
+        const base64Js = utf8ToBase64(newContent);
 
         // Step 3: Commit updated data/products.js to GitHub
+        alertMsg.textContent = `Committing data/products.js to repository ${GITHUB_REPO} on branch ${GITHUB_BRANCH}...`;
         const commitRes = await uploadFileToGitHub(
           token, 
           "data/products.js", 
@@ -1715,7 +1725,9 @@
         alertIcon.classList.remove("animate-spin");
         alertIcon.className = "material-symbols-outlined text-[20px] text-emerald-600";
         alertTitle.textContent = "Successfully Published!";
-        alertMsg.innerHTML = `Your catalog was committed to GitHub (<a href="${commitRes.commit.html_url}" target="_blank" class="underline font-mono text-[#875200]">commit ${commitRes.commit.sha.slice(0, 7)}</a>). GitHub Pages and Vercel are automatically deploying your latest fragrances live!`;
+        const commitSha = (commitRes && commitRes.commit && commitRes.commit.sha) ? commitRes.commit.sha.slice(0, 7) : "latest";
+        const commitUrl = (commitRes && commitRes.commit && commitRes.commit.html_url) ? commitRes.commit.html_url : `https://github.com/${GITHUB_REPO}/commits/${GITHUB_BRANCH}`;
+        alertMsg.innerHTML = `Your catalog was committed to GitHub (<a href="${commitUrl}" target="_blank" class="underline font-mono text-[#875200]">commit ${commitSha}</a>). GitHub Pages and Vercel are automatically building and deploying your live website!`;
         btnText.textContent = "Published Successfully!";
         showToast("Catalog published live to GitHub!");
 
@@ -1725,7 +1737,7 @@
         alertIcon.classList.remove("animate-spin");
         alertIcon.className = "material-symbols-outlined text-[20px] text-rose-600";
         alertTitle.textContent = "Publishing Failed";
-        alertMsg.textContent = `GitHub API Error: ${err.message}. Please verify your GitHub Token has 'Contents: Read and write' permissions.`;
+        alertMsg.innerHTML = `<span class="font-semibold text-rose-700">Error:</span> ${err.message}<br><br><span class="text-[11px] text-[#787268]">You can also use the <strong>Download products.js</strong> button below as an instant manual backup.</span>`;
         btnText.textContent = "Retry Publish";
         btn.disabled = false;
         showToast("Publishing failed: " + err.message, true);
@@ -1733,45 +1745,88 @@
     }
 
     async function uploadFileToGitHub(token, filePath, base64Content, commitMessage) {
+      const cleanToken = (token || "").trim();
       const apiUrl = `https://api.github.com/repos/${GITHUB_REPO}/contents/${filePath}`;
       
-      // Check existing SHA
+      const apiHeaders = {
+        "Authorization": `Bearer ${cleanToken}`,
+        "Accept": "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28"
+      };
+
+      // 1. Fetch current file SHA from target branch
       let currentSha = null;
       try {
-        const getResp = await fetch(apiUrl, {
-          headers: {
-            "Authorization": `Bearer ${token}`,
-            "Accept": "application/vnd.github.v3+json"
-          }
+        const getResp = await fetch(`${apiUrl}?ref=${encodeURIComponent(GITHUB_BRANCH)}`, {
+          headers: apiHeaders
         });
+
         if (getResp.ok) {
           const getJson = await getResp.json();
           currentSha = getJson.sha;
+        } else if (getResp.status === 404) {
+          // File does not exist yet (brand new file/image)
+          currentSha = null;
+        } else {
+          const errData = await getResp.json().catch(() => ({}));
+          const errMsg = errData.message || getResp.statusText;
+          if (getResp.status === 401) {
+            throw new Error(`GitHub Authentication Failed (HTTP 401): ${errMsg}. Please verify your Personal Access Token in Settings.`);
+          } else if (getResp.status === 403) {
+            throw new Error(`GitHub Permission Error (HTTP 403): ${errMsg}. Please verify that your token has repository access to '${GITHUB_REPO}' and 'Contents: Read and write' permissions.`);
+          } else {
+            throw new Error(`Failed to check existing file '${filePath}' (HTTP ${getResp.status}): ${errMsg}`);
+          }
         }
-      } catch (e) {}
+      } catch (e) {
+        if (e.message && e.message.includes("GitHub")) {
+          throw e;
+        }
+        // Network failure during SHA fetch
+        throw new Error(`Network error while connecting to GitHub API: ${e.message}`);
+      }
 
+      // 2. Prepare PUT payload
       const bodyData = {
         message: commitMessage,
         content: base64Content,
-        branch: GITHUB_BRANCH
+        branch: GITHUB_BRANCH,
+        committer: {
+          name: "Oud & Aura Admin",
+          email: "admin@oudandaura.com"
+        },
+        author: {
+          name: "Oud & Aura Admin",
+          email: "admin@oudandaura.com"
+        }
       };
+
       if (currentSha) {
         bodyData.sha = currentSha;
       }
 
+      // 3. Commit file via Contents API PUT
       const putResp = await fetch(apiUrl, {
         method: "PUT",
         headers: {
-          "Authorization": `Bearer ${token}`,
-          "Accept": "application/vnd.github.v3+json",
+          ...apiHeaders,
           "Content-Type": "application/json"
         },
         body: JSON.stringify(bodyData)
       });
 
       if (!putResp.ok) {
-        const errJson = await putResp.json();
-        throw new Error(errJson.message || `HTTP ${putResp.status}`);
+        const errJson = await putResp.json().catch(() => ({}));
+        const rawMsg = errJson.message || `HTTP ${putResp.status}`;
+        if (putResp.status === 403) {
+          throw new Error(`Permission Denied (HTTP 403): "${rawMsg}". Make sure your fine-grained token has "Contents: Read and write" selected for repository '${GITHUB_REPO}'.`);
+        } else if (putResp.status === 409) {
+          throw new Error(`Conflict (HTTP 409): The repository file changed remotely. Please reload and try again.`);
+        } else if (putResp.status === 422) {
+          throw new Error(`Validation Error (HTTP 422): ${rawMsg}`);
+        } else {
+          throw new Error(`GitHub API Error (HTTP ${putResp.status}): ${rawMsg}`);
+        }
       }
 
       return await putResp.json();
