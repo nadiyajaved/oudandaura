@@ -622,7 +622,62 @@ const PRODUCTS = [
         "isDefault": false
       }
     ]
-  }
+  },
+  {
+    "isArchived": false,
+    "id": "vanilla_haze",
+    "name": "Vanilla Haze",
+    "category": "perfumes",
+    "price": 549,
+    "originalPrice": 799,
+    "size": "50 ml",
+    "concentration": "Parfum",
+    "badge": "",
+    "isBestSeller": false,
+    "inStock": true,
+    "tag": "Vanilla Gourmand",
+    "shortDescription": "A warm, sweet and addictive vanilla fragrance with a rich, smooth and sensual character.",
+    "fullDescription": "A luxurious and comforting fragrance that blends creamy sweetness with a warm, elegant touch. Its rich vanilla character creates a beautiful balance of sweetness and warmth, leaving a soft, irresistible impression. Perfect for everyday wear, special occasions and layering with other fragrances.",
+    "images": [
+      "vanillahaze1.png",
+      "vanillahaze2.png"
+    ],
+    "notes": {
+      "top": "Vanilla Orchid, Jasmine",
+      "heart": "Brown Sugar, Tonka",
+      "base": "Amber, Amberwood, Musk, Patchouli"
+    },
+    "sizes": [
+      {
+        "size": "50 ml",
+        "price": 549,
+        "originalPrice": 799,
+        "label": "50 ml Bottle",
+        "isDefault": true
+      },
+      {
+        "size": "100 ml",
+        "price": 999,
+        "originalPrice": 1399,
+        "label": "100 ml Bottle",
+        "isDefault": false
+      },
+      {
+        "size": "30 ml",
+        "price": 299,
+        "originalPrice": 449,
+        "label": "30 ml Bottle",
+        "isDefault": false
+      },
+      {
+        "size": "20 ml Vial",
+        "price": 199,
+        "originalPrice": 299,
+        "label": "Pocket Vial",
+        "isDefault": false
+      }
+    ]
+  },
 ];
 
 // LocalStorage Keys for Catalog Synchronization
