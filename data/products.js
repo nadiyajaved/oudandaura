@@ -581,6 +581,47 @@ const PRODUCTS = [
         "isDefault": false
       }
     ]
+  },
+  {
+    "isArchived": false,
+    "id": "arabiantouch_attar",
+    "name": "Arabian Touch",
+    "category": "attars",
+    "price": 250,
+    "originalPrice": 400,
+    "size": "6 ml",
+    "concentration": "Perfume Oil",
+    "badge": "Premium collection",
+    "isBestSeller": false,
+    "inStock": true,
+    "tag": "Deep & Musky",
+    "shortDescription": "Intense sweetness, enormous projection and rich Middle Eastern profile.",
+    "fullDescription": "Powerful, ultra-sweet amber woody fragrance that blends rich oud and warm tonka bean with sugary cane and spicy saffron",
+    "images": [
+      "Arabiantouchattar.png",
+      "arabiantouch3.jpg"
+    ],
+    "notes": {
+      "top": "Saffron, Bergamot",
+      "heart": "Agarwood (Oud), Bulgarian Rose",
+      "base": "Tonka Bean, Sugar Cane, Amber, White Musk, Oakmoss"
+    },
+    "sizes": [
+      {
+        "size": "6 ml",
+        "price": 250,
+        "originalPrice": 399,
+        "label": "6 ml Bottle",
+        "isDefault": true
+      },
+      {
+        "size": "8 ml",
+        "price": 299,
+        "originalPrice": 499,
+        "label": "8 ml Bottle",
+        "isDefault": false
+      }
+    ]
   }
 ];
 
