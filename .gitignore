@@ -2,17 +2,10 @@
 cloudflared.exe
 *.exe
 
-# Ignore temporary screenshot captures
-*.png
-!storypageattar.png
-!arabiantouchgold1.png
-!nayel1.png
-!nayel2.png
-!boombelle1.png
-!boombelle2.png
-!Arabiantouchattar.png
-!vanillahaze1.png
-!vanillahaze2.png
+# Ignore temporary screenshot captures & Stitch reference screens
+*screenshot*.png
+*Screenshot*.png
+*screen.png
 
 # Ignore system files
 .DS_Store

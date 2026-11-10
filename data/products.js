@@ -678,6 +678,116 @@ const PRODUCTS = [
       }
     ]
   },
+  {
+    "isArchived": false,
+    "id": "saiba",
+    "name": "Saiba",
+    "category": "perfumes",
+    "price": 549,
+    "originalPrice": 799,
+    "size": "50 ml",
+    "concentration": "Parfum",
+    "badge": "",
+    "isBestSeller": false,
+    "inStock": true,
+    "tag": "Citrus Floral",
+    "shortDescription": "A refreshing and elegant fragrance with bright citrus freshness, soft florals and a clean, aromatic finish.",
+    "fullDescription": "A fresh and uplifting fragrance that opens with a sparkling citrus touch. Its soft floral heart adds a delicate elegance, while the aromatic woody finish brings a clean, refreshing and graceful character. Perfect for everyday wear.",
+    "images": [
+      "saiba1.png",
+      "saiba2.jpg"
+    ],
+    "notes": {
+      "top": "Bright, juicy citrus with a fresh, zesty and slightly sweet aroma",
+      "heart": "Soft floral sweetness with a delicate, feminine and airy feel",
+      "base": "Clean, green and woody freshness with a subtle earthy touch"
+    },
+    "sizes": [
+      {
+        "size": "50 ml",
+        "price": 549,
+        "originalPrice": 799,
+        "label": "50 ml Bottle",
+        "isDefault": true
+      },
+      {
+        "size": "100 ml",
+        "price": 999,
+        "originalPrice": 1399,
+        "label": "100 ml Bottle",
+        "isDefault": false
+      },
+      {
+        "size": "30 ml",
+        "price": 299,
+        "originalPrice": 449,
+        "label": "30 ml Bottle",
+        "isDefault": false
+      },
+      {
+        "size": "20 ml Vial",
+        "price": 199,
+        "originalPrice": 299,
+        "label": "Pocket Vial",
+        "isDefault": false
+      }
+    ]
+  },
+  {
+    "isArchived": false,
+    "id": "crx",
+    "name": "CRX",
+    "category": "perfumes",
+    "price": 549,
+    "originalPrice": 799,
+    "size": "50 ml",
+    "concentration": "Parfum",
+    "badge": "",
+    "isBestSeller": false,
+    "inStock": true,
+    "tag": "Citrus Floral",
+    "shortDescription": "A fresh, vibrant and energetic fragrance with juicy fruity freshness, aromatic florals and a clean, earthy woody finish.",
+    "fullDescription": "Refreshing and lively fragrance inspired by nature and adventure. It opens with a juicy, fruity freshness, followed by a smooth aromatic floral heart. Its earthy and woody finish creates a clean, masculine and effortlessly refreshing scent. Perfect for everyday wear, especially during warm days.",
+    "images": [
+      "crx1.png",
+      "crx2.png"
+    ],
+    "notes": {
+      "top": "A juicy burst of sweet pineapple, fresh mandarin and a slightly green, herbal touch",
+      "heart": "A clean aromatic blend of soft lavender, fresh green herbs and gentle floral sweetness",
+      "base": "Earthy patchouli and smooth vetiver create a warm, dry and woody finish"
+    },
+    "sizes": [
+      {
+        "size": "50 ml",
+        "price": 549,
+        "originalPrice": 799,
+        "label": "50 ml Bottle",
+        "isDefault": true
+      },
+      {
+        "size": "100 ml",
+        "price": 999,
+        "originalPrice": 1399,
+        "label": "100 ml Bottle",
+        "isDefault": false
+      },
+      {
+        "size": "30 ml",
+        "price": 299,
+        "originalPrice": 449,
+        "label": "30 ml Bottle",
+        "isDefault": false
+      },
+      {
+        "size": "20 ml Vial",
+        "price": 199,
+        "originalPrice": 299,
+        "label": "Pocket Vial",
+        "isDefault": false
+      }
+    ]
+  },
 ];
 
 // LocalStorage Keys for Catalog Synchronization
