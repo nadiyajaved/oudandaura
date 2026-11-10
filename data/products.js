@@ -278,7 +278,7 @@ const PRODUCTS = [
     "originalPrice": 799,
     "size": "50 ml",
     "concentration": "Parfum",
-    "badge": "New Launch",
+    "badge": "",
     "isBestSeller": false,
     "inStock": true,
     "tag": "Woody Spicy",
