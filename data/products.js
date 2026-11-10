@@ -745,7 +745,7 @@ const PRODUCTS = [
     "badge": "",
     "isBestSeller": false,
     "inStock": true,
-    "tag": "Citrus Floral",
+    "tag": "Fresh Fruity",
     "shortDescription": "A fresh, vibrant and energetic fragrance with juicy fruity freshness, aromatic florals and a clean, earthy woody finish.",
     "fullDescription": "Refreshing and lively fragrance inspired by nature and adventure. It opens with a juicy, fruity freshness, followed by a smooth aromatic floral heart. Its earthy and woody finish creates a clean, masculine and effortlessly refreshing scent. Perfect for everyday wear, especially during warm days.",
     "images": [

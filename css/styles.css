@@ -185,3 +185,14 @@ img:not([src]), img[src=""] {
   opacity: 1;
   transform: translateY(0);
 }
+
+
+/* Best Seller Badge Styling */
+.badge-bestseller,
+.bestseller-badge,
+[data-badge="Best Seller"],
+.badge-gold {
+  background-color: #cbb279 !important;
+  color: #141312 !important;
+  font-weight: 600;
+}
