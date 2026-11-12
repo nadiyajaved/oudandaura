@@ -122,7 +122,7 @@
         <!-- Editorial Product Hero Card -->
         <div class="relative w-full max-w-lg mx-auto rounded-2xl overflow-hidden bg-[#0D0C0B] shadow-md flex flex-col items-center border border-[#E5DDCF]/60">
           <div class="relative w-full aspect-square flex items-center justify-center overflow-hidden">
-            <img class="w-full h-full object-cover transition-transform duration-700 hover:scale-105" src="homepagelogo.jpg" alt="Oud &amp; Aura - The Essence Collection">
+            <img class="w-full h-full object-cover transition-transform duration-700 hover:scale-105" src="homepageoa.png" alt="Oud &amp; Aura - The Essence Collection">
           </div>
         </div>
 
@@ -360,7 +360,7 @@
             A versatile collection of four captivating fragrances (Arabian Touch, Tam D'Or, Ruh Arab, and Hawaz Rush), blending rich, warm, woody, and fresh characters for every mood, occasion, and gifting.
           </p>
           <div class="flex flex-col sm:flex-row gap-2">
-            <button onclick="event.stopPropagation(); addToCart('unisex_giftset', '4 × 20 ml', 777);" class="w-full py-3 bg-[#875200] hover:bg-[#6c4100] active:scale-[0.99] text-white font-label-caps text-label-caps uppercase tracking-wider text-center rounded transition-all flex items-center justify-center gap-2 cursor-pointer font-semibold shadow-xs" type="button">
+            <button onclick="event.stopPropagation(); addToCart('unisex_giftset', '4 × 20 ml', 777);" class="w-full py-3 bg-[#644c17] hover:bg-[#4e3b12] active:scale-[0.99] text-white font-label-caps text-label-caps uppercase tracking-wider text-center rounded transition-all flex items-center justify-center gap-2 cursor-pointer font-semibold shadow-xs" type="button">
               <span class="material-symbols-outlined text-[16px]">shopping_bag</span>
               <span>Order Now</span>
             </button>
@@ -574,11 +574,15 @@
   <script>
     // Home Page Specific Dynamic Content Hydration
     document.addEventListener("DOMContentLoaded", () => {
-      // 1. Render Best Sellers Only
+      // 1. Render Best Sellers Only (with shimmer skeleton loading state)
       const bestSellers = getBestSellers();
       const container = document.getElementById("bestSellersContainer");
       if (container && bestSellers.length > 0) {
-        container.innerHTML = bestSellers.slice(0, 4).map(product => `
+        renderWithSkeleton({
+          container,
+          skeletonHtml: getSkeletonCardHtml({ count: 4, aspectClass: "aspect-square", showButtons: true }),
+          renderData: () => {
+            container.innerHTML = bestSellers.slice(0, 4).map(product => `
           <div onclick="window.location.href='product.html?id=' + encodeURIComponent('${product.id}')" class="flex flex-col bg-[#FAF6F0] rounded-lg overflow-hidden shadow-sm p-3 border border-[#E5DDCF] product-card cursor-pointer transition-all hover:shadow-md">
             <div class="relative aspect-square rounded bg-[#EFE9DF] mb-2.5 overflow-hidden flex items-center justify-center">
               <img class="w-full h-full object-cover" src="${product.images[0]}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/300?text=${encodeURIComponent(product.name)}'">
@@ -602,24 +606,26 @@
               <span class="font-body-md text-[14px] font-semibold text-[#0D0C0B] mt-1">${SITE_CONFIG.currencySymbol}${product.price}</span>
             </div>
             <div class="mt-3 flex flex-col gap-1.5">
-              <button onclick="event.stopPropagation(); addToCart('${product.id}', '${product.size}', ${product.price});" class="w-full py-2 text-center font-label-caps text-[10px] text-white uppercase tracking-wider bg-[#875200] hover:bg-[#6c4100] active:scale-[0.99] rounded flex items-center justify-center gap-1 transition-all cursor-pointer font-semibold shadow-xs" type="button">
+              <button onclick="event.stopPropagation(); addToCart('${product.id}', '${product.size}', ${product.price});" class="w-full py-2 text-center font-label-caps text-[10px] text-white uppercase tracking-wider bg-[#644c17] hover:bg-[#4e3b12] active:scale-[0.99] rounded flex items-center justify-center gap-1 transition-all cursor-pointer font-semibold shadow-xs" type="button">
                 <span class="material-symbols-outlined text-[13px] text-white">shopping_bag</span>
                 <span>Order Now</span>
               </button>
-              <a onclick="event.stopPropagation();" class="w-full py-2 text-center font-label-caps text-[10px] text-[#FAF6F0] uppercase tracking-wider bg-[#0D0C0B] hover:bg-[#141312] rounded flex items-center justify-center gap-1 transition-colors" href="${SITE_CONFIG.getProductWhatsAppUrl(product.name, product.size, product.price)}" target="_blank" rel="noopener">
-                <span>WhatsApp</span>
-                <span class="material-symbols-outlined text-[12px] text-[#CBB279]">send</span>
-              </a>
             </div>
           </div>
-        `).join("");
+            `).join("");
+          }
+        });
       }
 
-      // 2. Render Featured Collection Items
+      // 2. Render Featured Collection Items (with shimmer skeleton loading state)
       const featuredList = document.getElementById("featuredCatalogueList");
       const allProds = typeof getAllProducts === 'function' ? getAllProducts() : PRODUCTS; const catalogueItems = allProds.filter(p => !p.isBestSeller).concat(allProds.filter(p => p.isBestSeller)).slice(0, 3);
       if (featuredList && catalogueItems.length > 0) {
-        featuredList.innerHTML = catalogueItems.map(p => `
+        renderWithSkeleton({
+          container: featuredList,
+          skeletonHtml: getSkeletonRowHtml(3),
+          renderData: () => {
+            featuredList.innerHTML = catalogueItems.map(p => `
           <div class="flex items-center p-3 rounded-lg bg-surface shadow-sm gap-3 border border-[#E5DDCF]/50">
             <div class="w-20 h-20 rounded bg-surface-container flex-shrink-0 overflow-hidden relative">
               <img class="w-full h-full object-cover" src="${p.images[0]}" alt="${p.name}">
@@ -632,21 +638,18 @@
               <p class="font-body-sm text-[12px] text-on-surface-variant truncate">${p.shortDescription}</p>
               <span class="font-label-caps text-[10px] text-secondary mt-0.5">${p.size} · ${p.concentration}</span>
               <div class="flex items-center gap-2 mt-2">
-                <button onclick="event.stopPropagation(); addToCart('${p.id}', '${p.size}', ${p.price});" class="font-label-caps text-[10px] text-[#875200] font-semibold flex items-center gap-0.5 hover:underline cursor-pointer" type="button">
+                <button onclick="event.stopPropagation(); addToCart('${p.id}', '${p.size}', ${p.price});" class="font-label-caps text-[10px] text-[#644c17] hover:text-[#4e3b12] font-semibold flex items-center gap-0.5 hover:underline cursor-pointer" type="button">
                   <span class="material-symbols-outlined text-[12px]">shopping_bag</span>
                   <span>Order Now</span>
                 </button>
-                <span class="text-outline-variant text-[10px]">·</span>
-                <a class="font-label-caps text-[10px] text-secondary flex items-center gap-0.5 hover:underline" href="${SITE_CONFIG.getProductWhatsAppUrl(p.name, p.size, p.price)}" target="_blank" rel="noopener">
-                  <span>WhatsApp</span>
-                  <span class="material-symbols-outlined text-[12px]">send</span>
-                </a>
                 <span class="text-outline-variant text-[10px]">·</span>
                 <a class="font-label-caps text-[10px] text-primary underline hover:text-secondary" href="product.html?id=${encodeURIComponent(p.id)}">Details</a>
               </div>
             </div>
           </div>
-        `).join("");
+            `).join("");
+          }
+        });
       }
 
       // 3. Setup Gift Set WhatsApp CTA

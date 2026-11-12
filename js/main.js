@@ -368,4 +368,132 @@ document.addEventListener("DOMContentLoaded", () => {
   setupMobileMenu();
   setupCartDrawer();
   setupSearchModal();
+  setupFloatingWhatsAppScroll();
 });
+
+/**
+ * Hides the floating WhatsApp CTA when scrolling down and reveals it when scrolling back up.
+ */
+function setupFloatingWhatsAppScroll() {
+  const floatingAside = document.querySelector("aside.fixed.bottom-20");
+  if (!floatingAside) return;
+
+  floatingAside.classList.add("floating-whatsapp-aside");
+
+  let lastScrollY = window.scrollY || window.pageYOffset || 0;
+  let ticking = false;
+
+  const updateVisibility = () => {
+    const currentScrollY = window.scrollY || window.pageYOffset || 0;
+
+    if (currentScrollY <= 40) {
+      floatingAside.classList.remove("is-hidden");
+    } else if (currentScrollY > lastScrollY && currentScrollY > 60) {
+      floatingAside.classList.add("is-hidden");
+    } else if (currentScrollY < lastScrollY) {
+      floatingAside.classList.remove("is-hidden");
+    }
+
+    lastScrollY = currentScrollY <= 0 ? 0 : currentScrollY;
+    ticking = false;
+  };
+
+  window.addEventListener("scroll", () => {
+    if (!ticking) {
+      window.requestAnimationFrame(updateVisibility);
+      ticking = true;
+    }
+  }, { passive: true });
+}
+
+
+// ============================================================================
+// SHIMMER SKELETON LOADING HELPERS
+// ============================================================================
+
+/**
+ * Checks if ?skeleton=1 is present in the URL to hold the skeleton state for visual preview.
+ */
+function shouldHoldSkeletonPreview() {
+  try {
+    return new URLSearchParams(window.location.search).get("skeleton") === "1";
+  } catch (e) {
+    return false;
+  }
+}
+
+/**
+ * Generates HTML for product grid skeleton cards.
+ */
+function getSkeletonCardHtml({ count = 4, aspectClass = "aspect-[4/5]", showButtons = false } = {}) {
+  return Array.from({ length: count }, () => `
+    <div class="skeleton-card p-3 shadow-sm" aria-hidden="true">
+      <div class="skeleton-image skeleton-shimmer ${aspectClass} mb-2.5">
+        <span class="skeleton-pill bg-[#e5ddcf]/80 w-16 absolute top-2 left-2"></span>
+        <span class="w-7 h-7 rounded-full bg-white/70 absolute top-2 right-2"></span>
+      </div>
+      <div class="flex flex-col gap-1.5 flex-1">
+        <div class="skeleton-line-sm skeleton-shimmer w-1/3"></div>
+        <div class="skeleton-line skeleton-shimmer w-3/4"></div>
+        <div class="skeleton-line-sm skeleton-shimmer w-1/2 mt-0.5"></div>
+        <div class="skeleton-line skeleton-shimmer w-1/4 mt-1"></div>
+      </div>
+      ${showButtons ? `
+        <div class="mt-3 flex flex-col gap-1.5">
+          <div class="skeleton-btn skeleton-shimmer"></div>
+        </div>
+      ` : ""}
+    </div>
+  `).join("");
+}
+
+/**
+ * Generates HTML for horizontal featured product row skeletons.
+ */
+function getSkeletonRowHtml(count = 3) {
+  return Array.from({ length: count }, () => `
+    <div class="flex items-center p-3 rounded-lg bg-surface shadow-sm gap-3 border border-[#E5DDCF]/50" aria-hidden="true">
+      <div class="w-20 h-20 rounded flex-shrink-0 skeleton-shimmer"></div>
+      <div class="flex flex-col flex-grow min-w-0 gap-1.5">
+        <div class="flex items-center justify-between gap-2">
+          <div class="skeleton-line skeleton-shimmer w-2/5"></div>
+          <div class="skeleton-line skeleton-shimmer w-12"></div>
+        </div>
+        <div class="skeleton-line-sm skeleton-shimmer w-4/5"></div>
+        <div class="skeleton-line-sm skeleton-shimmer w-1/3"></div>
+        <div class="flex items-center gap-2 mt-1">
+          <div class="skeleton-line-sm skeleton-shimmer w-16"></div>
+          <div class="skeleton-line-sm skeleton-shimmer w-16"></div>
+          <div class="skeleton-line-sm skeleton-shimmer w-12"></div>
+        </div>
+      </div>
+    </div>
+  `).join("");
+}
+
+/**
+ * Conditionally renders a shimmer skeleton while isLoading is true,
+ * then transitions to renderData() once loading completes.
+ */
+function renderWithSkeleton({ container, skeletonHtml, renderData, delayMs = 350 }) {
+  if (!container) return;
+
+  let isLoading = true;
+
+  if (isLoading) {
+    container.setAttribute("aria-busy", "true");
+    container.innerHTML = skeletonHtml;
+  }
+
+  if (shouldHoldSkeletonPreview()) {
+    return;
+  }
+
+  setTimeout(() => {
+    isLoading = false;
+    container.removeAttribute("aria-busy");
+    if (!isLoading) {
+      renderData();
+    }
+  }, delayMs);
+}
