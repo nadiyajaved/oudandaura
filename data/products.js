@@ -848,7 +848,7 @@ const PRODUCTS = [
     "id": "gold_oud",
     "name": "Gold Oud",
     "category": "perfumes",
-    "price": 799,
+    "price": 749,
     "originalPrice": 999,
     "size": "50 ml",
     "concentration": "Parfum",
