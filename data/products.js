@@ -843,6 +843,142 @@ const PRODUCTS = [
       }
     ]
   },
+  {
+    "isArchived": false,
+    "id": "gold_oud",
+    "name": "Gold Oud",
+    "category": "perfumes",
+    "price": 799,
+    "originalPrice": 999,
+    "size": "50 ml",
+    "concentration": "Parfum",
+    "badge": "",
+    "isBestSeller": false,
+    "inStock": true,
+    "tag": "Spicy Sweet Ambery",
+    "shortDescription": "A rich and elegant fragrance with warm spices, soft florals and a sweet, woody touch.",
+    "fullDescription": "Beautiful blend of warm spices, sweet caramel and delicate florals, balanced with deep woody and musky undertones. A luxurious and captivating fragrance, perfect for everyday wear and special occasions.",
+    "images": [
+      "Gold oud1.png",
+      "Gold oud2.png"
+    ],
+    "notes": {
+      "top": "A warm, slightly sweet blend of saffron and spicy pimento, balanced with a soft, romantic rose aroma",
+      "heart": "Sweet, creamy caramel blends with earthy patchouli and soft floral freshness",
+      "base": "Deep oud, warm amber, smooth musk and smoky incense create a rich, woody and long-lasting impression"
+    },
+    "sizes": [
+      {
+        "size": "50 ml",
+        "price": 749,
+        "originalPrice": 999,
+        "label": "50 ml Bottle",
+        "isDefault": true
+      },
+    ]
+  },
+  {
+    "isArchived": false,
+    "id": "zavian",
+    "name": "Zavian",
+    "category": "perfumes",
+    "price": 749,
+    "originalPrice": 999,
+    "size": "50 ml",
+    "concentration": "Parfum",
+    "badge": "",
+    "isBestSeller": false,
+    "inStock": true,
+    "tag": "Woody fruity Smoky",
+    "shortDescription": "A bold and sophisticated fragrance with fresh fruity sweetness and a rich, smoky woody character.",
+    "fullDescription": "A powerful and elegant fragrance that blends juicy fruits with smoky woods and warm earthy undertones. Its fresh yet masculine character makes it perfect for everyday wear and special occasions.",
+    "images": [
+      "Zavian1.png",
+      "Zavian2.png"
+    ],
+    "notes": {
+      "top": "Fresh pineapple, blackcurrant and bergamot with a bright, fruity opening.",
+      "heart": "Sweet jasmine, rose and birch create a smooth floral and slightly smoky character.",
+      "base": "Warm musk, oakmoss, ambergris and vanilla leave a rich, earthy and woody finish."
+    },
+    "sizes": [
+      {
+        "size": "50 ml",
+        "price": 749,
+        "originalPrice": 999,
+        "label": "50 ml Bottle",
+        "isDefault": true
+      },
+    ]
+  },
+  {
+    "isArchived": false,
+    "id": "azure",
+    "name": "Azure",
+    "category": "perfumes",
+    "price": 749,
+    "originalPrice": 999,
+    "size": "50 ml",
+    "concentration": "Parfum",
+    "badge": "",
+    "isBestSeller": false,
+    "inStock": true,
+    "tag": "Fresh Aromatic Spicy",
+    "shortDescription": "A beautiful, feminine fragrance with juicy fruity sweetness, delicate white florals and a soft, warm finish.",
+    "fullDescription": "A joyful and captivating fragrance that opens with a fresh burst of fruity sweetness. Its heart blooms with elegant white florals, creating a soft and romantic feel, while a touch of brown sugar adds a delicious sweetness to the warm, smooth finish. Perfect for everyday wear and special occasions.",
+    "images": [
+      "Azure1.png",
+      "Azure2.png"
+    ],
+    "notes": {
+      "top": "Fresh bergamot, black pepper and lavender create a crisp, citrusy and slightly spicy opening",
+      "heart": "Aromatic sage, geranium and nutmeg add a warm, herbal and subtly spicy character",
+      "base": "Cedarwood, vetiver and amber leave a smooth, earthy, woody and warm finish"
+    },
+    "sizes": [
+      {
+        "size": "50 ml",
+        "price": 749,
+        "originalPrice": 999,
+        "label": "50 ml Bottle",
+        "isDefault": true
+      },
+    ]
+  },
+  {
+    "isArchived": false,
+    "id": "elora",
+    "name": "Elora",
+    "category": "perfumes",
+    "price": 749,
+    "originalPrice": 999,
+    "size": "50 ml",
+    "concentration": "Parfum",
+    "badge": "",
+    "isBestSeller": false,
+    "inStock": true,
+    "tag": "Tropical Floral Fruity",
+    "shortDescription": "A fresh and tropical fragrance with juicy citrus, beautiful white florals and a soft, musky finish.",
+    "fullDescription": "Refreshing and feminine fragrance inspired by tropical island vibes. It blends bright citrus with creamy florals and a touch of fruity sweetness, leaving a soft, elegant and refreshing impression. Perfect for everyday wear, especially during warm days.",
+    "images": [
+      "Elora1.png",
+      "Elore2.png"
+    ],
+    "notes": {
+      "top": "Fresh, zesty citrus with a juicy and slightly green fruity touch",
+      "heart": "Creamy white florals with a soft, sweet and tropical aroma",
+      "base": "Smooth fruity sweetness blended with warm woods and clean musk"
+    },
+    "sizes": [
+      {
+        "size": "50 ml",
+        "price": 749,
+        "originalPrice": 999,
+        "label": "50 ml Bottle",
+        "isDefault": true
+      },
+    ]
+  },
 ];
 
 // LocalStorage Keys for Catalog Synchronization
