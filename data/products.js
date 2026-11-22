@@ -788,6 +788,61 @@ const PRODUCTS = [
       }
     ]
   },
+  {
+    "isArchived": false,
+    "id": "florea",
+    "name": "Floréa",
+    "category": "perfumes",
+    "price": 549,
+    "originalPrice": 799,
+    "size": "50 ml",
+    "concentration": "Parfum",
+    "badge": "",
+    "isBestSeller": false,
+    "inStock": true,
+    "tag": "Fresh & Feminine",
+    "shortDescription": "A beautiful, feminine fragrance with juicy fruity sweetness, delicate white florals and a soft, warm finish.",
+    "fullDescription": "A joyful and captivating fragrance that opens with a fresh burst of fruity sweetness. Its heart blooms with elegant white florals, creating a soft and romantic feel, while a touch of brown sugar adds a delicious sweetness to the warm, smooth finish. Perfect for everyday wear and special occasions.",
+    "images": [
+      "florea1.png",
+      "florea2.png"
+    ],
+    "notes": {
+      "top": "A juicy, sparkling blend of sweet red berries, fresh mandarin and fruity blossom",
+      "heart": "Creamy white gardenia, soft jasmine and delicate tropical florals create a rich, feminine floral scent",
+      "base": "Sweet brown sugar adds a warm, caramel-like sweetness with a subtle earthy touch of patchouli"
+    },
+    "sizes": [
+      {
+        "size": "50 ml",
+        "price": 549,
+        "originalPrice": 799,
+        "label": "50 ml Bottle",
+        "isDefault": true
+      },
+      {
+        "size": "100 ml",
+        "price": 999,
+        "originalPrice": 1399,
+        "label": "100 ml Bottle",
+        "isDefault": false
+      },
+      {
+        "size": "30 ml",
+        "price": 299,
+        "originalPrice": 449,
+        "label": "30 ml Bottle",
+        "isDefault": false
+      },
+      {
+        "size": "20 ml Vial",
+        "price": 199,
+        "originalPrice": 299,
+        "label": "Pocket Vial",
+        "isDefault": false
+      }
+    ]
+  },
 ];
 
 // LocalStorage Keys for Catalog Synchronization
